@@ -1,0 +1,14 @@
+\begindata
+	KERNELS_TO_LOAD = (
+		'data/spice/Gravity.tpc'
+		'data/spice/pck00010.tpc'
+		'data/spice/naif0010.tls'
+		'data/spice/de421.bsp'
+		'data/spice/mar085.bsp'
+		'data/spice/jup230l.bsp'
+		'data/spice/sat351.bsp'
+		'data/spice/ura083.bsp'
+		'data/spice/nep081.bsp'
+		'data/spice/plu021.bsp'
+	)
+\begintext

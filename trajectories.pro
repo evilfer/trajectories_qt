@@ -20,7 +20,9 @@ SOURCES += main.cpp \
     trajectory/pathsection.cpp \
     tmath/vectormath.cpp \
     tmath/julianday.cpp \
-    win/strptime.cpp
+    win/strptime.cpp \
+    ephemerides/SpicePosition.cpp \
+    ephemerides/BodyConstants.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
@@ -33,4 +35,11 @@ HEADERS += \
     tmath/vectormath.h \
     tmath/consts.h \
     tmath/julianday.h \
-    win/strptime.h
+    win/strptime.h \
+    ephemerides/SpicePosition.h \
+    ephemerides/BodyConstants.h
+
+OTHER_FILES += \
+    cfg/kernels.furnsh \
+    cfg/default.txt \
+    cfg/colors.cfg
