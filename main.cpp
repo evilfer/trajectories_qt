@@ -29,25 +29,27 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include "html5applicationviewer.h"
 #include <stdio.h>
 
-int main(int argc, char *argv[])
-{
+#include "world/solarsystem.h"
+#include "world/worldloader.h"
+#include "ephemerides/spiceposition.h"
 
-  QApplication app(argc, argv);
+int main(int argc, char *argv[]) {
 
-  Html5ApplicationViewer viewer;
-  viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-  viewer.showExpanded();
-  viewer.webView()->setAcceptHoverEvents(true);
-  viewer.webView()->setActive(true);
-//  viewer.webView()
-  QUrl url("assets:/html/index.html");
-  QString path = url.path();
+    ephemerides::SpicePosition::init();
 
+    world::SolarSystem * s= world::WorldLoader::loadSolarSystem();
+    s->wakeUpAllSystems();
 
+    QApplication app(argc, argv);
 
-  //viewer.loadFile(QLatin1String("html/index.html"));
- viewer.loadUrl(QUrl("html/index.html"));
+    Html5ApplicationViewer viewer;
+    viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
+    viewer.showExpanded();
+    viewer.webView()->setAcceptHoverEvents(true);
+    viewer.webView()->setActive(true);
 
-  return app.exec();
+    viewer.loadUrl(QUrl("html/index.html"));
+
+    return app.exec();
 
 }

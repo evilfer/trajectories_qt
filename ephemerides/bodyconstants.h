@@ -89,6 +89,8 @@ public:
 
     inline BodyConstantsConstIterator begin() const {return m_vector.begin();}
     inline BodyConstantsConstIterator end() const {return m_vector.end();}
+
+    inline int size() const {return m_vector.size();}
 };
 
 

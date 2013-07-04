@@ -143,6 +143,7 @@ void SpicePosition::init() {
     }
 
 
+
     for (BodyConstantsConstIterator it = m_bodies.begin(); it != m_bodies.end(); it++) {
         EphemeridesInterval & interval = m_intervals[(*it)->id()];
         getinterval(ks, (*it)->id(), interval);
@@ -163,6 +164,7 @@ void SpicePosition::init() {
 
     std::cout << "global: [" << timea << " - " << timeb << "]" << std::endl;
 
+    std::cout << m_bodies.size() << std::endl;
 
     erract_c("SET", 0, (char*)"DEFAULT");
 }
