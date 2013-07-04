@@ -1,8 +1,7 @@
 /*
 
-Copyright (C) 2010 Eloy David Villasclaras Fernandez.
+Copyright (C) 2010-2013 Eloy David Villasclaras Fernandez.
 evilfer@gmail.com
-http://sourceforge.net/projects/trajectories/
 
 This file is part of Trajectories.
 
@@ -21,13 +20,13 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include "SpicePosition.h"
+#include "spiceposition.h"
 
 #include <cmath>
 #include <cctype>
 #include <iostream>
 
-namespace sim {
+namespace ephemerides {
 
 double                  SpicePosition::m_lt(0);
 BodyConstantsList       SpicePosition::m_bodies;

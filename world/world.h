@@ -20,34 +20,32 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#pragma once
 
-#include <QApplication>
-#include <QWebView>
-#include <QtWebKit/QWebView>
-#include <QGraphicsWebView>
+#include "ship.h"
+#include "solarsystem.h"
 
-#include "html5applicationviewer.h"
-#include <stdio.h>
-
-int main(int argc, char *argv[])
-{
-
-  QApplication app(argc, argv);
-
-  Html5ApplicationViewer viewer;
-  viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-  viewer.showExpanded();
-  viewer.webView()->setAcceptHoverEvents(true);
-  viewer.webView()->setActive(true);
-//  viewer.webView()
-  QUrl url("assets:/html/index.html");
-  QString path = url.path();
+namespace world {
 
 
+  class World {
+    SolarSystem *solarsystem_;
+    Ship *ship_;
 
-  //viewer.loadFile(QLatin1String("html/index.html"));
- viewer.loadUrl(QUrl("html/index.html"));
+    double et_;
 
-  return app.exec();
+  public:
+    World(SolarSystem *solarsystem);
+    virtual ~World();
+
+    inline SolarSystem *solarSystem() {return this->solarsystem_;}
+    inline Ship *ship() {return this->ship_;}
+
+    double time() {return this->et_;}
+
+    void init(double et, ephemerides::BodyId id, double radius, double inc, double lon, double lat);
+    void setState(double et, const double *shippos, const double *shipvel);
+    void step(double maxtime);
+  };
 
 }

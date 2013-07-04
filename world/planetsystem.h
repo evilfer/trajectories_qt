@@ -20,34 +20,37 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#ifndef PLANETSYSTEM_H
+#define PLANETSYSTEM_H
 
-#include <QApplication>
-#include <QWebView>
-#include <QtWebKit/QWebView>
-#include <QGraphicsWebView>
+#include "body.h"
 
-#include "html5applicationviewer.h"
-#include <stdio.h>
-
-int main(int argc, char *argv[])
-{
-
-  QApplication app(argc, argv);
-
-  Html5ApplicationViewer viewer;
-  viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-  viewer.showExpanded();
-  viewer.webView()->setAcceptHoverEvents(true);
-  viewer.webView()->setActive(true);
-//  viewer.webView()
-  QUrl url("assets:/html/index.html");
-  QString path = url.path();
+namespace world {
 
 
+class PlanetSystem {
+    Body * m_baricenter;
+    Body * r_main;
+    BodyVector m_planets;
+    bool m_simplemode;
 
-  //viewer.loadFile(QLatin1String("html/index.html"));
- viewer.loadUrl(QUrl("html/index.html"));
+public:
+    PlanetSystem();
+    ~PlanetSystem();
 
-  return app.exec();
+    void addPlanet(const ephemerides::BodyConstants *body);
+    void createBarycenter();
+
+    void update(double et);
+
+    void set(bool simplemode) {m_simplemode = simplemode;}
+
+    inline bool simplemode() {return m_simplemode;}
+    inline Body * baricenter() {return m_baricenter;}
+    inline BodyVector & bodies() {return m_planets;}
+};
+
+typedef std::vector<PlanetSystem*> PlanetSystemList;
 
 }
+#endif // PLANETSYSTEM_H

@@ -20,34 +20,33 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#pragma once
 
-#include <QApplication>
-#include <QWebView>
-#include <QtWebKit/QWebView>
-#include <QGraphicsWebView>
+#include "solarsystem.h"
 
-#include "html5applicationviewer.h"
-#include <stdio.h>
+namespace world {
 
-int main(int argc, char *argv[])
-{
+class GravityField {
+    SolarSystem * solarsystem_r;
 
-  QApplication app(argc, argv);
+    PlanetSystem * closest_r;
+    Body * closestbody_r;
+    double distance_;
 
-  Html5ApplicationViewer viewer;
-  viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-  viewer.showExpanded();
-  viewer.webView()->setAcceptHoverEvents(true);
-  viewer.webView()->setActive(true);
-//  viewer.webView()
-  QUrl url("assets:/html/index.html");
-  QString path = url.path();
+    PlanetSystem * strongest_r;
+    Body * strongestbody_r;
+    double force_;
 
+    void getAcc(const double *pos, double *acc, Body *body, PlanetSystem *owner);
 
+public:
+    GravityField(SolarSystem * solarsystem);
+    virtual ~GravityField();
+    
+    void updateAccDistance(const double *pos, double *acc);
 
-  //viewer.loadFile(QLatin1String("html/index.html"));
- viewer.loadUrl(QUrl("html/index.html"));
-
-  return app.exec();
+    inline double minDistance() const {return this->distance_;}
+    inline PlanetSystem * closestSystem() {return this->closest_r;}
+};
 
 }

@@ -20,6 +20,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+
 #ifndef PATHPOINT_H
 #define PATHPOINT_H
 

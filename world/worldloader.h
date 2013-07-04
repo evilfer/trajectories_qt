@@ -20,34 +20,17 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-
-#include <QApplication>
-#include <QWebView>
-#include <QtWebKit/QWebView>
-#include <QGraphicsWebView>
-
-#include "html5applicationviewer.h"
-#include <stdio.h>
-
-int main(int argc, char *argv[])
-{
-
-  QApplication app(argc, argv);
-
-  Html5ApplicationViewer viewer;
-  viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-  viewer.showExpanded();
-  viewer.webView()->setAcceptHoverEvents(true);
-  viewer.webView()->setActive(true);
-//  viewer.webView()
-  QUrl url("assets:/html/index.html");
-  QString path = url.path();
+#pragma once
 
 
+#include "solarsystem.h"
 
-  //viewer.loadFile(QLatin1String("html/index.html"));
- viewer.loadUrl(QUrl("html/index.html"));
+namespace world {
 
-  return app.exec();
+class WorldLoader {
+public:
+    static SolarSystem *loadSolarSystem();
+    static void loadBodies(BodyList & list);
+};
 
 }

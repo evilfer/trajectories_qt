@@ -1,6 +1,6 @@
 /*
 
-Copyright (C) 2010 Eloy David Villasclaras Fernandez.
+Copyright (C) 2010-2013 Eloy David Villasclaras Fernandez.
 evilfer@gmail.com
 
 This file is part of Trajectories.
@@ -20,14 +20,16 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+
+
 #pragma once
 
 #include <vector>
 #include <map>
 #include <string>
 
-#include "SpiceUsr.h"
-#include "BodyConstants.h"
+#include <SpiceUsr.h>
+#include "bodyconstants.h"
 
 namespace ephemerides {
 

@@ -21,8 +21,18 @@ SOURCES += main.cpp \
     tmath/vectormath.cpp \
     tmath/julianday.cpp \
     win/strptime.cpp \
-    ephemerides/SpicePosition.cpp \
-    ephemerides/BodyConstants.cpp
+    world/ship.cpp \
+    ephemerides/bodyconstants.cpp \
+    ephemerides/spiceposition.cpp \
+    world/body.cpp \
+    world/gravityfield.cpp \
+    world/interpolator.cpp \
+    world/object.cpp \
+    world/orbit.cpp \
+    world/planetsystem.cpp \
+    world/solarsystem.cpp \
+    world/world.cpp \
+    world/worldloader.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
@@ -36,10 +46,24 @@ HEADERS += \
     tmath/consts.h \
     tmath/julianday.h \
     win/strptime.h \
-    ephemerides/SpicePosition.h \
-    ephemerides/BodyConstants.h
+    world/ship.h \
+    world/body.h \
+    world/gravityfield.h \
+    world/interpolator.h \
+    world/object.h \
+    world/orbit.h \
+    world/planetsystem.h \
+    world/solarsystem.h \
+    world/world.h \
+    world/worldloader.h \
+    ephemerides/bodyconstants.h \
+    ephemerides/spiceposition.h
 
 OTHER_FILES += \
     cfg/kernels.furnsh \
     cfg/default.txt \
     cfg/colors.cfg
+
+
+LIBS += -L/home/evilfer/lib/cspice/lib -lcspice
+INCLUDEPATH += /home/evilfer/lib/cspice/include

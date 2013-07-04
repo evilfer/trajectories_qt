@@ -20,34 +20,30 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#pragma once
 
-#include <QApplication>
-#include <QWebView>
-#include <QtWebKit/QWebView>
-#include <QGraphicsWebView>
+#include "ephemerides/bodyconstants.h"
 
-#include "html5applicationviewer.h"
-#include <stdio.h>
+namespace world {
 
-int main(int argc, char *argv[])
-{
+class Interpolator {
+    ephemerides::BodyId body_;
+    double gap_;
+    double igap_;
+    int index_;
 
-  QApplication app(argc, argv);
+    double a_[3], b_[3], c_[3];
+    
+//    double getIPoints(double et);
+//    void interpolate(double et, Vector3 *pos, Vector3 *vel);
+    double interpolate2GetPoints(double et);
 
-  Html5ApplicationViewer viewer;
-  viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-  viewer.showExpanded();
-  viewer.webView()->setAcceptHoverEvents(true);
-  viewer.webView()->setActive(true);
-//  viewer.webView()
-  QUrl url("assets:/html/index.html");
-  QString path = url.path();
+public:
+    Interpolator(ephemerides::BodyId body, double gap);
+    virtual ~Interpolator();
+    
+    void interpolate2(double et, double *pos, double *vel);
+};
 
-
-
-  //viewer.loadFile(QLatin1String("html/index.html"));
- viewer.loadUrl(QUrl("html/index.html"));
-
-  return app.exec();
 
 }

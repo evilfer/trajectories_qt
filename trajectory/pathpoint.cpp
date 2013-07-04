@@ -20,6 +20,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+
 #include "pathpoint.h"
 
 namespace trajectory {
