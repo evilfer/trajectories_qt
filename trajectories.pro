@@ -32,11 +32,14 @@ SOURCES += main.cpp \
     world/planetsystem.cpp \
     world/solarsystem.cpp \
     world/world.cpp \
-    world/worldloader.cpp
+    world/worldloader.cpp \
+    world/burn.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
+
+include(cspicelib.pri)
 
 HEADERS += \
     trajectory/path.h \
@@ -57,13 +60,13 @@ HEADERS += \
     world/world.h \
     world/worldloader.h \
     ephemerides/bodyconstants.h \
-    ephemerides/spiceposition.h
+    ephemerides/spiceposition.h \
+    world/burn.h
 
 OTHER_FILES += \
     cfg/kernels.furnsh \
     cfg/default.txt \
-    cfg/colors.cfg
+    cfg/colors.cfg \
+    cspicelib.pri.default
 
 
-LIBS += -L/home/evilfer/lib/cspice/lib -lcspice
-INCLUDEPATH += /home/evilfer/lib/cspice/include

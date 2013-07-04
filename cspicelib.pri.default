@@ -1,0 +1,4 @@
+# include here the cspice headers and library:
+
+# LIBS += -L[path-to-libcspice.a] -lcspice
+# INCLUDEPATH += [path-to-cspice-includes]

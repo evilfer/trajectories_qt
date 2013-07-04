@@ -25,17 +25,33 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "object.h"
 #include "gravityfield.h"
+#include "burn.h"
 
 namespace world {
+
+    typedef double ShipSystemsState;
 
     class Ship : public Object {
         double acc_[3];
         GravityField * gravity_;
 
+        double shipmass_;
+        double thrust_;
+        double isp_;
+        double fuelmass_;
+        double ve_;
+
+        double current_fuelmass_;
+        Burn *burn_;
+
+        void computeManeuverStep(double et);
 
     public:
         Ship(SolarSystem * solarsystem);
         ~Ship();
+
+        void setShipSystemsState(const ShipSystemsState & state);
+        void getShipSystemsState(ShipSystemsState & state);
 
         const double * acc() const {return this->acc_;}
         double * acc() {return this->acc_;}
@@ -44,11 +60,19 @@ namespace world {
         void setState(const double *pos, const double *vel);
         void step(double t, double dt);
 
+        void set(double shipmass, double thrust, double isp, double fuelmass);
+
+
         inline double minDistance() const {return this->gravity_->minDistance();}
         inline const PlanetSystem * closestSystem() const {return this->gravity_->closestSystem();}
         inline PlanetSystem * closestSystem() {return this->gravity_->closestSystem();}
 
         double calculateStepDuration() const;
+
+        bool hasFuel() const {return this->current_fuelmass_ > .0;}
+        void calculateBurn(const double *dv, double maneuverTime);
+        void startBurn();
+        void endBurn();
     };
 }
 
