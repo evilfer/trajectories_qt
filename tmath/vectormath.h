@@ -21,8 +21,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#ifndef VECTORMATH_H
-#define VECTORMATH_H
+#ifndef TVECTOR_VECTORMATH_H
+#define TVECTOR_VECTORMATH_H
 
 
 #include <cmath>

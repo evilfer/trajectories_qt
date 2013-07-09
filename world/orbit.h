@@ -21,7 +21,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#pragma once
+#ifndef WORLD_ORBIT_H
+#define WORLD_ORBIT_H
 
 #include "tmath/vectormath.h"
 #include "body.h"
@@ -83,3 +84,5 @@ public:
 };
 
 }
+
+#endif

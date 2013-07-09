@@ -21,8 +21,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#ifndef PATHSECTION_H
-#define PATHSECTION_H
+#ifndef TRAJECTORY_PATHSECTION_H
+#define TRAJECTORY_PATHSECTION_H
 
 #include <map>
 #include <string>
@@ -48,8 +48,6 @@ namespace trajectory {
     PathPosition from() const {return this->from_;}
     PathPosition to() const {return this->to_;}
   };
-
-  typedef std::map<std::string, PathSection> PathSectionMap;
 
 }
 

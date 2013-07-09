@@ -20,8 +20,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef SHIP_H
-#define SHIP_H
+#ifndef WORLD_SHIP_H
+#define WORLD_SHIP_H
 
 #include "object.h"
 #include "gravityfield.h"

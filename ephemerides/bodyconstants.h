@@ -20,8 +20,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef BODYCONSTANTS_H
-#define BODYCONSTANTS_H
+#ifndef EPHEMERIDES_BODYCONSTANTS_H
+#define EPHEMERIDES_BODYCONSTANTS_H
 
 #include <string>
 #include <map>

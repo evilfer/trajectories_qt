@@ -21,8 +21,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#ifndef PATH_H
-#define PATH_H
+#ifndef TRAJECTORY_PATH_H
+#define TRAJECTORY_PATH_H
 
 #include <deque>
 #include "pathpoint.h"

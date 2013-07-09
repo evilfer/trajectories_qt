@@ -21,7 +21,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#pragma once
+#ifndef TMATH_CONSTS_H
+#define TMATH_CONSTS_H
 
 
 namespace tmath {
@@ -33,3 +34,5 @@ namespace tmath {
 #define J2000MJDsec		4453444800.0
 
 }
+
+#endif

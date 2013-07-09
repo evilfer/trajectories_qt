@@ -20,7 +20,9 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#pragma once
+
+#ifndef WORLD_WORLD_H
+#define WORLD_WORLD_H
 
 #include "ship.h"
 #include "solarsystem.h"
@@ -49,3 +51,6 @@ namespace world {
   };
 
 }
+
+
+#endif

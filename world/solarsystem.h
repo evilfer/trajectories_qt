@@ -20,8 +20,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef SOLARSYSTEM_H
-#define SOLARSYSTEM_H
+#ifndef WORLD_SOLARSYSTEM_H
+#define WORLD_SOLARSYSTEM_H
 
 #include "body.h"
 #include "planetsystem.h"

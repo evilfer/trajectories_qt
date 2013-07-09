@@ -21,8 +21,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#ifndef JULIANDAY_H
-#define JULIANDAY_H
+#ifndef TMATH_JULIANDAY_H
+#define TMATH_JULIANDAY_H
 
 #include <ctime>
 #include <string>

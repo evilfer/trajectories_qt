@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     world/solarsystem.cpp \
     world/world.cpp \
     world/worldloader.cpp \
-    world/burn.cpp
+    world/burn.cpp \
+    trajectory/trajectory.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
@@ -61,7 +62,8 @@ HEADERS += \
     world/worldloader.h \
     ephemerides/bodyconstants.h \
     ephemerides/spiceposition.h \
-    world/burn.h
+    world/burn.h \
+    trajectory/trajectory.h
 
 OTHER_FILES += \
     cfg/kernels.furnsh \

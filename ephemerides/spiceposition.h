@@ -21,8 +21,9 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
+#ifndef EPHEMERIDES_SPICEPOSITION_H
+#define EPHEMERIDES_SPICEPOSITION_H
 
-#pragma once
 
 #include <vector>
 #include <map>
@@ -56,3 +57,6 @@ namespace ephemerides {
   };
 
 }
+
+
+#endif

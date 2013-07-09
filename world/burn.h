@@ -20,8 +20,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef BURN_H
-#define BURN_H
+#ifndef WORLD_BURN_H
+#define WORLD_BURN_H
 
 namespace world {
     class Burn {

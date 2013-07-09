@@ -20,8 +20,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-
-#pragma once
+#ifndef WORLD_OBJECT_H
+#define WORLD_OBJECT_H
 
 namespace world {
 
@@ -43,3 +43,4 @@ public:
 
 }
 
+#endif

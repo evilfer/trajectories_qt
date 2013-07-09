@@ -20,35 +20,19 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#include "trajectory.h"
 
-#include <QApplication>
-#include <QWebView>
-#include <QGraphicsWebView>
-#include <QUrl>
+namespace trajectory {
 
-#include "html5applicationviewer.h"
-#include <stdio.h>
+    Trajectory::Trajectory() : sections_(), children_(), parents_() {
+        this->clear();
+    }
 
-#include "world/solarsystem.h"
-#include "world/worldloader.h"
-#include "ephemerides/spiceposition.h"
+    void Trajectory::clear() {
+        this->sections_.clear();
+        this->children_.clear();
+        this->parents_.clear();
+    }
 
-int main(int argc, char *argv[]) {
 
-    ephemerides::SpicePosition::init();
-
-    world::SolarSystem * s= world::WorldLoader::loadSolarSystem();
-    s->wakeUpAllSystems();
-
-    QApplication app(argc, argv);
-
-    Html5ApplicationViewer viewer;
-    viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-    viewer.showExpanded();
-    viewer.webView()->setAcceptHoverEvents(true);
-    viewer.webView()->setActive(true);
-
-    viewer.loadFile("html/index.html");
-
-    return app.exec();
 }

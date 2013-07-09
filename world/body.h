@@ -22,7 +22,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
-#pragma once
+#ifndef WORLD_BODY_H
+#define WORLD_BODY_H
 
 #include <vector>
 #include <map>
@@ -74,3 +75,5 @@ public:
 
 
 }
+
+#endif

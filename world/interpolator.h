@@ -20,7 +20,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#pragma once
+#ifndef WORLD_INTERPOLATOR_H
+#define WORLD_INTERPOLATOR_H
 
 #include "ephemerides/bodyconstants.h"
 
@@ -47,3 +48,5 @@ public:
 
 
 }
+
+#endif

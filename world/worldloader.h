@@ -20,8 +20,9 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#pragma once
 
+#ifndef WORLD_WORLDLOADER_H
+#define WORLD_WORLDLOADER_H
 
 #include "solarsystem.h"
 
@@ -34,3 +35,6 @@ public:
 };
 
 }
+
+
+#endif

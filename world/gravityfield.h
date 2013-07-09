@@ -20,7 +20,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#pragma once
+#ifndef WORLD_GRAVITYFIELD_H
+#define WORLD_GRAVITYFIELD_H
 
 #include "solarsystem.h"
 
@@ -50,3 +51,5 @@ public:
 };
 
 }
+
+#endif
