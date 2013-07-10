@@ -2,7 +2,7 @@
 App.Router.map(function() {
   this.resource('index', {path: '/'});
   this.resource('simulations');
-  this.resource('simulation', {path: 'simulation/:table_id'});
+  this.resource('simulation', {path: 'simulation/:simulationMetadata_id'});
 });
 
 App.SimulationsRoute = Ember.Route.extend({

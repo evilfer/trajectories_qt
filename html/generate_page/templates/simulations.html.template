@@ -1,5 +1,11 @@
-simulations
+<div class="t-padded-page">
+  <h1>simulations</h1>
 
-{{#each simulation in controller}}
-<p>{{#linkTo "simulation" simulation}}{{ simulation.id }}{{/linkTo}}</p>
-{{/each}}
+  <ul class="t-simulations-list">
+    {{#each simulation in controller}}
+    <li>{{ simulation.title}} {{#linkTo "simulation" simulation class="pure-button"}}<i class="icon-rocket"></i> open{{/linkTo}}</li>
+    {{/each}}
+  </ul>
+
+  <p><button {{action "newSimulation"}} class="pure-button"><i class="icon-plus"></i> new</button></p>
+</div>

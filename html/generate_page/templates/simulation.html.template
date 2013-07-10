@@ -1,0 +1,5 @@
+<div class="t-padded-page">
+  <h1>{{ title }}</h1>
+
+  <p>{{#linkTo "simulations" class="pure-button"}}<i class="icon-arrow-left"></i> back{{/linkTo}}</p>
+</div>

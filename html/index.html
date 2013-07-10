@@ -5,36 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trajectories</title>
 
-    <link href="css/pure-nr-min.css" rel="stylesheet" media="screen">  </head>
-  <body>
+    <link href="css/font-awesome.css" rel="stylesheet" media="screen"><link href="css/pure-nr-min.css" rel="stylesheet" media="screen"><link href="css/typography.css" rel="stylesheet" media="screen"><link href="css/t-base.css" rel="stylesheet" media="screen"><link href="css/t-simulations.css" rel="stylesheet" media="screen">  </head>
+  <body class="csstype">
     <script type="text/x-handlebars" data-template-name="application">
       <h1>Trajectories</h1>
     </script>
 
     <script type="text/x-handlebars" data-template-name="application">{{ outlet }}
-</script><script type="text/x-handlebars" data-template-name="index"><h1>trajectories</h1>
+</script><script type="text/x-handlebars" data-template-name="index"><div class="t-app-name">
+<h1>trajectories</h1>
+</div>
 
-{{#linkTo 'simulations'}}simulations{{/linkTo}}
 
-<div class="pure-g">
-    <div class="pure-u-1-3">
-        <!--
-        By default, grid units don't have any margin/padding.
-        If you want to add these, put them in a child container.
-        -->
-        <p>Thirds</p>
-    </div>
+{{#linkTo 'simulations' class="pure-button"}}<i class="icon-arrow-right"></i> simulations{{/linkTo}}
+</script><script type="text/x-handlebars" data-template-name="simulations"><div class="t-padded-page">
+  <h1>simulations</h1>
 
-    <div class="pure-u-1-3">
-        <p>Thirds</p>
-    </div>
+  <ul class="t-simulations-list">
+    {{#each simulation in controller}}
+    <li>{{ simulation.title}} {{#linkTo "simulation" simulation class="pure-button"}}<i class="icon-rocket"></i> open{{/linkTo}}</li>
+    {{/each}}
+  </ul>
 
-    <div class="pure-u-1-3">
-        <p>Thirds!</p>
-    </div>
-</div></script><script type="text/x-handlebars" data-template-name="simulations">simulations
+  <p><button {{action "newSimulation"}} class="pure-button"><i class="icon-plus"></i> new</button></p>
+</div>
+</script><script type="text/x-handlebars" data-template-name="simulation"><div class="t-padded-page">
+  <h1>{{ title }}</h1>
 
-{{#each simulation in controller}}
-<p>{{#linkTo "simulation" simulation}}{{ simulation.id }}{{/linkTo}}</p>
-{{/each}}</script><script src="js/libs/jquery-1.9.1.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/simulationMetadata.js"></script><script src="js/fixtures/simulationMetadataFixtures.js"></script>  </body>
+  <p>{{#linkTo "simulations" class="pure-button"}}<i class="icon-arrow-left"></i> back{{/linkTo}}</p>
+</div>
+</script><script src="js/libs/jquery-1.9.1.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/fixtures/simulation_metadata_fixtures.js"></script>  </body>
 </html>
