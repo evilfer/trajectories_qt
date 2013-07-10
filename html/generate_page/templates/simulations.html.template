@@ -1,0 +1,5 @@
+simulations
+
+{{#each simulation in controller}}
+<p>{{#linkTo "simulation" simulation}}{{ simulation.id }}{{/linkTo}}</p>
+{{/each}}

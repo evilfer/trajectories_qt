@@ -8,9 +8,7 @@
     <?php
     include_once 'imports.php';
 
-    import_css(array(
-        'normalize',
-    ));
+    import_css();
     ?>
   </head>
   <body>
@@ -19,23 +17,9 @@
     </script>
 
     <?php
-    import_templates(array(
-        'application',
-        'index',
-        'simulations',
-    ));
+    import_templates();
 
-    import_javascript(array(
-        'libs/jquery-1.9.1',
-        'libs/handlebars-1.0.0-rc.4',
-        'libs/ember-1.0.0-rc.6',
-        'libs/ember-data-0.13',
-    ));
-
-    import_javascript(array(
-        'app',
-        'router',
-    ));
+    import_javascript();
     ?>
   </body>
 </html>
