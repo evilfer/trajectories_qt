@@ -5,3 +5,4 @@ App.SimulationMetadata = DS.Model.extend({
   author: DS.attr('string'),
   modified: DS.attr('date')
 });
+methods = {};

@@ -1,6 +1,8 @@
-<div class="t-app-name">
-<h1>trajectories</h1>
+<div class="t-padded-box-50">
+  <div class="t-app-name">
+    <h1>trajectories</h1>
+  </div>
+
+
+  {{#linkTo 'simulations' class="pure-button"}}<i class="icon-arrow-right"></i> simulations{{/linkTo}}
 </div>
-
-
-{{#linkTo 'simulations' class="pure-button"}}<i class="icon-arrow-right"></i> simulations{{/linkTo}}
