@@ -21,8 +21,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <algorithm>
-#include "tmath/consts.h"
-#include "ephemerides/spiceposition.h"
+#include "../tmath/consts.h"
+#include "../ephemerides/spiceposition.h"
 #include "body.h"
 
 

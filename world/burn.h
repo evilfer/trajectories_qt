@@ -26,7 +26,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 namespace world {
     class Burn {
 
-        double active_;
+        bool active_;
         double initialFuelMass_;
         double initialTotalMass_;
         double thrust_;

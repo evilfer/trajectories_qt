@@ -24,7 +24,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "worldloader.h"
 #include "solarsystem.h"
-#include "ephemerides/spiceposition.h"
+#include "../ephemerides/spiceposition.h"
 
 namespace world {
 

@@ -23,7 +23,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef WORLD_INTERPOLATOR_H
 #define WORLD_INTERPOLATOR_H
 
-#include "ephemerides/bodyconstants.h"
+#include "../ephemerides/bodyconstants.h"
 
 namespace world {
 

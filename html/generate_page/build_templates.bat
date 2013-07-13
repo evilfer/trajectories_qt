@@ -1,0 +1,1 @@
+C:/php5.5/php.exe C:/Users/evilfer/Documents/development/trajectories/trajectories/html/generate_page/build.php > C:/Users/evilfer/Documents/development/trajectories/trajectories/html/index.hml

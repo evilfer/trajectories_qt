@@ -22,10 +22,11 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "orbit.h"
-#include <math.h>
+#include <cmath>
 #include <iostream>
 
-#include "tmath/vectormath.h"
+#include "../tmath/consts.h"
+#include "../tmath/vectormath.h"
 
 namespace world {
 

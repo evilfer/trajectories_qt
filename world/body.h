@@ -27,7 +27,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <vector>
 #include <map>
-#include "ephemerides/bodyconstants.h"
+#include "../ephemerides/bodyconstants.h"
 #include "object.h"
 #include "interpolator.h"
 

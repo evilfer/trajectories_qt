@@ -21,7 +21,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "bodyconstants.h"
-#include "tmath/consts.h"
+#include "../tmath/consts.h"
 #include <algorithm>
 
 namespace ephemerides {

@@ -21,7 +21,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "burn.h"
-#include "tmath/vectormath.h"
+#include "../tmath/vectormath.h"
 #include <cmath>
 
 namespace world {

@@ -24,9 +24,9 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace tvector {
 
-    const double *X = (double[3]){1., 0., 0.};
-    const double *Y = (double[3]){0., 1., 0.};
-    const double *Z = (double[3]){0., 0., 1.};
+    const double X[3] = {1., 0., 0.};
+    const double Y[3] = {0., 1., 0.};
+    const double Z[3] = {0., 0., 1.};
 
     double distance(const double * v1, const double * v2) {
         double xyz[3];

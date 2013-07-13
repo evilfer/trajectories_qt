@@ -23,7 +23,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "object.h"
-#include "tmath/vectormath.h"
+#include "../tmath/vectormath.h"
 
 namespace world {
 

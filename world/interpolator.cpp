@@ -22,8 +22,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interpolator.h"
 
-#include "ephemerides/spiceposition.h"
-#include "tmath/vectormath.h"
+#include "../ephemerides/spiceposition.h"
+#include "../tmath/vectormath.h"
 
 #include <limits.h>
 #include <cmath>

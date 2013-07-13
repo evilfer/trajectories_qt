@@ -25,7 +25,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include "consts.h"
 
 #ifdef _TRAJECTORIES_USE_OWN_WIN_STRPTIME
-#include "win/strptime.h"
+#include "../win/strptime.h"
 #endif
 
 #include <cmath>
