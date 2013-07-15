@@ -1,8 +1,11 @@
 #include <QGraphicsWebView>
 #include <QApplication>
 #include <QWebInspector>
+#include <QWebFrame>
 
 #include "html5applicationviewer.h"
+
+#include "bridge/cppjavascriptbridge.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +23,7 @@ int main(int argc, char *argv[])
 
     viewer.showExpanded();
     viewer.loadFile(QLatin1String("html/index.html"));
+    viewer.webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new bridge::CppJavascriptBridge());
 
     return app.exec();
 }

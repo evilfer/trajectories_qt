@@ -1,4 +1,3 @@
 {{ outlet }}
 
-<p><a href="#" id="test_bridge">test</a></p>
-  
+<p><button {{action "testBridge"}} class="pure-button"><i class="icon-plus"></i> test</button></p>  

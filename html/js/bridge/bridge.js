@@ -1,19 +1,15 @@
 
-var CppJavascriptBridge = {
+var BridgeManager = {
     call_js: function() {
         alert('js called!');
     },
 
     call_qt: function() {
-        Qt.call_qt();
+        console.log('call qt!');
+        QtCppJsBridge.call_qt();
     }
 };
 
 $(function() {
-    Qt.call_js.connect(call_js);
-
-    $('#test_bridge').click(function() {
-        CppJavascriptBridge.call_qt();
-    });
+    QtCppJsBridge.call_js.connect(BridgeManager.call_js);
 });
-

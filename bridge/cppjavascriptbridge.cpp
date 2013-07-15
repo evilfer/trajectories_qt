@@ -29,6 +29,7 @@ namespace bridge {
     }
 
     void CppJavascriptBridge::call_qt() {
+        this->call_js();
         std::cout << "called!" << std::endl;
     }
 }
