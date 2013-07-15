@@ -20,22 +20,26 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#ifndef CPPJAVASCRIPTBRIDGE_H
+#define CPPJAVASCRIPTBRIDGE_H
 
-#ifndef TMATH_CONSTS_H
-#define TMATH_CONSTS_H
+#include <QObject>
 
+namespace bridge {
 
-namespace tmath {
+    class CppJavascriptBridge : public QObject {
+        Q_OBJECT
 
-//#define G               6.67384e-11
-#define G               6.67384e-20
-#define MT_G0			9.81
-#define J2000MJD		51544.5
-#define J2000MJDsec		4453444800.0
+    public:
+        CppJavascriptBridge();
 
-#ifndef M_PI
-#define M_PI            3.14159265359
-#endif
+    signals:
+        void call_js();
+
+    public slots:
+        void call_qt();
+    };
+
 }
 
-#endif
+#endif // CPPJAVASCRIPTBRIDGE_H

@@ -1,1 +1,4 @@
 {{ outlet }}
+
+<p><a href="#" id="test_bridge">test</a></p>
+  
