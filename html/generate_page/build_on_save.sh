@@ -1,16 +1,18 @@
 #!/bin/sh
 
-while file=$(inotifywait -r -e modify --format "%w%f" ../); do
+while file=$(inotifywait -r -q -e modify --format "%w%f" ../); do
   FILE=${file##*/}
   NAME=${FILE%.*}
   EXT=${FILE#*.}
-  echo $FILE
-  echo $EXT
-  if [ $EXT = "php" ] || [ $EXT = "html.template" ] || [ $EXT = "imports.cfg" ]
+  echo $FILE "modified"
+  if [ "$EXT" = "php" ] || [ "$EXT" = "html.template" ] || [ "$EXT" = "imports.cfg" ]
   then
+    echo "building index.html"
     php build.php > ../index.html  
-  elif [ $EXT = "scss" ]
+  elif [ "$EXT" = "scss" ]
   then
+    echo "building $NAME.css"
     sass "scss/"$FILE "../css/"$NAME".css"
   fi
+  echo
 done

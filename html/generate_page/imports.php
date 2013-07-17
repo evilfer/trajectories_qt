@@ -7,7 +7,7 @@ function import_get_files($type) {
     $in_section = FALSE;
     while (($line = fgets($handle)) !== false) {
       $trimmed = trim($line);
-      if (strlen($trimmed) > 0) {
+      if (strlen($trimmed) > 0 && strncmp($line, '#', 1)) {
         if (strncmp($line, ' ', 1)) {
           if ($trimmed === $type) {
             $in_section = TRUE;
