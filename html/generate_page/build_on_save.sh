@@ -11,8 +11,8 @@ while file=$(inotifywait -r -q -e modify --format "%w%f" ../); do
     php build.php > ../index.html  
   elif [ "$EXT" = "scss" ]
   then
-    echo "building $NAME.css"
-    sass "scss/"$FILE "../css/"$NAME".css"
+    echo "building t-style.css"
+    sass "scss/"t-style.scss ../css/t-style.css
   fi
   echo
 done

@@ -1,7 +1,16 @@
 <div class="t-simulation-page">
-    <div class="t-padded-box-50">
-        <h1>{{ title }}</h1>
-
-        <p>{{#linkTo "simulations" class="pure-button"}}<i class="icon-arrow-left"></i> back!!{{/linkTo}}</p>
+  <div class="t-simulation-header"></div>
+  <div class="t-simulation-main">
+    <div class="t-simulation-simulation">
+      <div class="t-simulation-simulation-frame">
+        <div class="t-simulation-simulation-inner">
+          <h1>{{ title }}</h1>
+          <p>{{#linkTo "simulations" class="pure-button"}}<i class="icon-arrow-left"></i> back!!{{/linkTo}}</p>
+        </div>
+      </div>
     </div>
+    <div class="t-simulation-view">
+    </div>
+  </div>
+  <div class="t-simulation-footer"></div>
 </div>

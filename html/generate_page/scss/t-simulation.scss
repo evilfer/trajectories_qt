@@ -1,6 +1,44 @@
 
 .t-simulation-page {
+  @extend .t-full-box;
+  @extend .t-flex-container-v;
+}
+
+.t-simulation-footer,
+.t-simulation-header {
   width: 100%;
-  height: 10%;
-  background: green;
+  height: 50px;
+}
+
+.t-simulation-main {
+  @extend .t-flex-container-h;
+  @extend .t-flex-child-1;
+}
+
+.t-simulation-simulation {
+  @extend .t-flex;
+  @extend .t-flex-container-v;
+  
+  width: 200px;
+  
+  resize: horizontal;
+  overflow: auto;
+}
+
+.t-simulation-simulation-frame {
+  @extend .t-box-frame;
+  @extend .t-flex-child-1;
+  @extend .t-flex-container-v;
+}
+
+.t-simulation-simulation-inner {
+  @extend .t-box-inner;
+  @extend .t-flex-child-1;
+  @extend .t-flex-container-v;
+}
+
+
+
+.t-simulation-view {
+  @extend .t-flex-child-1;
 }
