@@ -1,0 +1,10 @@
+
+<div class="pure-menu pure-menu-open pure-menu-horizontal">
+    <ul  class="t-font-xsmall">
+        {{#linkTo simulation.index tagName="li" activeClass="pure-menu-selected"}}<a href=false>Description</a>{{/linkTo}}
+        {{#linkTo simulation.config tagName="li" activeClass="pure-menu-selected"}}<a href=false>Configuration</a>{{/linkTo}}
+        {{#linkTo simulation.ship tagName="li" activeClass="pure-menu-selected"}}<a href=false>Ship</a>{{/linkTo}}
+        {{#linkTo simulation.mission tagName="li" activeClass="pure-menu-selected"}}<a href=false>Mission</a>{{/linkTo}}
+    </ul>
+</div>
+

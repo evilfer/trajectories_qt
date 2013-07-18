@@ -15,29 +15,14 @@
   @extend .t-flex-child-1;
 }
 
-.t-simulation-simulation {
+.t-simulation-specification {
   @extend .t-flex;
-  @extend .t-flex-container-v;
-  
-  width: 200px;
+  @extend .t-padded-box-10;
+  width: 350px;
   
   resize: horizontal;
   overflow: auto;
 }
-
-.t-simulation-simulation-frame {
-  @extend .t-box-frame;
-  @extend .t-flex-child-1;
-  @extend .t-flex-container-v;
-}
-
-.t-simulation-simulation-inner {
-  @extend .t-box-inner;
-  @extend .t-flex-child-1;
-  @extend .t-flex-container-v;
-}
-
-
 
 .t-simulation-view {
   @extend .t-flex-child-1;

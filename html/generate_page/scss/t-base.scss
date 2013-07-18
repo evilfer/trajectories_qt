@@ -18,14 +18,11 @@ body,
   padding: 10px;
 }
 
-
-.t-box-frame {
-   box-sizing: border-box;
-   padding: 10px;
+.t-separator-v {
+  width: 1px;
+  background: $frameborder;
 }
 
-.t-box-inner {
-   box-sizing: border-box;
-   padding: 10px;
-   border: 1px solid #bdbdbd;  
+.t-font-xsmall {
+  font-size: .67em;
 }
