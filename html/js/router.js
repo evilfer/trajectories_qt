@@ -26,3 +26,21 @@ App.SimulationIndexRoute = Ember.Route.extend({
     return this.modelFor('simulation').get('metadata');
   }
 });
+
+App.SimulationConfigRoute = Ember.Route.extend({
+  model: function() {
+    return this.modelFor('simulation').get('config');
+  }
+});
+
+App.SimulationShipRoute = Ember.Route.extend({
+  model: function() {
+    return this.modelFor('simulation').get('ship');
+  }
+});
+
+App.SimulationMissionRoute = Ember.Route.extend({
+  model: function() {
+    return this.modelFor('simulation').get('mission');
+  }
+});

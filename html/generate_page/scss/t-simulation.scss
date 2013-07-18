@@ -16,7 +16,7 @@
 }
 
 .t-simulation-specification {
-  @extend .t-flex;
+  @extend .t-flex-container-v;
   @extend .t-padded-box-10;
   width: 350px;
   

@@ -37,7 +37,7 @@
   </div>
   <div class="t-simulation-main">
     <div class="t-simulation-specification">
-      {{ partial simulation-specification }}
+      {{ partial simulation-specification-menu }}
       {{ outlet }}
     </div>
     <div class="t-separator-v"></div>
@@ -45,7 +45,7 @@
   </div>
   <div class="t-simulation-footer"></div>
 </div>
-</script><script type="text/x-handlebars" data-template-name="_simulation-specification">
+</script><script type="text/x-handlebars" data-template-name="_simulation-specification-menu">
 <div class="pure-menu pure-menu-open pure-menu-horizontal">
     <ul  class="t-font-xsmall">
         {{#linkTo simulation.index tagName="li" activeClass="pure-menu-selected"}}<a href=false>Description</a>{{/linkTo}}
@@ -55,5 +55,6 @@
     </ul>
 </div>
 
-</script><script src="js/libs/jquery-1.9.1.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script><script src="js/fixtures/simulation_metadata_fixtures.js"></script>  </body>
+</script><script type="text/x-handlebars" data-template-name="simulation/index"><p>{{ title }}</p>
+<p>{{ description }}</p></script><script src="js/libs/jquery-1.9.1.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script><script src="js/fixtures/simulation_metadata_fixtures.js"></script>  </body>
 </html>

@@ -4,7 +4,7 @@
   </div>
   <div class="t-simulation-main">
     <div class="t-simulation-specification">
-      {{ partial simulation-specification }}
+      {{ partial simulation-specification-menu }}
       {{ outlet }}
     </div>
     <div class="t-separator-v"></div>

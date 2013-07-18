@@ -3,9 +3,9 @@
 while file=$(inotifywait -r -q -e modify --format "%w%f" ../); do
   FILE=${file##*/}
   NAME=${FILE%.*}
-  EXT=${FILE#*.}
+  EXT=${FILE##*.}
   echo $FILE "modified"
-  if [ "$EXT" = "php" ] || [ "$EXT" = "html.template" ] || [ "$EXT" = "imports.cfg" ]
+  if [ "$EXT" = "php" ] || [ "$EXT" = "template" ] || [ "$EXT" = "cfg" ]
   then
     echo "building index.html"
     php build.php > ../index.html  

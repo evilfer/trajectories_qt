@@ -28,9 +28,9 @@ function import_templates() {
   $templates = import_get_files('templates');
 
   foreach ($templates as $template) {
-    $content = file_get_contents('templates/' . $template . '.html.template');
+    $content = file_get_contents('templates/' . $template . '.template');
     if ($content) {
-      print '<script type="text/x-handlebars" data-template-name="' . $template . '">'
+      print '<script type="text/x-handlebars" data-template-name="' . str_replace('.', '/', $template) . '">'
               . $content
               . '</script>';
     }

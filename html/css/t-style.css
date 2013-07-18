@@ -22,7 +22,7 @@ body,
 .t-font-xsmall {
   font-size: .67em; }
 
-.t-flex, .t-flex-container-h, .t-simulation-main, .t-flex-container-v, .t-simulation-page, .t-flex-child-1, .t-simulation-view, .t-simulation-specification {
+.t-flex, .t-flex-container-h, .t-simulation-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view {
   display: flex;
   display: -webkit-flex; }
 
@@ -30,7 +30,7 @@ body,
   flex-direction: row;
   -webkit-flex-direction: row; }
 
-.t-flex-container-v, .t-simulation-page {
+.t-flex-container-v, .t-simulation-page, .t-simulation-specification {
   flex-direction: column;
   -webkit-flex-direction: column; }
 
