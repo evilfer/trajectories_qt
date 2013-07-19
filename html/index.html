@@ -37,7 +37,7 @@
   </div>
   <div class="t-simulation-main">
     <div class="t-simulation-specification">
-      <div class="pure-menu pure-menu-open pure-menu-horizontal">
+      <div class="pure-menu pure-menu-open pure-menu-horizontal t-simulation-specification-menu">
         <ul  class="t-font-xsmall">
           {{#linkTo simulation.index tagName="li" activeClass="pure-menu-selected"}}<a href=false>Description</a>{{/linkTo}}
           {{#linkTo simulation.config tagName="li" activeClass="pure-menu-selected"}}<a href=false>Configuration</a>{{/linkTo}}
@@ -54,17 +54,39 @@
 </div>
 </script><script type="text/x-handlebars" data-template-name="simulation/index">
 <div class="t-buttons-on-hover">
-  Title: <button {{action "editTitle"}} class="pure-button pure-button-xsmall pure-button-thin"><i class="icon-edit"></i></button>  
+  <div class="t-metadata-field-label" style="width:80px">Title</div>
+  {{#if editingTitle}}
+  <div class="pure-form t-inline-form">
+    {{view App.EditSimulationMetadataTitleView valueBinding="title"}}
+  </div>
+  {{else}}
+  <div class="t-editable-field">
+    {{ title }}
+  </div>
+  <button {{action "editTitle"}} 
+    class="pure-button pure-button-xsmall pure-button-thin"
+    {{bindAttr class="editingTitle:pure-button-disabled"}}>
+    <i class="icon-edit-sign"></i>
+  </button>  
+  {{/if}}
 </div>
-<div>
-{{#if editingTitle}}
-<div class="pure-form">
-{{view App.EditSimulationMetadataTitleView valueBinding="title"}}
-</div>
-{{else}}
-{{ title }}
-{{/if}}
 
+<div class="t-buttons-on-hover">
+  <div class="t-metadata-field-label">Description</div>
+  {{#if editingDescription}}
+  <div class="pure-form t-inline-form">
+    {{view App.EditSimulationMetadataDescriptionView valueBinding="description"}}
+  </div>
+  {{else}}
+  <div class="t-editable-area">
+    {{ description }}
+  </div>
+  <button {{action "editDescription"}} 
+    class="pure-button pure-button-xsmall pure-button-thin"
+    {{bindAttr class="editingDescription:pure-button-disabled"}}>
+    <i class="icon-edit-sign"></i>
+  </button>  
+  {{/if}}
 </div>
-<p>{{ description }}</p></script><script src="js/libs/jquery-1.9.1.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/edit_simulation_metadata_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script><script src="js/fixtures/simulation_metadata_fixtures.js"></script>  </body>
+</script><script src="js/libs/jquery-1.9.1.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/edit_simulation_metadata_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script><script src="js/fixtures/simulation_metadata_fixtures.js"></script>  </body>
 </html>

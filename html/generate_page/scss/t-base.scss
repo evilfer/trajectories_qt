@@ -27,6 +27,33 @@ body,
   font-size: .67em;
 }
 
-/*.t-buttons-on-hover > button {display: none;}
-.t-buttons-on-hover:hover > button {display: inline-block}
-*/
+.t-inline-form {
+  display: inline-block;
+}
+
+.t-buttons-on-hover > button {display: none;}
+.t-buttons-on-hover:hover > button {display: inline-block; vertical-align: middle;}
+
+.t-field-label {
+  color: #999;
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 5px;
+}
+
+.t-editable-field {
+  height: 30px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: .5em .6em .5em .6em;
+  font-size: .8em;
+  display: inline-block;
+}
+
+.t-editable-area {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: .5em .6em .5em .6em;
+  font-size: .8em;
+  display: inline-block;  
+}

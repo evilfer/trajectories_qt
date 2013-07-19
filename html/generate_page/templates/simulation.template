@@ -4,7 +4,7 @@
   </div>
   <div class="t-simulation-main">
     <div class="t-simulation-specification">
-      <div class="pure-menu pure-menu-open pure-menu-horizontal">
+      <div class="pure-menu pure-menu-open pure-menu-horizontal t-simulation-specification-menu">
         <ul  class="t-font-xsmall">
           {{#linkTo simulation.index tagName="li" activeClass="pure-menu-selected"}}<a href=false>Description</a>{{/linkTo}}
           {{#linkTo simulation.config tagName="li" activeClass="pure-menu-selected"}}<a href=false>Configuration</a>{{/linkTo}}

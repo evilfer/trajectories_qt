@@ -18,4 +18,5 @@
 .pure-button-thin {
   padding-top: 2px;
   padding-bottom: 2px;
+  vertical-align: top;
 }
