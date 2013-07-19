@@ -1,2 +1,15 @@
-<p>{{ title }}</p>
+
+<div class="t-buttons-on-hover">
+  Title: <button {{action "editTitle"}} class="pure-button pure-button-xsmall pure-button-thin"><i class="icon-edit"></i></button>  
+</div>
+<div>
+{{#if editingTitle}}
+<div class="pure-form">
+{{view App.EditSimulationMetadataTitleView valueBinding="title"}}
+</div>
+{{else}}
+{{ title }}
+{{/if}}
+
+</div>
 <p>{{ description }}</p>

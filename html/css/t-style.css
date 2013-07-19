@@ -22,6 +22,9 @@ body,
 .t-font-xsmall {
   font-size: .67em; }
 
+/*.t-buttons-on-hover > button {display: none;}
+.t-buttons-on-hover:hover > button {display: inline-block}
+*/
 .t-flex, .t-flex-container-h, .t-simulation-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view {
   display: flex;
   display: -webkit-flex; }
