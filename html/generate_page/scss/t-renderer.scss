@@ -1,0 +1,10 @@
+
+.t-canvas-main {
+  @extend .t-flex-container-h;
+  @extend .t-flex-child-1;
+}
+
+.t-canvas {
+  /*@extend .t-flex-child-1;*/
+  display: inline-block;
+}

@@ -1,12 +1,12 @@
 
-App.EditSimulationMetadataTitleView = Ember.TextField.extend({
+App.EmbeddedTextFieldView = Ember.TextField.extend({
   classNames: ['edit'],
   size: 30,
   insertNewline: function() {
-    this.get('controller').acceptChanges('title');
+    this.get('parentView').acceptChanges();
   },
   focusOut: function() {
-    this.get('controller').acceptChanges('title');
+    this.get('parentView').acceptChanges();
   },
   didInsertElement: function() {
     this.$().focus();
@@ -14,12 +14,12 @@ App.EditSimulationMetadataTitleView = Ember.TextField.extend({
 });
 
 
-App.EditSimulationMetadataDescriptionView = Ember.TextArea.extend({
+App.EmbeddedTextAreaView = Ember.TextArea.extend({
   classNames: ['edit'],
   rows: 15,
   cols: 30,
   focusOut: function() {
-    this.get('controller').acceptChanges('description');
+    this.get('parentView').acceptChanges();
   },
   didInsertElement: function() {
     this.$().focus();

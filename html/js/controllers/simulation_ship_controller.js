@@ -1,5 +1,5 @@
 
-App.SimulationIndexController = Ember.ObjectController.extend({
+App.SimulationShipController = Ember.ObjectController.extend({
   acceptChanges: function() {
     this.get('model').save();
   }

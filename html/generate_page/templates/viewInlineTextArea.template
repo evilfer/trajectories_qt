@@ -1,0 +1,28 @@
+<div class="t-inline-edit-row">
+  <div class="t-inline-edit-label">
+    <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
+  </div>
+  {{#if view.isEditing}}
+  <div class="t-inline-edit-widget pure-form">
+    {{view App.EmbeddedTextAreaView valueBinding="view.value"}}
+  </div>
+  {{else}}
+  <div class="t-inline-edit-area">
+    {{{ view.formattedValue }}}
+  </div>
+  <div class="t-inline-edit-button">
+    <div class="t-inline-edit-button-inner">
+      <button {{action "edit" target="view"}} 
+        class="pure-button pure-button-xsmall pure-button-thin"
+        {{bindAttr class="editingTitle:pure-button-disabled"}}>
+        <i class="icon-edit-sign"></i>
+      </button>  
+    </div>
+  </div>
+  {{/if}}
+</div>
+
+
+
+
+

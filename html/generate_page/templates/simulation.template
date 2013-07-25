@@ -15,7 +15,9 @@
       {{ outlet }}
     </div>
     <div class="t-separator-v"></div>
-    <div class="t-simulation-view"></div>
+    <div class="t-simulation-view">
+      {{view "App.RendererView"}}
+    </div>
   </div>
   <div class="t-simulation-footer"></div>
 </div>

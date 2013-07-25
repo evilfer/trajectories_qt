@@ -1,36 +1,4 @@
-
-<div class="t-buttons-on-hover">
-  <div class="t-metadata-field-label" style="width:80px">Title</div>
-  {{#if editingTitle}}
-  <div class="pure-form t-inline-form">
-    {{view App.EditSimulationMetadataTitleView valueBinding="title"}}
-  </div>
-  {{else}}
-  <div class="t-editable-field">
-    {{ title }}
-  </div>
-  <button {{action "editTitle"}} 
-    class="pure-button pure-button-xsmall pure-button-thin"
-    {{bindAttr class="editingTitle:pure-button-disabled"}}>
-    <i class="icon-edit-sign"></i>
-  </button>  
-  {{/if}}
-</div>
-
-<div class="t-buttons-on-hover">
-  <div class="t-metadata-field-label">Description</div>
-  {{#if editingDescription}}
-  <div class="pure-form t-inline-form">
-    {{view App.EditSimulationMetadataDescriptionView valueBinding="description"}}
-  </div>
-  {{else}}
-  <div class="t-editable-area">
-    {{ description }}
-  </div>
-  <button {{action "editDescription"}} 
-    class="pure-button pure-button-xsmall pure-button-thin"
-    {{bindAttr class="editingDescription:pure-button-disabled"}}>
-    <i class="icon-edit-sign"></i>
-  </button>  
-  {{/if}}
+<div class="t-metadata-form">
+{{view App.InlineTextFieldView valueBinding="title" label="Title" labelWidth="80"}}
+{{view App.InlineTextAreaView valueBinding="description" label="Description" labelWidth="80"}}
 </div>

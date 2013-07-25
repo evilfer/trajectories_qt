@@ -1,0 +1,59 @@
+
+
+
+.t-inline-edit-row {
+  @extend .t-flex-container-h;
+}
+
+.t-inline-edit-button {
+  @extend .t-flex;
+  padding-top: 6px;
+}
+
+.t-inline-edit-button-inner {
+  display: inline-block;
+}
+
+
+.t-inline-edit-label {
+  @extend .t-flex;
+  width: 100px;
+}
+.t-inline-edit-label-inner {
+  width: 100%;
+  color: #999;
+  vertical-align: top;
+  padding-top: 7px;
+  padding-right: 5px;
+  text-align: right;
+  font-size: .8em;
+}
+
+
+.t-inline-edit-widget {
+  @extend .t-flex-child-1;
+}
+
+.t-inline-edit-field {
+  @extend .t-flex-child-1;
+  
+  height: 30px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: .5em .6em .5em .6em;
+  font-size: .8em;
+}
+
+.t-inline-edit-area {
+  @extend .t-flex-child-1;
+  
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: .5em .6em .5em .6em;
+  font-size: .8em;
+}
+
+
+.t-inline-edit-row .t-inline-edit-button-inner > button {visibility: hidden;}
+.t-inline-edit-row:hover .t-inline-edit-button-inner > button {visibility: visible;}
+.t-inline-edit-row:hover .t-inline-edit-label-inner {color: #666;}

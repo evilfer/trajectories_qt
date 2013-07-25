@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trajectories</title>
 
-    <link href="css/font-awesome.css" rel="stylesheet" media="screen"><link href="css/pure-nr-min.css" rel="stylesheet" media="screen"><link href="css/pure-button-ex.css" rel="stylesheet" media="screen"><link href="css/typography.css" rel="stylesheet" media="screen"><link href="css/t-style.css" rel="stylesheet" media="screen">  </head>
+    <link href="css/font-awesome.css" rel="stylesheet" media="screen"><link href="css/font-opensans.css" rel="stylesheet" media="screen"><link href="css/pure-nr-min.css" rel="stylesheet" media="screen"><link href="css/pure-button-ex.css" rel="stylesheet" media="screen"><link href="css/typography.css" rel="stylesheet" media="screen"><link href="css/t-style.css" rel="stylesheet" media="screen">  </head>
   <body class="csstype">
     <script type="text/x-handlebars" data-template-name="application">
       <h1>Trajectories</h1>
@@ -48,45 +48,76 @@
       {{ outlet }}
     </div>
     <div class="t-separator-v"></div>
-    <div class="t-simulation-view"></div>
+    <div class="t-simulation-view">
+      {{view "App.RendererView"}}
+    </div>
   </div>
   <div class="t-simulation-footer"></div>
 </div>
-</script><script type="text/x-handlebars" data-template-name="simulation/index">
-<div class="t-buttons-on-hover">
-  <div class="t-metadata-field-label" style="width:80px">Title</div>
-  {{#if editingTitle}}
-  <div class="pure-form t-inline-form">
-    {{view App.EditSimulationMetadataTitleView valueBinding="title"}}
+</script><script type="text/x-handlebars" data-template-name="simulation/index"><div class="t-metadata-form">
+{{view App.InlineTextFieldView valueBinding="title" label="Title" labelWidth="80"}}
+{{view App.InlineTextAreaView valueBinding="description" label="Description" labelWidth="80"}}
+</div></script><script type="text/x-handlebars" data-template-name="simulation/ship"><div class="t-ship-form">
+  {{view App.InlineTextFieldView valueBinding="name" label="Name"}}
+  {{view App.InlineTextFieldView valueBinding="mass" label="Mass"}}
+  {{view App.InlineTextFieldView valueBinding="thrust" label="Thrust"}}
+  {{view App.InlineTextFieldView valueBinding="isp" label="I<sub>sp</sub>"}}
+  {{view App.InlineTextFieldView valueBinding="fuelmass" label="Fuel mass"}}
+</div>
+
+</script><script type="text/x-handlebars" data-template-name="viewInlineTextArea"><div class="t-inline-edit-row">
+  <div class="t-inline-edit-label">
+    <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
+  </div>
+  {{#if view.isEditing}}
+  <div class="t-inline-edit-widget pure-form">
+    {{view App.EmbeddedTextAreaView valueBinding="view.value"}}
   </div>
   {{else}}
-  <div class="t-editable-field">
-    {{ title }}
+  <div class="t-inline-edit-area">
+    {{{ view.formattedValue }}}
   </div>
-  <button {{action "editTitle"}} 
-    class="pure-button pure-button-xsmall pure-button-thin"
-    {{bindAttr class="editingTitle:pure-button-disabled"}}>
-    <i class="icon-edit-sign"></i>
-  </button>  
+  <div class="t-inline-edit-button">
+    <div class="t-inline-edit-button-inner">
+      <button {{action "edit" target="view"}} 
+        class="pure-button pure-button-xsmall pure-button-thin"
+        {{bindAttr class="editingTitle:pure-button-disabled"}}>
+        <i class="icon-edit-sign"></i>
+      </button>  
+    </div>
+  </div>
   {{/if}}
 </div>
 
-<div class="t-buttons-on-hover">
-  <div class="t-metadata-field-label">Description</div>
-  {{#if editingDescription}}
-  <div class="pure-form t-inline-form">
-    {{view App.EditSimulationMetadataDescriptionView valueBinding="description"}}
+
+
+
+
+</script><script type="text/x-handlebars" data-template-name="viewInlineTextField"><div class="t-inline-edit-row">
+  <div class="t-inline-edit-label">
+    <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
+  </div>
+  {{#if view.isEditing}}
+  <div class="t-inline-edit-widget pure-form">
+    {{view App.EmbeddedTextFieldView valueBinding="view.value"}}
   </div>
   {{else}}
-  <div class="t-editable-area">
-    {{ description }}
+  <div class="t-inline-edit-field">
+    {{ view.value }}
   </div>
-  <button {{action "editDescription"}} 
-    class="pure-button pure-button-xsmall pure-button-thin"
-    {{bindAttr class="editingDescription:pure-button-disabled"}}>
-    <i class="icon-edit-sign"></i>
-  </button>  
+  <div class="t-inline-edit-button">
+    <div class="t-inline-edit-button-inner">
+      <button {{action "edit" target="view"}} 
+        class="pure-button pure-button-xsmall pure-button-thin"
+        {{bindAttr class="editingTitle:pure-button-disabled"}}>
+        <i class="icon-edit-sign"></i>
+      </button>  
+    </div>
+  </div>
   {{/if}}
 </div>
-</script><script src="js/libs/jquery-1.9.1.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/edit_simulation_metadata_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script><script src="js/fixtures/simulation_metadata_fixtures.js"></script>  </body>
+
+
+
+</script><script src="js/libs/jquery-1.10.2.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/libs/three.min.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/controllers/simulation_ship_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/embedded_edit_widgets.js"></script><script src="js/views/inline_edit_widgets.js"></script><script src="js/views/renderer_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script>  </body>
 </html>
