@@ -5,6 +5,10 @@
 }
 
 .t-canvas {
-  /*@extend .t-flex-child-1;*/
-  display: inline-block;
+  @extend .t-flex-child-1;
+}
+
+.t-canvas > canvas {
+  width: 100%;
+  height: 100%;
 }

@@ -15,14 +15,15 @@ body,
 .t-padded-box-10, .t-simulation-specification {
   padding: 10px; }
 
+/*unused
 .t-separator-v {
   width: 1px;
-  background: #dddddd; }
-
+  background: $frameborder;
+}*/
 .t-font-xsmall {
   font-size: .67em; }
 
-.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view, .t-inline-edit-widget, .t-inline-edit-field, .t-inline-edit-area, .t-inline-edit-button, .t-inline-edit-label {
+.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view, .t-inline-edit-widget, .t-inline-edit-field, .t-inline-edit-area, .t-canvas, .t-inline-edit-button, .t-inline-edit-label {
   display: flex;
   display: -webkit-flex; }
 
@@ -34,7 +35,7 @@ body,
   flex-direction: column;
   -webkit-flex-direction: column; }
 
-.t-flex-child-1, .t-simulation-main, .t-simulation-view, .t-inline-edit-widget, .t-inline-edit-field, .t-inline-edit-area, .t-canvas-main {
+.t-flex-child-1, .t-simulation-main, .t-simulation-view, .t-inline-edit-widget, .t-inline-edit-field, .t-inline-edit-area, .t-canvas-main, .t-canvas {
   flex: 1;
   -webkit-flex: 1; }
 
@@ -45,7 +46,6 @@ body,
 
 .t-simulation-specification {
   width: 367px;
-  resize: horizontal;
   overflow: auto; }
 
 .t-simulation-specification-menu {
@@ -94,9 +94,9 @@ ul.t-simulations-list > li {
 .t-inline-edit-row:hover .t-inline-edit-label-inner {
   color: #666; }
 
-.t-canvas {
-  /*@extend .t-flex-child-1;*/
-  display: inline-block; }
+.t-canvas > canvas {
+  width: 100%;
+  height: 100%; }
 
 html, button, input, select, textarea {
   font-family: 'open_sans'; }
