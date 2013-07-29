@@ -19,8 +19,10 @@ int main(int argc, char *argv[])
 
     QWebInspector inspector;
     inspector.setPage(viewer.webView()->page());
+    inspector.setGeometry(20, 500, 600, 400);
     inspector.setVisible(true);
 
+    viewer.setGeometry(20, 30, 600, 400);
     viewer.showExpanded();
     viewer.loadFile(QString("html/index.html"));
     viewer.webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new bridge::CppJavascriptBridge());

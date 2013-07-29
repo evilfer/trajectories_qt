@@ -3,8 +3,8 @@
 App.MissionEventWait = App.MissionEvent.extend({
 });
 
-DS.FixtureAdapter.configure('App.MissionEventWait', {
+/*Bridge.BridgeAdapter.configure('App.MissionEventWait', {
   alias: 'wait'
-});
+});*/
 
 
