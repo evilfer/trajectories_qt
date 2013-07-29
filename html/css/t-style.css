@@ -76,13 +76,13 @@ ul.t-simulations-list > li {
   height: 30px;
   box-sizing: border-box;
   border: 1px solid transparent;
-  padding: 0.5em 0.6em 0.5em 0.6em;
+  padding: .5em .6em .5em .6em;
   font-size: .8em; }
 
 .t-inline-edit-area {
   box-sizing: border-box;
   border: 1px solid transparent;
-  padding: 0.5em 0.6em 0.5em 0.6em;
+  padding: .5em .6em .5em .6em;
   font-size: .8em; }
 
 .t-inline-edit-row .t-inline-edit-button-inner > button {

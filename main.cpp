@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     inspector.setVisible(true);
 
     viewer.showExpanded();
-    viewer.loadFile(QLatin1String("html/index.html"));
+    viewer.loadFile(QString("html/index.html"));
     viewer.webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new bridge::CppJavascriptBridge());
 
     return app.exec();
