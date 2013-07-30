@@ -24,6 +24,9 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #define CPPJAVASCRIPTBRIDGE_H
 
 #include <QObject>
+#include <QVariantMap>
+
+#define BRIDGE_UPDATE 0
 
 namespace bridge {
 
@@ -37,7 +40,10 @@ namespace bridge {
         void call_js();
 
     public slots:
-        void call_qt();
+        void call_qt(int op, QString type, QVariantMap data);
+
+    protected:
+        virtual void processCall(int op, QString & type, QVariantMap & data) = 0;
     };
 
 }

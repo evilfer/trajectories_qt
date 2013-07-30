@@ -20,16 +20,21 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#ifndef TRAJECTORIESBRIDGE_H
+#define TRAJECTORIESBRIDGE_H
+
 #include "cppjavascriptbridge.h"
-#include <iostream>
 
 namespace bridge {
 
-    CppJavascriptBridge::CppJavascriptBridge() {
-    }
+    class TrajectoriesBridge : public CppJavascriptBridge {
+    public:
+        TrajectoriesBridge();
 
-    void CppJavascriptBridge::call_qt(int op, QString type, QVariantMap data) {
-        this->processCall(op, type, data);
-    }
+    protected:
+        virtual void processCall(int op, QString & type, QVariantMap & data);
+    };
+
 }
 
+#endif // TRAJECTORIESBRIDGE_H

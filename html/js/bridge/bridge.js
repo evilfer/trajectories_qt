@@ -1,10 +1,15 @@
-/*global QtCppJsBridge */
+/*global window, Ember, QtCppJsBridge */
 
 (function () {
     window.Bridge = Ember.Namespace.create();
 
+    Bridge.Ops = {
+        UPDATE: 0
+    };
+
     Bridge.Comm = {
         enabled: false,
+
         init: function () {
             if (typeof QtCppJsBridge !== 'undefined') {
                 this.enabled = true;
@@ -14,9 +19,8 @@
         call_js: function () {
             alert('js called!');
         },
-        call_qt: function () {
-            console.log('call qt!');
-            QtCppJsBridge.call_qt();
+        call_qt: function (op, type, data) {
+            QtCppJsBridge.call_qt(op, type, data);
         }
     };
 
@@ -167,6 +171,7 @@
 
         updateRecord: function (store, type, record) {
             var fixture = this.mockJSON(type, record);
+            Bridge.Comm.call_qt(Bridge.Ops.UPDATE, type, fixture);
 
             this.updateFixtures(type, fixture);
 

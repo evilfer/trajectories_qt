@@ -5,7 +5,7 @@
 
 #include "html5applicationviewer.h"
 
-#include "bridge/cppjavascriptbridge.h"
+#include "bridge/trajectoriesbridge.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     viewer.setGeometry(20, 30, 600, 400);
     viewer.showExpanded();
     viewer.loadFile(QString("html/index.html"));
-    viewer.webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new bridge::CppJavascriptBridge());
+    viewer.webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new bridge::TrajectoriesBridge());
 
     return app.exec();
 }
