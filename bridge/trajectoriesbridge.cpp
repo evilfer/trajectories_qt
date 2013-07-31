@@ -29,6 +29,14 @@ namespace bridge {
     }
 
     void TrajectoriesBridge::processCall(int op, QString & type, QVariantMap & data) {
+        QVariantList array = QVariantList();
+        for (int i = 0; i < 100; i++) {
+            array.append(1.0 * i);
+        }
+        QVariantMap output = QVariantMap();
+        output[QString('test')] = array;
+
+        this->call_js(output);
         return;
     }
 

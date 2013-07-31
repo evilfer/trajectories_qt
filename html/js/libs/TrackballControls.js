@@ -288,13 +288,18 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 		_this.object.lookAt( _this.target );
 
-		if ( lastPosition.distanceToSquared( _this.object.position ) > 0 ) {
+        try {
 
-			_this.dispatchEvent( changeEvent );
+            if ( lastPosition.distanceToSquared( _this.object.position ) > 0 ) {
 
-			lastPosition.copy( _this.object.position );
+                _this.dispatchEvent( changeEvent );
 
-		}
+                lastPosition.copy( _this.object.position );
+
+            }
+
+        } catch (e) {}
+
 
 	};
 

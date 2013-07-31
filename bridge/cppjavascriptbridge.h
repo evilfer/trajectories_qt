@@ -37,7 +37,7 @@ namespace bridge {
         CppJavascriptBridge();
 
     signals:
-        void call_js();
+        void call_js(QVariantMap data);
 
     public slots:
         void call_qt(int op, QString type, QVariantMap data);

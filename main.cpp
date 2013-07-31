@@ -3,7 +3,7 @@
 #include <QWebInspector>
 #include <QWebFrame>
 
-#include "html5applicationviewer.h"
+#include "bridge/html5trajectoriesviewer.h"
 
 #include "bridge/trajectoriesbridge.h"
 
@@ -11,11 +11,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    Html5ApplicationViewer viewer;
-    viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-    viewer.webView()->setAcceptHoverEvents(true);
-
-    viewer.webView()->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    bridge::Html5TrajectoriesViewer viewer;
 
     QWebInspector inspector;
     inspector.setPage(viewer.webView()->page());
@@ -25,7 +21,7 @@ int main(int argc, char *argv[])
     viewer.setGeometry(20, 30, 600, 400);
     viewer.showExpanded();
     viewer.loadFile(QString("html/index.html"));
-    viewer.webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new bridge::TrajectoriesBridge());
+
 
     return app.exec();
 }

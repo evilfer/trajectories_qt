@@ -1,7 +1,7 @@
 /*global window, Ember, QtCppJsBridge */
 
 (function () {
-    window.Bridge = Ember.Namespace.create();
+    window.Bridge = {};
 
     Bridge.Ops = {
         UPDATE: 0
@@ -16,8 +16,8 @@
                 QtCppJsBridge.call_js.connect(Bridge.Comm.call_js);
             }
         },
-        call_js: function () {
-            alert('js called!');
+        call_js: function (data) {
+            console.log(data);
         },
         call_qt: function (op, type, data) {
             QtCppJsBridge.call_qt(op, type, data);
