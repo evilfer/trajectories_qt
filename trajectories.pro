@@ -24,7 +24,6 @@ include(win/win.pri)
 include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
 
-OTHER_FILES += \
-    cfg/kernels.furnsh
+OTHER_FILES +=
 
 

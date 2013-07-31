@@ -25,6 +25,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
+    const std::string TObject::DEFAULT_STRING = "";
+
     TObject::TObject(const std::string & type, int id) :
         type_(type), id_(id), ints_(), strings_(), doubles_() {
     }
@@ -41,6 +43,24 @@ namespace model {
         this->strings_[property] = value;
     }
 
+    void TObject::pLink(const std::string & property, const std::string & type) {
+        this->links_[property].type(type);
+    }
+
+    void TObject::pLink(const std::string & property, const std::string & type, int value) {
+        this->links_[property].type(type);
+        this->links_[property].objid(value);
+    }
+
+    bool TObject::pLink(const std::string & property, int value) {
+        if (this->links_.find(property) != this->links_.end()) {
+            this->links_[property].objid(value);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     int TObject::pInt(const std::string & property) const {
         std::map<std::string, int>::const_iterator i = this->ints_.find(property);
         return i == this->ints_.end() ? 0 : i->second;
@@ -51,9 +71,14 @@ namespace model {
         return i == this->doubles_.end() ? 0 : i->second;
     }
 
-    std::string TObject::pString(const std::string & property) const {
+    const std::string & TObject::pString(const std::string & property) const {
         std::map<std::string, std::string>::const_iterator i = this->strings_.find(property);
-        return i == this->strings_.end() ? 0 : i->second;
+        return i == this->strings_.end() ? TObject::DEFAULT_STRING : i->second;
+    }
+
+    const TObjectLink * TObject::pLink(const std::string & property) const {
+        std::map<std::string, TObjectLink>::const_iterator i = this->links_.find(property);
+        return i == this->links_.end() ? NULL : &i->second;
     }
 
     void TObject::clearInt(const std::string & property) {
@@ -68,6 +93,12 @@ namespace model {
         this->strings_.erase(property);
     }
 
+    void TObject::clearLink(const std::string & property) {
+        if (this->links_.find(property) != this->links_.end()) {
+            this->links_[property].clear();
+        }
+    }
+
     bool TObject::emptyInt(const std::string & property) const {
         return this->ints_.find(property) == this->ints_.end();
     }
@@ -78,6 +109,14 @@ namespace model {
 
     bool TObject::emptyString(const std::string & property) const {
         return this->strings_.find(property) == this->strings_.end();
+    }
+
+    bool TObject::emptyLink(const std::string & property) const {
+        if (this->strings_.find(property) == this->strings_.end()) {
+            return true;
+        } else {
+            return this->strings_.find(property)->second.empty();
+        }
     }
 
 }

@@ -30,6 +30,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 
 #include "tobject.h"
+#include "tobjectlink.h"
 
 
 namespace model {
@@ -69,6 +70,9 @@ namespace model {
 
         TObjectPtr create(const std::string & type);
         TObjectPtr find(const std::string & type, int id);
+
+        TObjectPtr find(const TObjectLink * link);
+
         void findAll(const std::string & type, TObjectList & list);
         bool remove(const std::string & type, int id);
 

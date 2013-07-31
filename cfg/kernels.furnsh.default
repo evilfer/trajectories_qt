@@ -1,23 +1,29 @@
 \begindata
-	KERNELS_TO_LOAD = (
-		'data/spice/Gravity.tpc'
-		'data/spice/pck00010.tpc'
-		'data/spice/naif0010.tls'
-                'data/spice/de421.bsp'
-                'data/spice/de721_full.bsp'
-                'data/spice/jup230l.bsp'
-                'data/spice/jup282-1.bsp'
-                'data/spice/jup293.bsp'
-                'data/spice/jup294.bsp'
-                'data/spice/mar097.bsp'
-                'data/spice/nep081.bsp'
-                'data/spice/nep085.bsp'
-                'data/spice/plu031.bsp'
-                'data/spice/sat357.bsp'
-                'data/spice/sat359l.bsp'
-                'data/spice/sat361.bsp'
-                'data/spice/ura083.bsp'
-                'data/spice/ura091.bsp'
-                'data/spice/ura095.bsp'
-	)
+
+    PATH_VALUES = ( 'path_to_kernels' )
+
+    PATH_SYMBOLS = ( 'A' )
+
+    KERNELS_TO_LOAD = (
+        '$A/Gravity.tpc'
+        '$A/pck00010.tpc'
+        '$A/naif0010.tls'
+        '$A/de421.bsp'
+        '$A/de721_full.bsp'
+        '$A/jup230l.bsp'
+        '$A/jup282-1.bsp'
+        '$A/jup293.bsp'
+        '$A/jup294.bsp'
+        '$A/mar097.bsp'
+        '$A/nep081.bsp'
+        '$A/nep085.bsp'
+        '$A/plu031.bsp'
+        '$A/sat357.bsp'
+        '$A/sat359l.bsp'
+        '$A/sat361.bsp'
+        '$A/ura083.bsp'
+        '$A/ura091.bsp'
+        '$A/ura095.bsp'
+    )
+
 \begintext

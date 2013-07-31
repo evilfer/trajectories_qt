@@ -93,6 +93,14 @@ namespace model {
         return this->typeStore(type).find(id);
     }
 
+    TObjectPtr Store::find(const TObjectLink * link) {
+        if (link && link->type().length() > 0 && !link->empty()) {
+            return this->find(link->type(), link->objid());
+        } else {
+            return NULL;
+        }
+    }
+
     void Store::findAll(const std::string & type, TObjectList & list) {
         this->typeStore(type).findAll(list);
     }

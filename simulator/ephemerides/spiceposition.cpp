@@ -131,7 +131,7 @@ void SpicePosition::getinterval(const std::vector<std::string> &kernels, BodyId 
 void SpicePosition::init() {
     erract_c("SET", 0, (char*)"IGNORE");
 
-    const char * k = "cfg/kernels.furnsh";
+    const char * k = "../cfg/kernels.furnsh";
     furnsh_c(k);
 
     std::vector<std::string> ks;

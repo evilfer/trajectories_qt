@@ -5,10 +5,14 @@
 
 #include "bridge/html5trajectoriesviewer.h"
 
-#include "bridge/trajectoriesbridge.h"
+#include "simulator/ephemerides/spiceposition.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+
+    ephemerides::SpicePosition::init();
+
+
+
     QApplication app(argc, argv);
 
     bridge::Html5TrajectoriesViewer viewer;
@@ -20,7 +24,7 @@ int main(int argc, char *argv[])
 
     viewer.setGeometry(20, 30, 600, 400);
     viewer.showExpanded();
-    viewer.loadFile(QString("html/index.html"));
+    viewer.loadFile(QString("../html/index.html"));
 
 
     return app.exec();
