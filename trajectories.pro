@@ -15,16 +15,16 @@ SOURCES += main.cpp
 
 
 include(cspicelib.pri)
-include(backend.pri)
-include(bridge.pri)
+include(simulator/simulator.pri)
+include(bridge/bridge.pri)
+include(model/model.pri)
+include(win/win.pri)
 
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
 
 OTHER_FILES += \
-    cfg/kernels.furnsh \
-    backend.pri \
-    bridge.pri
+    cfg/kernels.furnsh
 
 
