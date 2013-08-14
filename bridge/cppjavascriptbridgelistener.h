@@ -20,24 +20,30 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include "trajectoriesbridge.h"
+#ifndef CPPJAVASCRIPTBRIDGELISTENER_H
+#define CPPJAVASCRIPTBRIDGELISTENER_H
 
+#include <QObject>
+#include <QVariantMap>
 
 namespace bridge {
+    class CppJavascriptBridge;
 
-    TrajectoriesBridge::TrajectoriesBridge() {
-    }
+    class CppJavascriptBridgeListener {
 
-    void TrajectoriesBridge::processCall(int op, QString & type, QVariantMap & data) {
-        QVariantList array = QVariantList();
-        for (int i = 0; i < 100; i++) {
-            array.append(1.0 * i);
-        }
-        QVariantMap output = QVariantMap();
-        output[QString('test')] = array;
+        CppJavascriptBridge * bridge_;
 
-        this->call_js(output);
-        return;
-    }
+    public:
+        CppJavascriptBridgeListener();
+        void setBridge(CppJavascriptBridge * bridge);
+
+        virtual void processCall(int op, QVariantMap & data) = 0;
+
+    protected:
+        void makeCall(int op, bool complete, QVariantMap & data);
+    };
 
 }
+
+
+#endif // CPPJAVASCRIPTBRIDGELISTENER_H

@@ -1,9 +1,9 @@
 HEADERS += \
     bridge/cppjavascriptbridge.h \
-    bridge/trajectoriesbridge.h \
-    bridge/html5trajectoriesviewer.h
+    bridge/html5trajectoriesviewer.h \
+    bridge/cppjavascriptbridgelistener.h
 
 SOURCES += \
     bridge/cppjavascriptbridge.cpp \
-    bridge/trajectoriesbridge.cpp \
-    bridge/html5trajectoriesviewer.cpp
+    bridge/html5trajectoriesviewer.cpp \
+    bridge/cppjavascriptbridgelistener.cpp

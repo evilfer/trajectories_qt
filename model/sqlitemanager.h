@@ -20,28 +20,33 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef HTML5TRAJECTORIESVIEWER_H
-#define HTML5TRAJECTORIESVIEWER_H
 
-#include "cppjavascriptbridgelistener.h"
-#include "../html5applicationviewer/html5applicationviewer.h"
+#ifndef SQLITEMANAGER_H
+#define SQLITEMANAGER_H
 
+#include <sqlite3.h>
+#include <iostream>
 
-namespace bridge {
+#include "tobject.h"
 
-    class Html5TrajectoriesViewer : public Html5ApplicationViewer {
-        Q_OBJECT
+namespace model {
 
-        CppJavascriptBridgeListener * listener_;
-        bool javascriptAdded_;
+    class SQLiteManager {
+        sqlite3 *db_;
 
     public:
-        Html5TrajectoriesViewer(CppJavascriptBridgeListener * listener);
+        SQLiteManager();
 
-    public slots:
-        void addJavascriptObject();
+        void init(const TObjectModelMap & models);
+
+        void createObject(TObjectPtr obj);
+
+    private:
+        void exec(const std::string & sql, int (*callback)(void*,int,char**,char**) = NULL, void * firstParam = NULL);
+        void exec(const char *sql, int (*callback)(void*,int,char**,char**) = NULL, void * firstParam = NULL);
+
     };
 
 }
 
-#endif // HTML5TRAJECTORIESVIEWER_H
+#endif // SQLITEMANAGER_H

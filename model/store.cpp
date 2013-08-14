@@ -22,7 +22,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "store.h"
-
+#include <istream>
 
 
 namespace model {
@@ -35,6 +35,7 @@ namespace model {
             delete iter->second;
         }
     }
+
 
     TObjectPtr TObjectStore::create(const std::string & type) {
         int id = this->popNextId();
@@ -55,9 +56,18 @@ namespace model {
         }
     }
 
-    bool TObjectStore::remove(int id) {
+    bool TObjectStore::remove(int id, Store * store) {
         if (this->objects_.find(id) != this->objects_.end()) {
             TObjectPtr obj = this->objects_[id];
+
+            std::map<std::string, TObjectLink> & links = obj->links();
+            for(std::map<std::string, TObjectLink>::iterator i = links.begin(); i != links.end(); i++) {
+                TObjectLink & link = i->second;
+                if (link.owned() && !link.empty()) {
+                    store->remove(link.type(), link.objid());
+                }
+            }
+
             this->objects_.erase(id);
             delete obj;
             return true;
@@ -70,27 +80,31 @@ namespace model {
         return this->objects_.find(id) != this->objects_.end() ? this->objects_[id] : NULL;
     }
 
-    void TObjectStore::findAll(TObjectList & list) {
-        list.clear();
+    void TObjectStore::findAll(TObjectList & result) {
+        result.clear();
         for (TObjectStoreMap::iterator iter = this->objects_.begin(); iter != this->objects_.end(); ++iter) {
-            list.push_back(iter->second);
+            result.push_back(iter->second);
         }
     }
 
 
-    Store::Store() : stores_() {
+    Store::Store(const TObjectModelMap & model) : model_(model), stores_(), db_() {
+        this->db_.init(this->model_);
     }
 
-    TObjectStore & Store::typeStore(const std::string & type) {
-        return this->stores_[type];
+
+    TObjectStore * Store::typeStore(const std::string & type) {
+        return this->stores_.find(type) != this->stores_.end() ? & this->stores_[type] : NULL;
     }
 
     TObjectPtr Store::create(const std::string & type) {
-        return this->typeStore(type).create(type);
+        TObjectStore * store = this->typeStore(type);
+        return store ? store->create(type) : NULL;
     }
 
     TObjectPtr Store::find(const std::string & type, int id) {
-        return this->typeStore(type).find(id);
+        TObjectStore * store = this->typeStore(type);
+        return store ? store->find(id) : NULL;
     }
 
     TObjectPtr Store::find(const TObjectLink * link) {
@@ -102,11 +116,15 @@ namespace model {
     }
 
     void Store::findAll(const std::string & type, TObjectList & list) {
-        this->typeStore(type).findAll(list);
+        TObjectStore * store = this->typeStore(type);
+        if (store) {
+            store->findAll(list);
+        }
     }
 
     bool Store::remove(const std::string & type, int id) {
-        return this->typeStore(type).remove(id);
+        TObjectStore * store = this->typeStore(type);
+        return store ? store->remove(id, this) : false;
     }
 
 }

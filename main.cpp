@@ -4,18 +4,15 @@
 #include <QWebFrame>
 
 #include "bridge/html5trajectoriesviewer.h"
-
-#include "simulator/ephemerides/spiceposition.h"
+#include "trajectories.h"
 
 int main(int argc, char *argv[]) {
 
-    ephemerides::SpicePosition::init();
-
-
-
     QApplication app(argc, argv);
 
-    bridge::Html5TrajectoriesViewer viewer;
+    Trajectories trajectories;
+
+    bridge::Html5TrajectoriesViewer viewer(&trajectories);
 
     QWebInspector inspector;
     inspector.setPage(viewer.webView()->page());

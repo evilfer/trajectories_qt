@@ -10,8 +10,10 @@ DEPLOYMENTFOLDERS = html_folder cfg_folder
 
 #DEFINES += TOUCH_OPTIMIZED_NAVIGATION
 
-# The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+QMAKE_CXXFLAGS += -std=c++0x
+
+SOURCES += main.cpp \
+    trajectories.cpp
 
 
 include(cspicelib.pri)
@@ -24,6 +26,9 @@ include(win/win.pri)
 include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
 
-OTHER_FILES +=
 
+LIBS += -lsqlite3
+
+HEADERS += \
+    trajectories.h
 

@@ -31,6 +31,10 @@ namespace model {
         type_(type), id_(id), ints_(), strings_(), doubles_() {
     }
 
+    TObject::~TObject() {
+
+    }
+
     void TObject::pInt(const std::string & property, int value) {
         this->ints_[property] = value;
     }
@@ -43,23 +47,11 @@ namespace model {
         this->strings_[property] = value;
     }
 
-    void TObject::pLink(const std::string & property, const std::string & type) {
-        this->links_[property].type(type);
-    }
-
-    void TObject::pLink(const std::string & property, const std::string & type, int value) {
-        this->links_[property].type(type);
+    void TObject::pLink(const std::string & property, const std::string & type, bool owned, int value) {
+        this->links_[property].type(type, owned);
         this->links_[property].objid(value);
     }
 
-    bool TObject::pLink(const std::string & property, int value) {
-        if (this->links_.find(property) != this->links_.end()) {
-            this->links_[property].objid(value);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     int TObject::pInt(const std::string & property) const {
         std::map<std::string, int>::const_iterator i = this->ints_.find(property);

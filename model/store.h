@@ -31,16 +31,24 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "tobject.h"
 #include "tobjectlink.h"
+#include "sqlitemanager.h"
 
+#define TOBJECT_MODEL_TYPE_INT      0
+#define TOBJECT_MODEL_TYPE_DOUBLE   1
+#define TOBJECT_MODEL_TYPE_STRING   2
+#define TOBJECT_MODEL_TYPE_LINK     3
 
 namespace model {
 
-    typedef TObject* TObjectPtr;
     typedef std::map<int, TObjectPtr> TObjectStoreMap;
     typedef std::vector<TObjectPtr> TObjectList;
 
+    class Store;
+
     class TObjectStore {
         TObjectStoreMap objects_;
+        bool allFound_;
+
         int nextId_;
         std::vector<int> free_;
 
@@ -50,8 +58,8 @@ namespace model {
 
         TObjectPtr create(const std::string & type);
         TObjectPtr find(int id);
-        void findAll(TObjectList & list);
-        bool remove(int id);
+        void findAll(TObjectList & result);
+        bool remove(int id, Store * store);
 
     private:
         int popNextId();
@@ -61,11 +69,12 @@ namespace model {
     typedef std::map<std::string, TObjectStore> TypeStoreMap;
 
     class Store {
-
+        TObjectModelMap model_;
         TypeStoreMap stores_;
+        SQLiteManager db_;
 
     public:
-        Store();
+        Store(const TObjectModelMap & model);
 
 
         TObjectPtr create(const std::string & type);
@@ -77,8 +86,7 @@ namespace model {
         bool remove(const std::string & type, int id);
 
     private:
-        TObjectStore & typeStore(const std::string & type);
-
+        TObjectStore * typeStore(const std::string & type);
     };
 
 }

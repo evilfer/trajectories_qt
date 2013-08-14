@@ -32,11 +32,13 @@ namespace model {
     class TObjectLink {
         std::string type_;
         int objid_;
+        bool owned_;
 
     public:
         TObjectLink();
+        void type(const std::string & type, bool owned) {this->type_ = type;this->owned_ = owned;}
         const std::string & type() const {return this->type_;}
-        void type(const std::string & type) {this->type_ = type;}
+        bool owned() const {return this->owned_;}
 
         int objid() const {return this->objid_;}
         void objid(int objid) {this->objid_ = objid;}

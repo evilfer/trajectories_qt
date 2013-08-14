@@ -25,11 +25,11 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsWebView>
 #include <QWebFrame>
 
-#include "trajectoriesbridge.h"
+#include "cppjavascriptbridge.h"
 
 namespace bridge {
 
-    Html5TrajectoriesViewer::Html5TrajectoriesViewer() : Html5ApplicationViewer() {
+    Html5TrajectoriesViewer::Html5TrajectoriesViewer(CppJavascriptBridgeListener * listener) : Html5ApplicationViewer(), listener_(listener) {
         QObject::connect(this->webView()->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()),this, SLOT(addJavascriptObject()));
 
 
@@ -41,7 +41,7 @@ namespace bridge {
     }
 
     void Html5TrajectoriesViewer::addJavascriptObject() {
-        this->webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new TrajectoriesBridge());
+        this->webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new CppJavascriptBridge(this->listener_));
     }
 
 }

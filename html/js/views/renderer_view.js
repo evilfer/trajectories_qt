@@ -63,7 +63,7 @@ App.RendererView = Ember.View.extend({
     var resizeF = function() {
       var width = $container.width();
       var height = $container.height();
-
+      
       renderer.setSize(width, height);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();

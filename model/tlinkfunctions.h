@@ -32,8 +32,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
-    void link(TObjectPtr a, const std::string & propertyA, TObjectPtr b, const std::string & propertyB);
-    void link(Store & store, const std::string & typeA, int idA, const std::string & propertyA, const std::string & typeB, int idB, const std::string & propertyB);
+    void link(Store * store, TObjectPtr a, const std::string & propertyA, TObjectPtr b, const std::string & propertyB, int owner);
+    void link(Store * store, const std::string & typeA, int idA, const std::string & propertyA, const std::string & typeB, int idB, const std::string & propertyB, int owner);
 
 }
 

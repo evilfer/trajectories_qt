@@ -29,6 +29,16 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "tobjectlink.h"
 
+
+#define TOBJECT_PARAM_INT           00000001
+#define TOBJECT_PARAM_DOUBLE        00000002
+#define TOBJECT_PARAM_STRING        00000004
+#define TOBJECT_PARAM_LINK          00000010
+#define TOBJECT_PARAM_OWNEDLINK     00000030
+#define TOBJECT_PARAM_LINKS         00000100
+#define TOBJECT_PARAM_OWNEDLINKS    00000300
+
+
 namespace model {
 
     class TObject {
@@ -45,6 +55,7 @@ namespace model {
 
     public:
         TObject(const std::string & type, int id);
+        ~TObject();
 
         const std::string & type() const {return this->type_;}
         int id() const {return this->id_;}
@@ -53,9 +64,7 @@ namespace model {
         void pDouble(const std::string & property, double value);
         void pString(const std::string & property, const std::string & value);
 
-        void pLink(const std::string & property, const std::string & type);
-        void pLink(const std::string & property, const std::string & type, int value);
-        bool pLink(const std::string & property, int value);
+        void pLink(const std::string & property, const std::string & type, bool owned, int value);
 
         int pInt(const std::string & property) const;
         double pDouble(const std::string & property) const;
@@ -71,8 +80,22 @@ namespace model {
         bool emptyDouble(const std::string & property) const;
         bool emptyString(const std::string & property) const;
         bool emptyLink(const std::string & property) const;
+
+        std::map<std::string, TObjectLink> & links() {return this->links_;}
     };
 
+    typedef TObject* TObjectPtr;
+
+    typedef std::map<std::string, int> TObjectModelParams;
+
+
+
+    struct TObjectModel {
+        bool solid;
+        TObjectModelParams params;
+    };
+
+    typedef std::map<std::string, TObjectModel> TObjectModelMap;
 }
 
 #endif // TOBJECT_H

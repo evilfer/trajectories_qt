@@ -25,6 +25,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QVariantMap>
+#include "cppjavascriptbridgelistener.h"
 
 #define BRIDGE_UPDATE 0
 
@@ -33,17 +34,18 @@ namespace bridge {
     class CppJavascriptBridge : public QObject {
         Q_OBJECT
 
+        /* reference to not-owned listener */
+        CppJavascriptBridgeListener * listener_;
+
     public:
-        CppJavascriptBridge();
+        CppJavascriptBridge(CppJavascriptBridgeListener * listener);
+        void makeCall(int op, bool complete, QVariantMap & data);
 
     signals:
-        void call_js(QVariantMap data);
+        void call_js(int op, bool complete, QVariantMap data);
 
     public slots:
-        void call_qt(int op, QString type, QVariantMap data);
-
-    protected:
-        virtual void processCall(int op, QString & type, QVariantMap & data) = 0;
+        void call_qt(int op, QVariantMap data);
     };
 
 }

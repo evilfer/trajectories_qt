@@ -25,11 +25,15 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace bridge {
 
-    CppJavascriptBridge::CppJavascriptBridge() {
+    CppJavascriptBridge::CppJavascriptBridge(CppJavascriptBridgeListener * listener) : listener_(listener) {
     }
 
-    void CppJavascriptBridge::call_qt(int op, QString type, QVariantMap data) {
-        this->processCall(op, type, data);
+    void CppJavascriptBridge::call_qt(int op, QVariantMap data) {
+        this->listener_->processCall(op, data);
+    }
+
+    void CppJavascriptBridge::makeCall(int op, bool complete, QVariantMap & data) {
+        this->call_js(op, complete, data);
     }
 }
 
