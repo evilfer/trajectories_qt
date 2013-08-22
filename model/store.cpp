@@ -27,35 +27,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
-    TObjectStore::TObjectStore() : objects_(), nextId_(0), free_() {
-    }
-
-    TObjectStore::~TObjectStore() {
-        for (TObjectStoreMap::iterator iter = this->objects_.begin(); iter != this->objects_.end(); ++iter) {
-            delete iter->second;
-        }
-    }
-
-
-    TObjectPtr TObjectStore::create(const std::string & type) {
-        int id = this->popNextId();
-        TObjectPtr obj = new TObject(type, id);
-        this->objects_[id] = obj;
-        return obj;
-    }
-
-    int TObjectStore::popNextId() {
-        if (this->free_.size() > 0) {
-            int id = this->free_.back();
-            this->free_.pop_back();
-            return id;
-        } else {
-            int id = this->nextId_;
-            this->nextId_ ++;
-            return id;
-        }
-    }
-
+    /*
     bool TObjectStore::remove(int id, Store * store) {
         if (this->objects_.find(id) != this->objects_.end()) {
             TObjectPtr obj = this->objects_[id];
@@ -86,28 +58,86 @@ namespace model {
             result.push_back(iter->second);
         }
     }
+*/
 
+    Store::Store(const TObjectModelMap & model) : stores_(), db_() {
+        std::map<std::string, int> ids;
 
-    Store::Store(const TObjectModelMap & model) : model_(model), stores_(), db_() {
-        this->db_.init(this->model_);
+        this->db_.init(model, ids);
+
+        for (TObjectModelMap::const_iterator i = model.begin(); i != model.end(); i++) {
+            int nextid = ids.find(i->first) != ids.end() ? ids[i->first] : 1;
+            this->stores_[i->first] = TObjectStore{i->second, TObjectStoreMap(), false, nextid};
+        }
+
     }
+
+    Store::~Store() {
+        for (TypeStoreMap::iterator i = this->stores_.begin(); i != this->stores_.end(); i++) {
+            for (TObjectStoreMap::iterator j = i->second.objects_.begin(); j != i->second.objects_.end(); j++) {
+                delete j->second;
+            }
+        }
+    }
+
 
 
     TObjectStore * Store::typeStore(const std::string & type) {
         return this->stores_.find(type) != this->stores_.end() ? & this->stores_[type] : NULL;
     }
 
-    TObjectPtr Store::create(const std::string & type) {
-        TObjectStore * store = this->typeStore(type);
-        return store ? store->create(type) : NULL;
+    int Store::newId(const std::string & type) {
+        TypeStoreMap::iterator storeIter = this->stores_.find(type);
+        if (storeIter == this->stores_.end()) {
+            return -1;
+        }
+
+        TObjectStore & store = storeIter->second;
+        if (false && store.model.solid) {
+
+        } else {
+            int id = store.nextTransientId_;
+            store.nextTransientId_++;
+            return id;
+        }
+    }
+
+    bool Store::add(TObjectPtr obj) {
+        TypeStoreMap::iterator storeIter = this->stores_.find(obj->type());
+        if (storeIter == this->stores_.end()) {
+            return false;
+        }
+
+        TObjectStore & store = storeIter->second;
+        int id = 0;
+        if (store.model.solid) {
+            /* TODO db */
+        } else {
+            id = store.nextTransientId_;
+            store.nextTransientId_ ++;
+        }
+
+        store.objects_[id] = obj;
+        return true;
     }
 
     TObjectPtr Store::find(const std::string & type, int id) {
-        TObjectStore * store = this->typeStore(type);
-        return store ? store->find(id) : NULL;
+        TypeStoreMap::iterator storeIter = this->stores_.find(type);
+        if (storeIter == this->stores_.end()) {
+            return NULL;
+        }
+
+        TObjectStore & store = storeIter->second;
+
+        TObjectStoreMap::iterator objIter = store.objects_.find(id);
+        if (objIter == store.objects_.end()) {
+            return NULL;
+        }
+
+        return objIter->second;
     }
 
-    TObjectPtr Store::find(const TObjectLink * link) {
+    TObjectPtr Store::find(const model::TObjectLink * link) {
         if (link && link->type().length() > 0 && !link->empty()) {
             return this->find(link->type(), link->objid());
         } else {
@@ -115,16 +145,55 @@ namespace model {
         }
     }
 
-    void Store::findAll(const std::string & type, TObjectList & list) {
-        TObjectStore * store = this->typeStore(type);
-        if (store) {
-            store->findAll(list);
+    void Store::findAll(const std::string & type, TObjectList & result) {
+        result.clear();
+
+        TypeStoreMap::iterator storeIter = this->stores_.find(type);
+        if (storeIter == this->stores_.end()) {
+            return;
+        }
+
+        TObjectStore & store = storeIter->second;
+        for (TObjectStoreMap::iterator iter = store.objects_.begin(); iter != store.objects_.end(); ++iter) {
+            result.push_back(iter->second);
         }
     }
 
     bool Store::remove(const std::string & type, int id) {
-        TObjectStore * store = this->typeStore(type);
-        return store ? store->remove(id, this) : false;
+        TypeStoreMap::iterator storeIter = this->stores_.find(type);
+        if (storeIter == this->stores_.end()) {
+            return false;
+        }
+
+        TObjectStore & store = storeIter->second;
+
+        TObjectStoreMap::iterator objIter = store.objects_.find(id);
+        if (objIter == store.objects_.end()) {
+            return false;
+        }
+
+        TObjectPtr obj = objIter->second;
+
+        store.objects_.erase(id);
+
+
+
+        std::map<std::string, TObjectLink> & links = obj->links();
+        for(std::map<std::string, TObjectLink>::iterator i = links.begin(); i != links.end(); i++) {
+            TObjectLink & link = i->second;
+            if (link.owned() && !link.empty()) {
+                this->remove(link.type(), link.objid());
+            }
+        }
+
+        delete obj;
+        return true;
     }
+
+    const TObjectModel * Store::getModel(const std::string & type) const {
+        TypeStoreMap::const_iterator i = this->stores_.find(type);
+        return i != this->stores_.end() ?  & i->second.model : NULL;
+    }
+
 
 }

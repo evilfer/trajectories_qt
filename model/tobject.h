@@ -54,11 +54,13 @@ namespace model {
         std::map<std::string, TObjectLink> links_;
 
     public:
-        TObject(const std::string & type, int id);
+        TObject();
         ~TObject();
 
         const std::string & type() const {return this->type_;}
         int id() const {return this->id_;}
+        void setType(const std::string type) {this->type_ = type;}
+        void setId(int id) {this->id_ = id;}
 
         void pInt(const std::string & property, int value);
         void pDouble(const std::string & property, double value);

@@ -37,7 +37,7 @@ namespace model {
     public:
         SQLiteManager();
 
-        void init(const TObjectModelMap & models);
+        void init(const TObjectModelMap & models, std::map<std::string, int> ids);
 
         void createObject(TObjectPtr obj);
 

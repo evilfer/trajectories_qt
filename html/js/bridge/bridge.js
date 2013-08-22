@@ -8,7 +8,8 @@
     FINDALL: 1,
     CREATE: 2,
     UPDATE: 3,
-    DELETE: 4
+    DELETE: 4,
+    NEWID: 5
   };
 
   Bridge.Comm = {
@@ -39,8 +40,11 @@
         request: data,
         localRecord: localRecord ? localRecord : null
       };
-      
-      QtCppJsBridge.call_qt(op, data);
+
+      QtCppJsBridge.call_qt(op, id, data);
+    },
+    sync_call_qt: function(op, data) {
+      return QtCppJsBridge.call_qt(op, -1, data);
     }
   };
 
@@ -107,28 +111,23 @@
     mockJSON: function(type, record) {
       return this.serialize(record, {includeId: true});
     },
+    globalObjectType: function(localType) {
+      var type = localType.toString();
+      return type.substr(type.indexOf('.') + 1);
+    },
     /*
      Adapter methods
      */
     generateIdForRecord: function(store, record) {
-      return Ember.guidFor(record);
+      var type = this.globalObjectType(record.constructor);
+      var answer = Bridge.Comm.sync_call_qt(Bridge.Ops.NEWID, {type: type});
+      return answer.id;
     },
     find: function(store, type, id) {
-
-      var fixtures = this.fixturesForType(type),
-              fixture;
-
-      Ember.warn("Unable to find fixtures for model type " + type.toString(), fixtures);
-
-      if (fixtures) {
-        fixture = Ember.A(fixtures).findProperty('id', id);
-      }
-
-      if (fixture) {
-        this.simulateRemoteCall(function() {
-          this.didFindRecord(store, type, fixture, id);
-        }, this);
-      }
+      Bridge.Comm.call_qt(Bridge.Ops.FIND, this, store, {
+        type: this.globalObjectType(type),
+        id: id
+      });
     },
     findMany: function(store, type, ids) {
       var fixtures = this.fixturesForType(type);
@@ -148,13 +147,9 @@
       }
     },
     findAll: function(store, type) {
-      var fixtures = this.fixturesForType(type);
-
-      Ember.assert("Unable to find fixtures for model type " + type.toString(), !!fixtures);
-
-      this.simulateRemoteCall(function() {
-        this.didFindAll(store, type, fixtures);
-      }, this);
+      Bridge.Comm.call_qt(Bridge.Ops.FINDALL, this, store, {
+        type: this.globalObjectType(type)
+      });
     },
     findQuery: function(store, type, query, array) {
       var fixtures = this.fixturesForType(type);
@@ -170,23 +165,25 @@
       }
     },
     createRecord: function(store, type, record) {
-      var fixture = this.mockJSON(type, record);
-
-      this.updateFixtures(type, fixture);
-
-      this.simulateRemoteCall(function() {
-        this.didCreateRecord(store, type, record, fixture);
-      }, this);
+      var data = this.mockJSON(type, record);
+      Bridge.Comm.call_qt(Bridge.Ops.CREATE, this, store, {
+        type: this.globalObjectType(type),
+        record: data
+      }, record);
     },
     updateRecord: function(store, type, record) {
       var data = this.mockJSON(type, record);
-      Bridge.Comm.call_qt({op: Bridge.Ops.UPDATE, type: type, record: data});
-
-      this.updateFixtures(type, data);
-      
+      Bridge.Comm.call_qt(Bridge.Ops.UPDATE, this, store, {
+        type: this.globalObjectType(type),
+        record: data
+      }, record);
     },
     deleteRecord: function(store, type, record) {
-
+      var data = this.mockJSON(type, record);
+      Bridge.Comm.call_qt(Bridge.Ops.DELETE, this, store, {
+        type: this.globalObjectType(type),
+        record: data
+      }, record);
     },
     /*
      @listener

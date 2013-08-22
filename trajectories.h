@@ -15,7 +15,11 @@ public:
     void init();
 
 protected:
-    virtual void processCall(int op, QVariantMap & data);
+    virtual QVariantMap processCall(int op, int opId, QVariantMap & data);
+
+    void object2qvariant(const model::TObjectModelParams & model, const model::TObjectPtr obj, QVariantMap & result);
+    void updateObject(const model::TObjectModelParams & model, model::TObjectPtr obj, QVariantMap & data);
+    model::TObjectPtr createObject(const std::string & type, const model::TObjectModelParams & model, QVariantMap & data);
 };
 
 #endif // TRAJECTORIES_H

@@ -30,7 +30,9 @@ namespace model {
     SQLiteManager::SQLiteManager() {
     }
 
-    void SQLiteManager::init(const TObjectModelMap & models) {
+    void SQLiteManager::init(const TObjectModelMap & models, std::map<std::string, int> ids) {
+        ids.clear();
+
         int rc = sqlite3_open("../simulations/r1.sqlite3", &this->db_);
         if (rc) {
             std::cout << "Can't open database: " << sqlite3_errmsg(this->db_) << std::endl;
@@ -38,28 +40,30 @@ namespace model {
         }
 
         for (TObjectModelMap::const_iterator i = models.begin(); i != models.end(); i++) {
-            std::stringstream buff;
-            buff << std::string("CREATE TABLE IF NOT EXISTS ") << i->first << "(id INT";
-            for (TObjectModelParams::const_iterator j = i->second.params.begin(); j != i->second.params.end(); j++) {
-                if (j->second & TOBJECT_PARAM_LINKS) {
-                    std::stringstream buff2;
-                    buff2 << std::string("CREATE TABLE IF NOT EXISTS ") << i->first << "_" << j->first << " (a INT, b INT)";
-                    this->exec(buff2.str());
-                } else {
+            if (i->second.solid) {
+                std::stringstream buff;
+                buff << std::string("CREATE TABLE IF NOT EXISTS ") << i->first << "(id INT";
+                for (TObjectModelParams::const_iterator j = i->second.params.begin(); j != i->second.params.end(); j++) {
+                    if (j->second & TOBJECT_PARAM_LINKS) {
+                        std::stringstream buff2;
+                        buff2 << std::string("CREATE TABLE IF NOT EXISTS ") << i->first << "_" << j->first << " (a INT, b INT)";
+                        this->exec(buff2.str());
+                    } else {
 
-                buff << ", " << j->first;
-                if (j->second == TOBJECT_PARAM_INT || j->second & TOBJECT_PARAM_LINK) {
-                    buff << " INT";
-                } else if (j->second == TOBJECT_PARAM_INT) {
-                    buff << " REAL";
-                } else if (j->second == TOBJECT_PARAM_STRING) {
-                    buff << " STRING";
+                        buff << ", " << j->first;
+                        if (j->second == TOBJECT_PARAM_INT || j->second & TOBJECT_PARAM_LINK) {
+                            buff << " INT";
+                        } else if (j->second == TOBJECT_PARAM_INT) {
+                            buff << " REAL";
+                        } else if (j->second == TOBJECT_PARAM_STRING) {
+                            buff << " STRING";
+                        }
+                    }
                 }
-                }
+                buff << ");";
+
+                this->exec(buff.str());
             }
-            buff << ");";
-
-            this->exec(buff.str());
         }
 
     }

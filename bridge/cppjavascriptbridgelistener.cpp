@@ -32,9 +32,9 @@ namespace bridge {
         this->bridge_ = bridge;
     }
 
-    void CppJavascriptBridgeListener::makeCall(int op, bool complete, QVariantMap &data) {
+    void CppJavascriptBridgeListener::makeCall(int opId, bool complete, QVariantMap &data) {
         if (this->bridge_) {
-            this->bridge_->makeCall(op, complete,data);
+            this->bridge_->makeCall(opId, complete,data);
         }
     }
 

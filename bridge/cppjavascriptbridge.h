@@ -27,7 +27,12 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVariantMap>
 #include "cppjavascriptbridgelistener.h"
 
-#define BRIDGE_UPDATE 0
+#define BRIDGE_FIND     0
+#define BRIDGE_FINDALL  1
+#define BRIDGE_CREATE   2
+#define BRIDGE_UPDATE   3
+#define BRIDGE_DELETE   4
+#define BRIDGE_NEWID    5
 
 namespace bridge {
 
@@ -39,13 +44,13 @@ namespace bridge {
 
     public:
         CppJavascriptBridge(CppJavascriptBridgeListener * listener);
-        void makeCall(int op, bool complete, QVariantMap & data);
+        void makeCall(int opId, bool complete, QVariantMap & data);
 
     signals:
         void call_js(int op, bool complete, QVariantMap data);
 
     public slots:
-        void call_qt(int op, QVariantMap data);
+        QVariantMap call_qt(int op, int opId, QVariantMap data);
     };
 
 }

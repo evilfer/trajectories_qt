@@ -43,47 +43,35 @@ namespace model {
     typedef std::map<int, TObjectPtr> TObjectStoreMap;
     typedef std::vector<TObjectPtr> TObjectList;
 
-    class Store;
-
-    class TObjectStore {
+    struct TObjectStore {
+        TObjectModel model;
         TObjectStoreMap objects_;
-        bool allFound_;
-
-        int nextId_;
-        std::vector<int> free_;
-
-    public:
-        TObjectStore();
-        ~TObjectStore();
-
-        TObjectPtr create(const std::string & type);
-        TObjectPtr find(int id);
-        void findAll(TObjectList & result);
-        bool remove(int id, Store * store);
-
-    private:
-        int popNextId();
+        bool allLoaded_;
+        int nextTransientId_;
     };
 
 
     typedef std::map<std::string, TObjectStore> TypeStoreMap;
 
     class Store {
-        TObjectModelMap model_;
         TypeStoreMap stores_;
         SQLiteManager db_;
 
     public:
         Store(const TObjectModelMap & model);
+        ~Store();
 
 
-        TObjectPtr create(const std::string & type);
+        const TObjectModel * getModel(const std::string & type) const;
+        int newId(const std::string & type);
+        bool add(TObjectPtr obj);
         TObjectPtr find(const std::string & type, int id);
 
         TObjectPtr find(const TObjectLink * link);
 
-        void findAll(const std::string & type, TObjectList & list);
+        void findAll(const std::string & type, TObjectList & result);
         bool remove(const std::string & type, int id);
+
 
     private:
         TObjectStore * typeStore(const std::string & type);

@@ -27,8 +27,8 @@ namespace model {
 
     const std::string TObject::DEFAULT_STRING = "";
 
-    TObject::TObject(const std::string & type, int id) :
-        type_(type), id_(id), ints_(), strings_(), doubles_() {
+    TObject::TObject() :
+        type_(), id_(-1), ints_(), strings_(), doubles_() {
     }
 
     TObject::~TObject() {
