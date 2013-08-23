@@ -28,8 +28,12 @@ namespace bridge {
     CppJavascriptBridge::CppJavascriptBridge(CppJavascriptBridgeListener * listener) : listener_(listener) {
     }
 
-    QVariantMap CppJavascriptBridge::call_qt(int op, int opId, QVariantMap data) {
-        return this->listener_->processCall(op, opId, data);
+    void CppJavascriptBridge::call_qt(int op, int opId, QVariantMap data) {
+        this->listener_->processCall(op, opId, data);
+    }
+
+    QVariantMap CppJavascriptBridge::call_qt_sync(int op, QVariantMap data) {
+        return this->listener_->processSyncCall(op, data);
     }
 
     void CppJavascriptBridge::makeCall(int op, bool complete, QVariantMap & data) {

@@ -43,8 +43,8 @@
 
       QtCppJsBridge.call_qt(op, id, data);
     },
-    sync_call_qt: function(op, data) {
-      return QtCppJsBridge.call_qt(op, -1, data);
+    call_qt_sync: function(op, data) {
+      return QtCppJsBridge.call_qt_sync(op, data);
     }
   };
 
@@ -120,7 +120,7 @@
      */
     generateIdForRecord: function(store, record) {
       var type = this.globalObjectType(record.constructor);
-      var answer = Bridge.Comm.sync_call_qt(Bridge.Ops.NEWID, {type: type});
+      var answer = Bridge.Comm.call_qt_sync(Bridge.Ops.NEWID, {type: type});
       return answer.id;
     },
     find: function(store, type, id) {

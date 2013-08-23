@@ -27,43 +27,11 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
-    /*
-    bool TObjectStore::remove(int id, Store * store) {
-        if (this->objects_.find(id) != this->objects_.end()) {
-            TObjectPtr obj = this->objects_[id];
 
-            std::map<std::string, TObjectLink> & links = obj->links();
-            for(std::map<std::string, TObjectLink>::iterator i = links.begin(); i != links.end(); i++) {
-                TObjectLink & link = i->second;
-                if (link.owned() && !link.empty()) {
-                    store->remove(link.type(), link.objid());
-                }
-            }
-
-            this->objects_.erase(id);
-            delete obj;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    TObjectPtr TObjectStore::find(int id) {
-        return this->objects_.find(id) != this->objects_.end() ? this->objects_[id] : NULL;
-    }
-
-    void TObjectStore::findAll(TObjectList & result) {
-        result.clear();
-        for (TObjectStoreMap::iterator iter = this->objects_.begin(); iter != this->objects_.end(); ++iter) {
-            result.push_back(iter->second);
-        }
-    }
-*/
-
-    Store::Store(const TObjectModelMap & model) : stores_(), db_() {
+    Store::Store(const TObjectModelMap & model) : stores_(), db_(model) {
         std::map<std::string, int> ids;
 
-        this->db_.init(model, ids);
+        this->db_.getNextIds(ids);
 
         for (TObjectModelMap::const_iterator i = model.begin(); i != model.end(); i++) {
             int nextid = ids.find(i->first) != ids.end() ? ids[i->first] : 1;
@@ -109,15 +77,11 @@ namespace model {
         }
 
         TObjectStore & store = storeIter->second;
-        int id = 0;
         if (store.model.solid) {
-            /* TODO db */
-        } else {
-            id = store.nextTransientId_;
-            store.nextTransientId_ ++;
+            this->db_.insertObject(obj);
         }
 
-        store.objects_[id] = obj;
+        store.objects_[obj->id()] = obj;
         return true;
     }
 
@@ -181,7 +145,7 @@ namespace model {
         std::map<std::string, TObjectLink> & links = obj->links();
         for(std::map<std::string, TObjectLink>::iterator i = links.begin(); i != links.end(); i++) {
             TObjectLink & link = i->second;
-            if (link.owned() && !link.empty()) {
+            if (store.model.params[i->first] == TOBJECT_PARAM_OWNEDLINK && !link.empty()) {
                 this->remove(link.type(), link.objid());
             }
         }

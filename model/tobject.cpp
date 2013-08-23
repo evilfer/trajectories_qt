@@ -47,11 +47,13 @@ namespace model {
         this->strings_[property] = value;
     }
 
-    void TObject::pLink(const std::string & property, const std::string & type, bool owned, int value) {
-        this->links_[property].type(type, owned);
-        this->links_[property].objid(value);
+    void TObject::pLink(const std::string & property, const std::string & type, int value) {
+        this->links_[property].type_id(type, value);
     }
 
+    void TObject::pLink(const std::string & property, const std::string & type_id) {
+        this->links_[property].type_id(type_id);
+    }
 
     int TObject::pInt(const std::string & property) const {
         std::map<std::string, int>::const_iterator i = this->ints_.find(property);

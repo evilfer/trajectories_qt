@@ -15,9 +15,7 @@ Trajectories::~Trajectories() {
     }
 }
 
-QVariantMap Trajectories::processCall(int op, int opId, QVariantMap & data) {
-    QVariantMap output;
-
+void Trajectories::processCall(int op, int opId, QVariantMap & data) {
     std::string type = data["type"].toString().toStdString();
     const model::TObjectModel * model = this->store_->getModel(type);
 
@@ -72,18 +70,28 @@ QVariantMap Trajectories::processCall(int op, int opId, QVariantMap & data) {
         {
             break;
         }
-        case BRIDGE_NEWID:
+        default:
         {
-            int id = this->store_->newId(type);
-            output["id"] = id;
+            QVariantMap empty;
+            this->makeCall(opId, true, empty);
             break;
         }
         }
     }
+}
+
+QVariantMap Trajectories::processSyncCall(int op, QVariantMap & data) {
+    QVariantMap output;
+
+    if (op == BRIDGE_NEWID) {
+        std::string type = data["type"].toString().toStdString();
+        int id = this->store_->newId(type);
+        output["id"] = id;
+    }
 
     return output;
-
 }
+
 
 void Trajectories::init() {
 

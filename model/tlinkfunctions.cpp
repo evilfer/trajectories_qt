@@ -26,10 +26,10 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
-    void link(Store * store, TObjectPtr a, const std::string & propertyA, TObjectPtr b, const std::string & propertyB, int owner) {
+    void link(Store * store, TObjectPtr a, const std::string & propertyA, TObjectPtr b, const std::string & propertyB) {
         if (a && b) {
-            a->pLink(propertyA, b->type(), owner > 0, b->id());
-            b->pLink(propertyB, a->type(), owner > 1, a->id());
+            a->pLink(propertyA, b->type(), b->id());
+            b->pLink(propertyB, a->type(), a->id());
         } else if (a) {
             a->clearLink(propertyA);
         } else if (b) {
@@ -37,8 +37,8 @@ namespace model {
         }
     }
 
-    void link(Store * store, const std::string & typeA, int idA, const std::string & propertyA, const std::string & typeB, int idB, const std::string & propertyB, int owner) {
-        link(store, store->find(typeA, idA), propertyA, store->find(typeB, idB), propertyB, owner);
+    void link(Store * store, const std::string & typeA, int idA, const std::string & propertyA, const std::string & typeB, int idB, const std::string & propertyB) {
+        link(store, store->find(typeA, idA), propertyA, store->find(typeB, idB), propertyB);
     }
 
 }

@@ -15,7 +15,8 @@ public:
     void init();
 
 protected:
-    virtual QVariantMap processCall(int op, int opId, QVariantMap & data);
+    virtual void processCall(int op, int opId, QVariantMap & data);
+    virtual QVariantMap processSyncCall(int op, QVariantMap & data);
 
     void object2qvariant(const model::TObjectModelParams & model, const model::TObjectPtr obj, QVariantMap & result);
     void updateObject(const model::TObjectModelParams & model, model::TObjectPtr obj, QVariantMap & data);

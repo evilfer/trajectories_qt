@@ -30,21 +30,27 @@ namespace model {
 
 
     class TObjectLink {
+        std::string type_id_;
         std::string type_;
         int objid_;
-        bool owned_;
 
     public:
         TObjectLink();
-        void type(const std::string & type, bool owned) {this->type_ = type;this->owned_ = owned;}
+
+        void type(const std::string & type);
+        void type_id(const std::string & type_id);
+        void type_id(const std::string & type, int id);
+
         const std::string & type() const {return this->type_;}
-        bool owned() const {return this->owned_;}
-
         int objid() const {return this->objid_;}
-        void objid(int objid) {this->objid_ = objid;}
 
-        void clear() {this->objid_ = -1;}
+        void clear();
         bool empty() const {return this->objid_ < 0;}
+
+        const std::string & toString() const {return this->type_id_;}
+
+    private:
+        void updateTypeId();
     };
 
     typedef std::vector<TObjectLink> TObjectLinkArray;

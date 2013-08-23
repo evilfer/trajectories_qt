@@ -23,9 +23,54 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "tobjectlink.h"
 
+#include <sstream>
+
 namespace model {
 
-    TObjectLink::TObjectLink(): type_(), objid_(-1) {
+    TObjectLink::TObjectLink(): type_id_(), type_(), objid_(-1) {
     }
+
+    void TObjectLink::type(const std::string & type) {
+        this->type_ = type;
+        this->objid_ = -1;
+        this->updateTypeId();
+    }
+
+    void TObjectLink::type_id(const std::string & type, int id) {
+        this->type_ = type;
+        this->objid_ = id;
+        this->updateTypeId();
+    }
+
+    void TObjectLink::type_id(const std::string & type_id) {
+        std::string::size_type sep = type_id.find(':');
+        if (sep != std::string::npos) {
+            this->type_id_ = type_id;
+            this->type_ = type_id.substr(0, sep);
+            this->objid_ = atoi(type_id.substr(sep + 1).c_str());
+        } else {
+            this->type_id_ = "";
+            this->type_ = "";
+            this->objid_ = -1;
+        }
+
+    }
+
+    void TObjectLink::clear() {
+        this->objid_ = -1;
+        this->updateTypeId();
+    }
+
+    void TObjectLink::updateTypeId() {
+        if (this->empty()) {
+            this->type_id_ = "";
+        } else {
+            std::stringstream ss;
+            ss << this->type_ << ":" << this->objid_;
+            this->type_id_ = ss.str();
+        }
+    }
+
+
 
 }

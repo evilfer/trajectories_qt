@@ -66,7 +66,8 @@ namespace model {
         void pDouble(const std::string & property, double value);
         void pString(const std::string & property, const std::string & value);
 
-        void pLink(const std::string & property, const std::string & type, bool owned, int value);
+        void pLink(const std::string & property, const std::string & type, int value);
+        void pLink(const std::string & property, const std::string & type_id);
 
         int pInt(const std::string & property) const;
         double pDouble(const std::string & property) const;
