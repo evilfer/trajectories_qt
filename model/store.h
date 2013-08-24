@@ -40,7 +40,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
-    typedef std::map<int, TObjectPtr> TObjectStoreMap;
+
+    typedef std::map<TObjectId, TObjectPtr> TObjectStoreMap;
     typedef std::vector<TObjectPtr> TObjectList;
 
     struct TObjectStore {
@@ -63,14 +64,14 @@ namespace model {
 
 
         const TObjectModel * getModel(const std::string & type) const;
-        int newId(const std::string & type);
+        TObjectId newId(const std::string & type);
         bool add(TObjectPtr obj);
-        TObjectPtr find(const std::string & type, int id);
+        TObjectPtr find(const std::string & type, const TObjectId & id);
 
         TObjectPtr find(const TObjectLink * link);
 
         void findAll(const std::string & type, TObjectList & result);
-        bool remove(const std::string & type, int id);
+        bool remove(const std::string & type, const TObjectId & id);
 
 
     private:

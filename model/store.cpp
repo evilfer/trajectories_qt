@@ -23,6 +23,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "store.h"
 #include <istream>
+#include <sstream>
 
 
 namespace model {
@@ -54,10 +55,10 @@ namespace model {
         return this->stores_.find(type) != this->stores_.end() ? & this->stores_[type] : NULL;
     }
 
-    int Store::newId(const std::string & type) {
+    TObjectId Store::newId(const std::string & type) {
         TypeStoreMap::iterator storeIter = this->stores_.find(type);
         if (storeIter == this->stores_.end()) {
-            return -1;
+            return "";
         }
 
         TObjectStore & store = storeIter->second;
@@ -66,7 +67,9 @@ namespace model {
         } else {
             int id = store.nextTransientId_;
             store.nextTransientId_++;
-            return id;
+            std::stringstream ss;
+            ss << id;
+            return ss.str();
         }
     }
 
@@ -85,7 +88,7 @@ namespace model {
         return true;
     }
 
-    TObjectPtr Store::find(const std::string & type, int id) {
+    TObjectPtr Store::find(const std::string & type, const TObjectId & id) {
         TypeStoreMap::iterator storeIter = this->stores_.find(type);
         if (storeIter == this->stores_.end()) {
             return NULL;
@@ -123,7 +126,7 @@ namespace model {
         }
     }
 
-    bool Store::remove(const std::string & type, int id) {
+    bool Store::remove(const std::string & type, const TObjectId & id) {
         TypeStoreMap::iterator storeIter = this->stores_.find(type);
         if (storeIter == this->stores_.end()) {
             return false;
@@ -145,7 +148,7 @@ namespace model {
         std::map<std::string, TObjectLink> & links = obj->links();
         for(std::map<std::string, TObjectLink>::iterator i = links.begin(); i != links.end(); i++) {
             TObjectLink & link = i->second;
-            if (store.model.params[i->first] == TOBJECT_PARAM_OWNEDLINK && !link.empty()) {
+            if (store.model.links[i->first].owned && !link.empty()) {
                 this->remove(link.type(), link.objid());
             }
         }

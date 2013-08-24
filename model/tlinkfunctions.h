@@ -23,7 +23,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef TLINKFUNCTIONS_H
 #define TLINKFUNCTIONS_H
-
+/*
 #include <string>
 
 #include "store.h"
@@ -36,5 +36,6 @@ namespace model {
     void link(Store * store, const std::string & typeA, int idA, const std::string & propertyA, const std::string & typeB, int idB, const std::string & propertyB);
 
 }
+*/
 
 #endif // TLINKFUNCTIONS_H

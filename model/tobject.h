@@ -33,20 +33,18 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #define TOBJECT_PARAM_INT           00000001
 #define TOBJECT_PARAM_DOUBLE        00000002
 #define TOBJECT_PARAM_STRING        00000004
-#define TOBJECT_PARAM_LINK          00000010
-#define TOBJECT_PARAM_OWNEDLINK     00000030
-#define TOBJECT_PARAM_LINKS         00000100
-#define TOBJECT_PARAM_OWNEDLINKS    00000300
 
 
 namespace model {
+
+
 
     class TObject {
 
         static const std::string DEFAULT_STRING;
 
         std::string type_;
-        int id_;
+        TObjectId id_;
 
         std::map<std::string, int> ints_;
         std::map<std::string, std::string> strings_;
@@ -58,15 +56,15 @@ namespace model {
         ~TObject();
 
         const std::string & type() const {return this->type_;}
-        int id() const {return this->id_;}
+        const TObjectId & id() const {return this->id_;}
         void setType(const std::string type) {this->type_ = type;}
-        void setId(int id) {this->id_ = id;}
+        void setId(const TObjectId & id) {this->id_ = id;}
 
         void pInt(const std::string & property, int value);
         void pDouble(const std::string & property, double value);
         void pString(const std::string & property, const std::string & value);
 
-        void pLink(const std::string & property, const std::string & type, int value);
+        void pLink(const std::string & property, const std::string & type, const TObjectId & id);
         void pLink(const std::string & property, const std::string & type_id);
 
         int pInt(const std::string & property) const;
@@ -89,13 +87,24 @@ namespace model {
 
     typedef TObject* TObjectPtr;
 
-    typedef std::map<std::string, int> TObjectModelParams;
 
+    struct TObjectLinkModel {
+        bool owned;
+        bool polymorphic;
+        const char * type;
+        const char * id_key;
+        const char * type_key;
+    };
+
+    typedef std::map<std::string, int> TObjectModelParams;
+    typedef std::map<std::string, TObjectLinkModel> TObjectModelLinkParams;
 
 
     struct TObjectModel {
         bool solid;
         TObjectModelParams params;
+        TObjectModelLinkParams links;
+        TObjectModelLinkParams arrays;
     };
 
     typedef std::map<std::string, TObjectModel> TObjectModelMap;

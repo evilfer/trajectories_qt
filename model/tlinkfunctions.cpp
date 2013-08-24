@@ -23,7 +23,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "tlinkfunctions.h"
 
-
+/*
 namespace model {
 
     void link(Store * store, TObjectPtr a, const std::string & propertyA, TObjectPtr b, const std::string & propertyB) {
@@ -42,3 +42,4 @@ namespace model {
     }
 
 }
+*/

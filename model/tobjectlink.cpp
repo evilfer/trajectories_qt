@@ -27,16 +27,16 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
-    TObjectLink::TObjectLink(): type_id_(), type_(), objid_(-1) {
+    TObjectLink::TObjectLink(): type_id_(), type_(), objid_() {
     }
 
     void TObjectLink::type(const std::string & type) {
         this->type_ = type;
-        this->objid_ = -1;
+        this->objid_ = "";
         this->updateTypeId();
     }
 
-    void TObjectLink::type_id(const std::string & type, int id) {
+    void TObjectLink::type_id(const std::string & type, const TObjectId & id) {
         this->type_ = type;
         this->objid_ = id;
         this->updateTypeId();
@@ -51,13 +51,13 @@ namespace model {
         } else {
             this->type_id_ = "";
             this->type_ = "";
-            this->objid_ = -1;
+            this->objid_ = "";
         }
 
     }
 
     void TObjectLink::clear() {
-        this->objid_ = -1;
+        this->objid_ = "";
         this->updateTypeId();
     }
 

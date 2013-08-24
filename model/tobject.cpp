@@ -28,7 +28,7 @@ namespace model {
     const std::string TObject::DEFAULT_STRING = "";
 
     TObject::TObject() :
-        type_(), id_(-1), ints_(), strings_(), doubles_() {
+        type_(), id_(""), ints_(), strings_(), doubles_() {
     }
 
     TObject::~TObject() {
@@ -47,8 +47,8 @@ namespace model {
         this->strings_[property] = value;
     }
 
-    void TObject::pLink(const std::string & property, const std::string & type, int value) {
-        this->links_[property].type_id(type, value);
+    void TObject::pLink(const std::string & property, const std::string & type, const TObjectId & id) {
+        this->links_[property].type_id(type, id);
     }
 
     void TObject::pLink(const std::string & property, const std::string & type_id) {

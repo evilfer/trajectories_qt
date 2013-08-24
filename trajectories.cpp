@@ -24,8 +24,8 @@ void Trajectories::processCall(int op, int opId, QVariantMap & data) {
         case BRIDGE_FIND:
         {
             QVariantMap result;
-            model::TObjectPtr obj = this->store_->find(type, data["id"].toInt());
-            this->object2qvariant(model->params, obj, result);
+            model::TObjectPtr obj = this->store_->find(type, data["id"].toString().toStdString());
+            this->object2qvariant(model, obj, result);
             this->makeCall(opId, true, result);
             break;
         }
@@ -36,7 +36,7 @@ void Trajectories::processCall(int op, int opId, QVariantMap & data) {
             QVariantList qlist;
             for(model::TObjectList::iterator i = list.begin(); i != list.end(); i++) {
                 QVariantMap qobj;
-                this->object2qvariant(model->params, *i, qobj);
+                this->object2qvariant(model, *i, qobj);
                 qlist.append(qobj);
             }
 
@@ -51,10 +51,10 @@ void Trajectories::processCall(int op, int opId, QVariantMap & data) {
             QVariantMap record = data["record"].toMap();
 
             model::TObjectPtr obj = new model::TObject();
-            obj->setId(record["id"].toInt());
+            obj->setId(record["id"].toString().toStdString());
             obj->setType(type);
 
-            this->updateObject(model->params, obj, record);
+            this->updateObject(model, obj, record);
             this->store_->add(obj);
 
             this->makeCall(opId, true, record);
@@ -85,8 +85,7 @@ QVariantMap Trajectories::processSyncCall(int op, QVariantMap & data) {
 
     if (op == BRIDGE_NEWID) {
         std::string type = data["type"].toString().toStdString();
-        int id = this->store_->newId(type);
-        output["id"] = id;
+        output["id"] = this->store_->newId(type).c_str();
     }
 
     return output;
@@ -102,9 +101,11 @@ void Trajectories::init() {
             "Simulation",
             {
                 true,
+                {},
                 {
-                    {"metadata", TOBJECT_PARAM_OWNEDLINK}
-                }
+                    {"metadata", {true, false, "SimulationMetadata", "metadata_id", "metadata_key"}}
+                },
+                {}
             }
         },
         {
@@ -113,9 +114,12 @@ void Trajectories::init() {
                 true,
                 {
                     {"title", TOBJECT_PARAM_STRING},
-                    {"description", TOBJECT_PARAM_STRING},
-                    {"simulation", TOBJECT_PARAM_LINK}
-                }
+                    {"description", TOBJECT_PARAM_STRING}
+                },
+                {
+                    {"simulation", {false, false, "Simulation", "simulation_id", "simulation_type"}}
+                },
+                {}
             }
         }
     };
@@ -123,8 +127,8 @@ void Trajectories::init() {
     this->store_ = new model::Store(model);
 }
 
-void Trajectories::object2qvariant(const model::TObjectModelParams & model, const model::TObjectPtr obj, QVariantMap & result) {
-    for (model::TObjectModelParams::const_iterator i = model.begin(); i != model.end(); i++) {
+void Trajectories::object2qvariant(const model::TObjectModel * model, const model::TObjectPtr obj, QVariantMap & result) {
+    for (model::TObjectModelParams::const_iterator i = model->params.begin(); i != model->params.end(); i++) {
         switch(i->second) {
         case TOBJECT_PARAM_INT:
             if (!obj->emptyInt(i->first)) {
@@ -141,17 +145,25 @@ void Trajectories::object2qvariant(const model::TObjectModelParams & model, cons
                 result.insert(i->first.c_str(), obj->pString(i->first).c_str());
             }
             break;
-        case TOBJECT_PARAM_LINK:
-            if (!obj->emptyLink(i->first)) {
-                result.insert(i->first.c_str(), obj->pLink(i->first)->objid());
-            }
-            break;
         }
     }
+
+    for (model::TObjectModelLinkParams::const_iterator i = model->links.begin(); i != model->links.end(); i++) {
+        if (!obj->emptyLink(i->first)) {
+            const model::TObjectLink * link = obj->pLink(i->first);
+            result.insert(i->second.id_key, link->objid().c_str());
+            if (i->second.polymorphic) {
+                result.insert(i->second.type_key, link->type().c_str());
+            }
+        }
+    }
+
+    /* TODO arrays */
+
 }
 
-void Trajectories::updateObject(const model::TObjectModelParams & model, model::TObjectPtr obj, QVariantMap & data) {
-    for (model::TObjectModelParams::const_iterator i = model.begin(); i != model.end(); i++) {
+void Trajectories::updateObject(const model::TObjectModel * model, model::TObjectPtr obj, QVariantMap & data) {
+    for (model::TObjectModelParams::const_iterator i = model->params.begin(); i != model->params.end(); i++) {
         switch(i->second) {
         case TOBJECT_PARAM_INT:
             if (data.contains(i->first.c_str())) {
@@ -174,13 +186,15 @@ void Trajectories::updateObject(const model::TObjectModelParams & model, model::
                 obj->clearString(i->first);
             }
             break;
-        case TOBJECT_PARAM_LINK:
-            if (data.contains(i->first.c_str())) {
-                /* TODO */
-            } else {
-                obj->clearLink(i->first);
-            }
-            break;
+        }
+    }
+
+    for (model::TObjectModelLinkParams::const_iterator i = model->links.begin(); i != model->links.end(); i++) {
+        if (data.contains(i->first.c_str())) {
+
+
+        } else {
+            obj->clearLink(i->first);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace model {
                 std::stringstream findQuery;
                 std::stringstream allQuery;
 
-                createQuery << "CREATE TABLE IF NOT EXISTS " << i->first << "(id INT";
+                createQuery << "CREATE TABLE IF NOT EXISTS " << i->first << "(id TEXT";
                 insertQuery << "INSERT INTO " << i->first << " (id";
                 updateQuery << "UPDATE " << i->first << " SET ";
                 deleteQuery << "DELETE FROM " << i->first << " WHERE id=?";
@@ -58,62 +58,76 @@ namespace model {
                 allQuery << "SELECT * FROM " << i->first;
 
                 bool notFirst = false;
+                int insertValueCount = 0;
 
                 for (TObjectModelParams::const_iterator j = i->second.params.begin(); j != i->second.params.end(); j++) {
-                    if (!(j->second & TOBJECT_PARAM_LINKS)) {
-                        if (notFirst) {
-                            updateQuery << ", ";
-                            findQuery << ", ";
-                        } else {
-                            notFirst = true;
-                        }
-                        updateQuery << j->first << "=?";
-                        findQuery << j->first;
-
-                        insertQuery << ", " << j->first;
-
-                        createQuery << ", " << j->first;
-                        if (j->second == TOBJECT_PARAM_INT) {
-                            createQuery << " INT";
-                        } else if (j->second == TOBJECT_PARAM_DOUBLE) {
-                            createQuery << " REAL";
-                        } else if (j->second == TOBJECT_PARAM_STRING || j->second & TOBJECT_PARAM_LINK) {
-                            createQuery << " STRING";
-                        }
+                    if (notFirst) {
+                        updateQuery << ", ";
+                        findQuery << ", ";
+                    } else {
+                        notFirst = true;
                     }
+                    updateQuery << j->first << "=?";
+                    findQuery << j->first;
+
+                    insertQuery << ", " << j->first;
+                    insertValueCount ++;
+
+                    createQuery << ", " << j->first;
+                    if (j->second == TOBJECT_PARAM_INT) {
+                        createQuery << " INT";
+                    } else if (j->second == TOBJECT_PARAM_DOUBLE) {
+                        createQuery << " REAL";
+                    } else if (j->second == TOBJECT_PARAM_STRING) {
+                        createQuery << " TEXT";
+                    }
+                }
+
+                for (TObjectModelLinkParams::const_iterator j = i->second.links.begin(); j != i->second.links.end(); j++) {
+                    if (notFirst) {
+                        updateQuery << ", ";
+                        findQuery << ", ";
+                    } else {
+                        notFirst = true;
+                    }
+                    updateQuery << j->first << "=?";
+                    findQuery << j->first;
+
+                    insertQuery << ", " << j->first;
+                    insertValueCount ++;
+
+                    createQuery << ", " << j->first << " TEXT";
                 }
 
                 createQuery << ")";
                 this->exec(createQuery.str());
 
                 insertQuery << ") VALUES (?";
+                for (int i = 0; i < insertValueCount; i++) {
+                    insertQuery << ", ?";
+                }
+                insertQuery << ")";
                 updateQuery << " WHERE id=?";
                 findQuery << " FROM " << i->first << " WHERE id=?";
 
-                for (TObjectModelParams::const_iterator j = i->second.params.begin(); j != i->second.params.end(); j++) {
-                    if (j->second & TOBJECT_PARAM_LINKS) {
-                        std::stringstream subcreateQuery;
-                        std::stringstream subupdateQuery;
-                        std::stringstream subfindQuery;
+                for (TObjectModelLinkParams::const_iterator j = i->second.arrays.begin(); j != i->second.arrays.end(); j++) {
+                    std::stringstream subcreateQuery;
+                    std::stringstream subupdateQuery;
+                    std::stringstream subfindQuery;
 
-                        subcreateQuery << "CREATE TABLE IF NOT EXISTS " << i->first << "_" << j->first << " (id INT, child STRING)";
-                        this->exec(subcreateQuery.str());
+                    subcreateQuery << "CREATE TABLE IF NOT EXISTS " << i->first << "_" << j->first << " (id TEXT, child TEXT)";
+                    this->exec(subcreateQuery.str());
 
-                        subupdateQuery << "DELETE FROM " << i->first << "_" << j->first <<
-                                          " WHERE id=?;INSERT INTO " << i-> first<< "_" << j->first << " (id, child) VALUES ";
+                    subupdateQuery << "DELETE FROM " << i->first << "_" << j->first <<
+                                      " WHERE id=?;INSERT INTO " << i-> first<< "_" << j->first << " (id, child) VALUES ";
 
-                        subfindQuery << "SELECT child FROM " << i->first << "_" << j->first <<
-                                        " WHERE id=?";
+                    subfindQuery << "SELECT child FROM " << i->first << "_" << j->first << " WHERE id=?";
 
-                        this->queries_[i->first].subqueries[j->first].update = subupdateQuery.str();
-                        this->queries_[i->first].subqueries[j->first].select = subfindQuery.str();
-
-                    } else {
-                        insertQuery << ", ?";
-                    }
+                    this->queries_[i->first].subqueries[j->first].update = subupdateQuery.str();
+                    this->queries_[i->first].subqueries[j->first].select = subfindQuery.str();
                 }
 
-                insertQuery << ")";
+
 
                 this->queries_[i->first].insert = insertQuery.str();
                 this->queries_[i->first].update = updateQuery.str();
@@ -139,7 +153,7 @@ namespace model {
         sqlite3_stmt * stmt;
         sqlite3_prepare_v2(this->db_, this->queries_[obj->type()].insert.c_str(), -1, &stmt, NULL);
 
-        sqlite3_bind_int(stmt, 1, obj->id());
+        sqlite3_bind_text(stmt, 1, obj->id().c_str(), -1, SQLITE_TRANSIENT);
         this->bindParams(obj, stmt, 2);
         sqlite3_step(stmt);
         sqlite3_finalize(stmt);
@@ -150,7 +164,7 @@ namespace model {
         sqlite3_prepare_v2(this->db_, this->queries_[obj->type()].update.c_str(), -1, &stmt, NULL);
 
         int lastIndex = this->bindParams(obj, stmt, 1);
-        sqlite3_bind_int(stmt, lastIndex, obj->id());
+        sqlite3_bind_text(stmt, lastIndex, obj->id().c_str(), -1, SQLITE_TRANSIENT);
 
         sqlite3_step(stmt);
         sqlite3_finalize(stmt);
@@ -160,21 +174,21 @@ namespace model {
         this->deleteObject(obj->type(), obj->id());
     }
 
-    void SQLiteManager::deleteObject(const std::string & type, int id) {
+    void SQLiteManager::deleteObject(const std::string & type, const model::TObjectId & id) {
         sqlite3_stmt * stmt;
         sqlite3_prepare_v2(this->db_, this->queries_[type].remove.c_str(), -1, &stmt, NULL);
-        sqlite3_bind_int(stmt, 1, id);
+        sqlite3_bind_text(stmt, 1, id.c_str(), -1, SQLITE_TRANSIENT);
         sqlite3_step(stmt);
         sqlite3_finalize(stmt);
     }
 
 
-    TObjectPtr SQLiteManager::loadObject(const std::string & type, int id) {
+    TObjectPtr SQLiteManager::loadObject(const std::string & type, const TObjectId & id) {
         TObjectPtr obj = NULL;
 
         sqlite3_stmt * stmt;
         sqlite3_prepare_v2(this->db_, this->queries_[type].select.c_str(), -1, &stmt, NULL);
-        sqlite3_bind_int(stmt, 1, id);
+        sqlite3_bind_text(stmt, 1, id.c_str(), -1, SQLITE_TRANSIENT);
 
         if (sqlite3_step(stmt) == SQLITE_ROW) {
             TObjectPtr obj = new TObject();
@@ -201,9 +215,9 @@ namespace model {
     }
 
     int SQLiteManager::bindParams(const TObjectPtr obj, sqlite3_stmt * stmt, int index) {
-        TObjectModelParams &model = this->model_[obj->type()].params;
+        TObjectModel & model = this->model_[obj->type()];
 
-        for (TObjectModelParams::const_iterator iter = model.begin(); iter != model.end(); iter++) {
+        for (TObjectModelParams::const_iterator iter = model.params.begin(); iter != model.params.end(); iter++) {
             if (iter->second == TOBJECT_PARAM_INT) {
                 if (obj->emptyInt(iter->first)) {
                     sqlite3_bind_null(stmt, index);
@@ -218,25 +232,29 @@ namespace model {
                 }
             } else if (iter->second == TOBJECT_PARAM_STRING) {
                 sqlite3_bind_text(stmt, index, obj->pString(iter->first).c_str(), -1, SQLITE_TRANSIENT);
-            } else if (iter->second & TOBJECT_PARAM_LINK) {
-                const TObjectLink * link = obj->pLink(iter->first);
-                if (!link || link->empty()) {
-                    sqlite3_bind_null(stmt, index);
-                } else {
-                    sqlite3_bind_text(stmt, index, obj->pLink(iter->first)->toString().c_str(), -1, SQLITE_TRANSIENT);
-                }
+            }
+
+            index++;
+        }
+
+        for (TObjectModelLinkParams::const_iterator iter = model.links.begin(); iter != model.links.end(); iter++) {
+            if (obj->emptyLink(iter->first)) {
+                sqlite3_bind_null(stmt, index);
+            } else {
+                sqlite3_bind_text(stmt, index, obj->pLink(iter->first)->toString().c_str(), -1, SQLITE_TRANSIENT);
             }
             index++;
         }
+
         return index;
     }
 
     int SQLiteManager::loadParams(TObjectPtr obj, sqlite3_stmt * stmt) {
-        TObjectModelParams &model = this->model_[obj->type()].params;
+        TObjectModel & model = this->model_[obj->type()];
 
         int column = 0;
 
-        for (TObjectModelParams::const_iterator iter = model.begin(); iter != model.end(); iter++) {
+        for (TObjectModelParams::const_iterator iter = model.params.begin(); iter != model.params.end(); iter++) {
             bool isNull = sqlite3_column_type(stmt, column) == SQLITE_NULL;
 
             if (iter->second == TOBJECT_PARAM_INT) {
@@ -260,17 +278,23 @@ namespace model {
                     std::string value = std::string(reinterpret_cast< const char* >(sqlite3_column_text(stmt, column)));
                     obj->pString(iter->first, value);
                 }
-            } else if (iter->second & TOBJECT_PARAM_LINK) {
-                if (isNull) {
-                    obj->clearLink(iter->first);
-                } else {
-                    std::string value = std::string(reinterpret_cast< const char* >(sqlite3_column_text(stmt, column)));
-                    obj->pLink(iter->first, value);
-                }
             }
 
             column++;
         }
+
+        for (TObjectModelLinkParams::const_iterator iter = model.links.begin(); iter != model.links.end(); iter++) {
+            bool isNull = sqlite3_column_type(stmt, column) == SQLITE_NULL;
+            if (isNull) {
+                obj->clearLink(iter->first);
+            } else {
+                std::string value = std::string(reinterpret_cast< const char* >(sqlite3_column_text(stmt, column)));
+                obj->pLink(iter->first, value);
+            }
+
+            column++;
+        }
+
         return 0;
     }
 

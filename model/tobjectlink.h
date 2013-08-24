@@ -28,24 +28,26 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace model {
 
+    typedef std::string TObjectId;
+
 
     class TObjectLink {
         std::string type_id_;
         std::string type_;
-        int objid_;
+        TObjectId objid_;
 
     public:
         TObjectLink();
 
         void type(const std::string & type);
         void type_id(const std::string & type_id);
-        void type_id(const std::string & type, int id);
+        void type_id(const std::string & type, const TObjectId & id);
 
         const std::string & type() const {return this->type_;}
-        int objid() const {return this->objid_;}
+        const TObjectId & objid() const {return this->objid_;}
 
         void clear();
-        bool empty() const {return this->objid_ < 0;}
+        bool empty() const {return this->objid_.length() == 0;}
 
         const std::string & toString() const {return this->type_id_;}
 

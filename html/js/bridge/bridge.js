@@ -70,7 +70,7 @@
    @extends DS.Adapter
    */
   Bridge.BridgeAdapter = DS.Adapter.extend({
-    serializer: DS.FixtureSerializer,
+    serializer: DS.RESTSerializer,
     /*
      Implement this method in order to provide data associated with a type
      */
@@ -109,7 +109,7 @@
      Implement this method in order to provide provide json for CRUD methods
      */
     mockJSON: function(type, record) {
-      return this.serialize(record, {includeId: true});
+      return this.serialize(record, {includeId: true, includeType: true});
     },
     globalObjectType: function(localType) {
       var type = localType.toString();

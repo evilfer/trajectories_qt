@@ -67,9 +67,9 @@ namespace model {
         void insertObject(TObjectPtr obj);
         void updateObject(TObjectPtr obj);
         void deleteObject(TObjectPtr obj);
-        void deleteObject(const std::string & type, int id);
+        void deleteObject(const std::string & type, const TObjectId & id);
 
-        TObjectPtr loadObject(const std::string & type, int id);
+        TObjectPtr loadObject(const std::string & type, const TObjectId & id);
         void loadObjects(const std::string & type);
 
     private:
