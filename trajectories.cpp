@@ -190,12 +190,15 @@ void Trajectories::updateObject(const model::TObjectModel * model, model::TObjec
     }
 
     for (model::TObjectModelLinkParams::const_iterator i = model->links.begin(); i != model->links.end(); i++) {
-        if (data.contains(i->first.c_str())) {
-
-
+        if (data.contains(i->second.id_key)) {
+            model::TObjectId id = data[i->second.id_key].toString().toStdString();
+            std::string type = i->second.polymorphic ? data[i->second.type_key].toString().toStdString() : i->second.type;
+            obj->pLink(i->first, type, id);
         } else {
             obj->clearLink(i->first);
         }
     }
+
+    /* TODO arrays */
 }
 

@@ -106,10 +106,10 @@ namespace model {
     }
 
     bool TObject::emptyLink(const std::string & property) const {
-        if (this->strings_.find(property) == this->strings_.end()) {
+        if (this->links_.find(property) == this->links_.end()) {
             return true;
         } else {
-            return this->strings_.find(property)->second.empty();
+            return this->links_.find(property)->second.empty();
         }
     }
 
