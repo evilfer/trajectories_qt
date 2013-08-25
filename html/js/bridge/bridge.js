@@ -22,12 +22,15 @@
         QtCppJsBridge.call_js.connect(Bridge.Comm.call_js);
       }
     },
-    call_js: function(op, complete, answer) {
-      var opData = this.ops[op];
+    call_js: function(opId, complete, answer) {
+      Bridge.Comm.processJsCall(opId, complete, answer);
+    },
+    processJsCall: function(opId, complete, answer) {
+      var opData = this.ops[opId];
       if (opData) {
-        opData.adapter.invoked(opData.store, opData.request, opData.localRecord, answer);
+        opData.adapter.invoked(opData.op, opData.store, opData.request, answer, opData.localRecord);
         if (complete) {
-          delete this.ops[op];
+          delete this.ops[opId];
         }
       }
     },
@@ -35,6 +38,7 @@
       var id = this.opId;
       this.opId++;
       this.ops[id] = {
+        op: op,
         adapter: adapter,
         store: store,
         request: data,
@@ -188,8 +192,8 @@
     /*
      @listener
      */
-    invoked: function(store, request, data, localRecord) {
-      switch (request.op) {
+    invoked: function(op, store, request, data, localRecord) {
+      switch (op) {
         case Bridge.Ops.FIND:
           this.didFindRecord(store, request.type, data, request.id);
           break;

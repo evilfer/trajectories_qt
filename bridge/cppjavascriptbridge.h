@@ -45,6 +45,7 @@ namespace bridge {
 
     public:
         CppJavascriptBridge(CppJavascriptBridgeListener * listener);
+        ~CppJavascriptBridge();
         void makeCall(int opId, bool complete, QVariantMap & data);
 
     signals:

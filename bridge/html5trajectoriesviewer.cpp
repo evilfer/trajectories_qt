@@ -41,6 +41,7 @@ namespace bridge {
     }
 
     void Html5TrajectoriesViewer::addJavascriptObject() {
+
         this->webView()->page()->mainFrame()->addToJavaScriptWindowObject(QString("QtCppJsBridge"), new CppJavascriptBridge(this->listener_));
     }
 

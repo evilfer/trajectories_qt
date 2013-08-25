@@ -7,11 +7,9 @@ App.SimulationsController = Ember.ArrayController.extend({
       author: '',
       modified: 0
     });
-    metadata.save();
 
     var sim = App.Simulation.createRecord({
     });
-    sim.save();
     
     sim.set('metadata', metadata);
     metadata.set('simulation', sim);

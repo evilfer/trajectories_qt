@@ -64,6 +64,7 @@ void Trajectories::processCall(int op, int opId, QVariantMap & data) {
         {
             QVariantMap record = data["record"].toMap();
             //model::TObjectPtr obj = this->store_->find()
+            /* TODO !*/
             break;
         }
         case BRIDGE_DELETE:
