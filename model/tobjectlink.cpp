@@ -47,7 +47,7 @@ namespace model {
         if (sep != std::string::npos) {
             this->type_id_ = type_id;
             this->type_ = type_id.substr(0, sep);
-            this->objid_ = atoi(type_id.substr(sep + 1).c_str());
+            this->objid_ = type_id.substr(sep + 1);
         } else {
             this->type_id_ = "";
             this->type_ = "";

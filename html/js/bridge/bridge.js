@@ -28,19 +28,20 @@
     processJsCall: function(opId, complete, answer) {
       var opData = this.ops[opId];
       if (opData) {
-        opData.adapter.invoked(opData.op, opData.store, opData.request, answer, opData.localRecord);
+        opData.adapter.invoked(opData.op, opData.adapter, opData.store, opData.type, opData.request, answer, opData.localRecord);
         if (complete) {
           delete this.ops[opId];
         }
       }
     },
-    call_qt: function(op, adapter, store, data, localRecord) {
+    call_qt: function(op, adapter, store, type, data, localRecord) {
       var id = this.opId;
       this.opId++;
       this.ops[id] = {
         op: op,
         adapter: adapter,
         store: store,
+        type: type,
         request: data,
         localRecord: localRecord ? localRecord : null
       };
@@ -74,7 +75,7 @@
    @extends DS.Adapter
    */
   Bridge.BridgeAdapter = DS.Adapter.extend({
-    serializer: DS.RESTSerializer,
+    serializer: DS.JSONSerializer,
     /*
      Implement this method in order to provide data associated with a type
      */
@@ -113,11 +114,13 @@
      Implement this method in order to provide provide json for CRUD methods
      */
     mockJSON: function(type, record) {
-      return this.serialize(record, {includeId: true, includeType: true});
+      return this.serialize(record, {includeId: true});
     },
     globalObjectType: function(localType) {
-      var type = localType.toString();
-      return type.substr(type.indexOf('.') + 1);
+      var typeString = localType.toString();
+      var parts = typeString.split(".");
+      var name = parts[parts.length - 1];
+      return name.replace(/([A-Z])/g, '_$1').toLowerCase().slice(1);
     },
     /*
      Adapter methods
@@ -128,63 +131,39 @@
       return answer.id;
     },
     find: function(store, type, id) {
-      Bridge.Comm.call_qt(Bridge.Ops.FIND, this, store, {
+      Bridge.Comm.call_qt(Bridge.Ops.FIND, this, store, type, {
         type: this.globalObjectType(type),
         id: id
       });
     },
     findMany: function(store, type, ids) {
-      var fixtures = this.fixturesForType(type);
-
-      Ember.assert("Unable to find fixtures for model type " + type.toString(), !!fixtures);
-
-      if (fixtures) {
-        fixtures = fixtures.filter(function(item) {
-          return ids.indexOf(item.id) !== -1;
-        });
-      }
-
-      if (fixtures) {
-        this.simulateRemoteCall(function() {
-          this.didFindMany(store, type, fixtures);
-        }, this);
-      }
+      Ember.assert("find many not implemented", true);
     },
     findAll: function(store, type) {
-      Bridge.Comm.call_qt(Bridge.Ops.FINDALL, this, store, {
+      Bridge.Comm.call_qt(Bridge.Ops.FINDALL, this, store, type, {
         type: this.globalObjectType(type)
       });
     },
     findQuery: function(store, type, query, array) {
-      var fixtures = this.fixturesForType(type);
-
-      Ember.assert("Unable to find fixtures for model type " + type.toString(), !!fixtures);
-
-      fixtures = this.queryFixtures(fixtures, query, type);
-
-      if (fixtures) {
-        this.simulateRemoteCall(function() {
-          this.didFindQuery(store, type, fixtures, array);
-        }, this);
-      }
+      Ember.assert("find query not implemented", true);
     },
     createRecord: function(store, type, record) {
       var data = this.mockJSON(type, record);
-      Bridge.Comm.call_qt(Bridge.Ops.CREATE, this, store, {
+      Bridge.Comm.call_qt(Bridge.Ops.CREATE, this, store, type, {
         type: this.globalObjectType(type),
         record: data
       }, record);
     },
     updateRecord: function(store, type, record) {
       var data = this.mockJSON(type, record);
-      Bridge.Comm.call_qt(Bridge.Ops.UPDATE, this, store, {
+      Bridge.Comm.call_qt(Bridge.Ops.UPDATE, this, store, type, {
         type: this.globalObjectType(type),
         record: data
       }, record);
     },
     deleteRecord: function(store, type, record) {
       var data = this.mockJSON(type, record);
-      Bridge.Comm.call_qt(Bridge.Ops.DELETE, this, store, {
+      Bridge.Comm.call_qt(Bridge.Ops.DELETE, this, store, type, {
         type: this.globalObjectType(type),
         record: data
       }, record);
@@ -192,22 +171,22 @@
     /*
      @listener
      */
-    invoked: function(op, store, request, data, localRecord) {
+    invoked: function(op, adapter, store, type, request, data, localRecord) {
       switch (op) {
         case Bridge.Ops.FIND:
-          this.didFindRecord(store, request.type, data, request.id);
+          adapter.didFindRecord(store, type, data, request.id);
           break;
         case Bridge.Ops.FINDALL:
-          this.didFindAll(store, request.type, data);
+          adapter.didFindAll(store, type, data);
           break;
         case Bridge.Ops.CREATE:
-          this.didCreateRecord(store, request.type, localRecord, data);
+          adapter.didCreateRecord(store, type, localRecord, data);
           break;
         case Bridge.Ops.UPDATE:
-          this.didUpdateRecord(store, request.type, localRecord, data);
+          adapter.didUpdateRecord(store, type, localRecord, data);
           break;
         case Bridge.Ops.DELETE:
-          this.didDeleteRecord(store, request.type, localRecord);
+          adapter.didDeleteRecord(store, type, localRecord);
           break;
       }
     }

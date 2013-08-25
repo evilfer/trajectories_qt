@@ -70,7 +70,7 @@ namespace model {
         void deleteObject(const std::string & type, const TObjectId & id);
 
         TObjectPtr loadObject(const std::string & type, const TObjectId & id);
-        void loadObjects(const std::string & type);
+        void loadObjects(const std::string & type, TObjectIdMap & container);
 
     private:
         void init(const TObjectModelMap & model);
@@ -79,7 +79,7 @@ namespace model {
         void exec(const char *sql, int (*callback)(void*,int,char**,char**) = NULL, void * firstParam = NULL);
 
         int bindParams(const TObjectPtr obj, sqlite3_stmt * stmt, int index);
-        int loadParams(TObjectPtr obj, sqlite3_stmt * stmt);
+        int loadParams(TObjectPtr obj, sqlite3_stmt * stmt, int column);
     };
 
 }

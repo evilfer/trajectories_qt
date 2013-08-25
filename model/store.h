@@ -41,12 +41,11 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 namespace model {
 
 
-    typedef std::map<TObjectId, TObjectPtr> TObjectStoreMap;
     typedef std::vector<TObjectPtr> TObjectList;
 
     struct TObjectStore {
         TObjectModel model;
-        TObjectStoreMap objects_;
+        TObjectIdMap objects_;
         bool allLoaded_;
         int nextTransientId_;
     };
@@ -66,6 +65,7 @@ namespace model {
         const TObjectModel * getModel(const std::string & type) const;
         TObjectId newId(const std::string & type);
         bool add(TObjectPtr obj);
+        void updated(TObjectPtr obj);
         TObjectPtr find(const std::string & type, const TObjectId & id);
 
         TObjectPtr find(const TObjectLink * link);

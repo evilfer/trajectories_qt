@@ -23,9 +23,11 @@ void Trajectories::processCall(int op, int opId, QVariantMap & data) {
         switch (op) {
         case BRIDGE_FIND:
         {
-            QVariantMap result;
+            QVariantMap qobj;
             model::TObjectPtr obj = this->store_->find(type, data["id"].toString().toStdString());
-            this->object2qvariant(model, obj, result);
+            this->object2qvariant(model, obj, qobj);
+            QVariantMap result;
+            result[type.c_str()] = qobj;
             this->makeCall(opId, true, result);
             break;
         }
@@ -41,7 +43,7 @@ void Trajectories::processCall(int op, int opId, QVariantMap & data) {
             }
 
             QVariantMap result;
-            result["list"] = QVariantList();
+            result[model->plural] = qlist;
 
             this->makeCall(opId, true, result);
             break;
@@ -63,8 +65,10 @@ void Trajectories::processCall(int op, int opId, QVariantMap & data) {
         case BRIDGE_UPDATE:
         {
             QVariantMap record = data["record"].toMap();
-            //model::TObjectPtr obj = this->store_->find()
-            /* TODO !*/
+            model::TObjectPtr obj = this->store_->find(type, record["id"].toString().toStdString());
+            this->updateObject(model, obj, record);
+            this->store_->updated(obj);
+            this->makeCall(opId, true, record);
             break;
         }
         case BRIDGE_DELETE:
@@ -99,26 +103,26 @@ void Trajectories::init() {
 
     model::TObjectModelMap model = {
         {
-            "Simulation",
-            {
+            "simulation", {
                 true,
+                "simulations",
                 {},
                 {
-                    {"metadata", {true, false, "SimulationMetadata", "metadata_id", "metadata_key"}}
+                    {"metadata", {true, false, "simulation_metadata", "metadata", "metadata_key"}}
                 },
                 {}
             }
         },
         {
-            "SimulationMetadata",
-            {
+            "simulation_metadata", {
                 true,
+                "simulation_metadatas",
                 {
                     {"title", TOBJECT_PARAM_STRING},
                     {"description", TOBJECT_PARAM_STRING}
                 },
                 {
-                    {"simulation", {false, false, "Simulation", "simulation_id", "simulation_type"}}
+                    {"simulation", {false, false, "simulation", "simulation", "simulation_type"}}
                 },
                 {}
             }
@@ -129,6 +133,8 @@ void Trajectories::init() {
 }
 
 void Trajectories::object2qvariant(const model::TObjectModel * model, const model::TObjectPtr obj, QVariantMap & result) {
+    result.insert("id", obj->id().c_str());
+
     for (model::TObjectModelParams::const_iterator i = model->params.begin(); i != model->params.end(); i++) {
         switch(i->second) {
         case TOBJECT_PARAM_INT:

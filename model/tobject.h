@@ -87,6 +87,7 @@ namespace model {
 
     typedef TObject* TObjectPtr;
 
+    typedef std::map<TObjectId, TObjectPtr> TObjectIdMap;
 
     struct TObjectLinkModel {
         bool owned;
@@ -102,6 +103,7 @@ namespace model {
 
     struct TObjectModel {
         bool solid;
+        const char * plural;
         TObjectModelParams params;
         TObjectModelLinkParams links;
         TObjectModelLinkParams arrays;

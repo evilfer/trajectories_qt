@@ -55,7 +55,7 @@ namespace model {
                 updateQuery << "UPDATE " << i->first << " SET ";
                 deleteQuery << "DELETE FROM " << i->first << " WHERE id=?";
                 findQuery << "SELECT ";
-                allQuery << "SELECT * FROM " << i->first;
+                allQuery << "SELECT id";
 
                 bool notFirst = false;
                 int insertValueCount = 0;
@@ -72,6 +72,8 @@ namespace model {
 
                     insertQuery << ", " << j->first;
                     insertValueCount ++;
+
+                    allQuery << ", " << j->first;
 
                     createQuery << ", " << j->first;
                     if (j->second == TOBJECT_PARAM_INT) {
@@ -96,6 +98,8 @@ namespace model {
                     insertQuery << ", " << j->first;
                     insertValueCount ++;
 
+                    allQuery << ", " << j->first;
+
                     createQuery << ", " << j->first << " TEXT";
                 }
 
@@ -109,6 +113,7 @@ namespace model {
                 insertQuery << ")";
                 updateQuery << " WHERE id=?";
                 findQuery << " FROM " << i->first << " WHERE id=?";
+                allQuery << " FROM " << i->first;
 
                 for (TObjectModelLinkParams::const_iterator j = i->second.arrays.begin(); j != i->second.arrays.end(); j++) {
                     std::stringstream subcreateQuery;
@@ -191,14 +196,32 @@ namespace model {
         sqlite3_bind_text(stmt, 1, id.c_str(), -1, SQLITE_TRANSIENT);
 
         if (sqlite3_step(stmt) == SQLITE_ROW) {
-            TObjectPtr obj = new TObject();
+            obj = new TObject();
             obj->setType(type);
             obj->setId(id);
-            this->loadParams(obj, stmt);
+            this->loadParams(obj, stmt, 0);
         }
 
         sqlite3_finalize(stmt);
         return obj;
+    }
+
+    void SQLiteManager::loadObjects(const std::string & type, TObjectIdMap & container) {
+        sqlite3_stmt * stmt;
+        sqlite3_prepare_v2(this->db_, this->queries_[type].selectall.c_str(), -1, &stmt, NULL);
+
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            std::string id = std::string(reinterpret_cast< const char* >(sqlite3_column_text(stmt, 0)));
+            if (container.find(id) == container.end()) {
+                TObjectPtr obj = new TObject();
+                obj->setType(type);
+                obj->setId(id);
+                this->loadParams(obj, stmt, 1);
+                container[id] = obj;
+            }
+        }
+
+        sqlite3_finalize(stmt);
     }
 
     void SQLiteManager::exec(const char *sql, int (*callback)(void*,int,char**,char**), void * firstParam) {
@@ -249,10 +272,8 @@ namespace model {
         return index;
     }
 
-    int SQLiteManager::loadParams(TObjectPtr obj, sqlite3_stmt * stmt) {
+    int SQLiteManager::loadParams(TObjectPtr obj, sqlite3_stmt * stmt, int column) {
         TObjectModel & model = this->model_[obj->type()];
-
-        int column = 0;
 
         for (TObjectModelParams::const_iterator iter = model.params.begin(); iter != model.params.end(); iter++) {
             bool isNull = sqlite3_column_type(stmt, column) == SQLITE_NULL;
@@ -295,7 +316,7 @@ namespace model {
             column++;
         }
 
-        return 0;
+        return column;
     }
 
 }

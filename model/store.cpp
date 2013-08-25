@@ -36,14 +36,14 @@ namespace model {
 
         for (TObjectModelMap::const_iterator i = model.begin(); i != model.end(); i++) {
             int nextid = ids.find(i->first) != ids.end() ? ids[i->first] : 1;
-            this->stores_[i->first] = TObjectStore{i->second, TObjectStoreMap(), false, nextid};
+            this->stores_[i->first] = TObjectStore{i->second, TObjectIdMap(), false, nextid};
         }
 
     }
 
     Store::~Store() {
         for (TypeStoreMap::iterator i = this->stores_.begin(); i != this->stores_.end(); i++) {
-            for (TObjectStoreMap::iterator j = i->second.objects_.begin(); j != i->second.objects_.end(); j++) {
+            for (TObjectIdMap::iterator j = i->second.objects_.begin(); j != i->second.objects_.end(); j++) {
                 delete j->second;
             }
         }
@@ -88,6 +88,19 @@ namespace model {
         return true;
     }
 
+    void Store::updated(TObjectPtr obj) {
+        TypeStoreMap::iterator storeIter = this->stores_.find(obj->type());
+        if (storeIter == this->stores_.end()) {
+            return;
+        }
+
+        TObjectStore & store = storeIter->second;
+        if (store.model.solid) {
+            this->db_.updateObject(obj);
+        }
+    }
+
+
     TObjectPtr Store::find(const std::string & type, const TObjectId & id) {
         TypeStoreMap::iterator storeIter = this->stores_.find(type);
         if (storeIter == this->stores_.end()) {
@@ -96,10 +109,20 @@ namespace model {
 
         TObjectStore & store = storeIter->second;
 
-        TObjectStoreMap::iterator objIter = store.objects_.find(id);
-        if (objIter == store.objects_.end()) {
-            return NULL;
+        TObjectIdMap::iterator objIter = store.objects_.find(id);
+        if (objIter != store.objects_.end()) {
+            return objIter->second;
         }
+
+        if (store.model.solid && !store.allLoaded_) {
+            TObjectPtr obj = this->db_.loadObject(type, id);
+            if (obj) {
+                store.objects_[id] = obj;
+                return obj;
+            }
+        }
+
+
 
         return objIter->second;
     }
@@ -121,9 +144,16 @@ namespace model {
         }
 
         TObjectStore & store = storeIter->second;
-        for (TObjectStoreMap::iterator iter = store.objects_.begin(); iter != store.objects_.end(); ++iter) {
+        if (store.model.solid && !store.allLoaded_) {
+            this->db_.loadObjects(type, store.objects_);
+            store.allLoaded_ = true;
+        }
+
+        for (TObjectIdMap::iterator iter = store.objects_.begin(); iter != store.objects_.end(); ++iter) {
             result.push_back(iter->second);
         }
+
+        return;
     }
 
     bool Store::remove(const std::string & type, const TObjectId & id) {
@@ -134,7 +164,7 @@ namespace model {
 
         TObjectStore & store = storeIter->second;
 
-        TObjectStoreMap::iterator objIter = store.objects_.find(id);
+        TObjectIdMap::iterator objIter = store.objects_.find(id);
         if (objIter == store.objects_.end()) {
             return false;
         }
