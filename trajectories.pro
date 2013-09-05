@@ -13,7 +13,8 @@ DEPLOYMENTFOLDERS = html_folder cfg_folder
 QMAKE_CXXFLAGS += -std=c++0x
 
 SOURCES += main.cpp \
-    trajectories.cpp
+    trajectories.cpp \
+    trajectories_init.cpp
 
 
 include(cspicelib.pri)

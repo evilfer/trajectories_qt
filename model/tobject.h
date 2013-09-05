@@ -95,6 +95,7 @@ namespace model {
         const char * type;
         const char * id_key;
         const char * type_key;
+        bool toSingleton;
     };
 
     typedef std::map<std::string, int> TObjectModelParams;

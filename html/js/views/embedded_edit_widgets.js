@@ -6,7 +6,7 @@ App.EmbeddedTextFieldView = Ember.TextField.extend({
     this.get('parentView').acceptChanges();
   },
   focusOut: function() {
-    this.get('parentView').acceptChanges();
+  //  this.get('parentView').acceptChanges();
   },
   didInsertElement: function() {
     this.$().focus();

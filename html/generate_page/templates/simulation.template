@@ -15,7 +15,7 @@
       {{ outlet }}
     </div>
     <div class="t-simulation-view">
-      {{view "App.RendererView"}}
+      {{ render "renderer" }}
     </div>
   </div>
   <div class="t-simulation-footer"></div>

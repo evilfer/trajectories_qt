@@ -1,0 +1,12 @@
+<div class="t-mission-form">
+  {{render "simulation/mission/start" start}}
+
+  <div class="t-mission-item">
+    <div class="t-mission-item-title">Simulation duration</div>
+    <div class="t-mission-item-body">
+      {{view App.InlineTextFieldView valueBinding="duration" label="Duration"}}
+    </div>
+  </div>
+
+</div>
+

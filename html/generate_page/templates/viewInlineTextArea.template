@@ -15,7 +15,7 @@
       <button {{action "edit" target="view"}} 
         class="pure-button pure-button-xsmall pure-button-thin"
         {{bindAttr class="editingTitle:pure-button-disabled"}}>
-        <i class="icon-edit-sign"></i>
+        <i class="icon-edit"></i>
       </button>  
     </div>
   </div>

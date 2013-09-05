@@ -2,28 +2,36 @@
 App.Router.map(function() {
   this.resource('index', {path: '/'});
   this.resource('simulations');
-  this.resource('simulation', {path: 'simulation/:simulation_id'}, function() {
-    this.route('config');
-    this.route('ship');
-    this.route('mission');
+  this.resource('simulator', {path: 'simulator'}, function() {
+    this.resource('simulation', {path: '/:simulation_id'}, function() {
+      this.route('config');
+      this.route('ship');
+      this.route('mission');
+    });
   });
 });
 
 App.SimulationsRoute = Ember.Route.extend({
   model: function() {
-    return App.Simulation.find();
+    return this.get('store').find('simulation');
   }
 });
 
-App.SimulationRoute = Ember.Route.extend({
-  model: function(params) {
-    return App.Simulation.find(params.simulation_id);
+App.SimulatorRoute = Ember.Route.extend({
+  model: function() {
+    return App.SimulatorData.find('singleton');
   }
 });
 
 App.SimulationIndexRoute = Ember.Route.extend({
   model: function() {
-    return this.modelFor('simulation').get('metadata');
+    var data = this.modelFor('simulator');
+    var simulation = this.modelFor('simulation');
+    if (data.get('simulation') != simulation) {
+      data.set('simulation', simulation);
+      data.save();
+    }
+    return simulation.get('metadata');
   }
 });
 

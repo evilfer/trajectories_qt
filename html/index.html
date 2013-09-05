@@ -7,12 +7,7 @@
 
     <link href="css/font-awesome.css" rel="stylesheet" media="screen"><link href="css/font-opensans.css" rel="stylesheet" media="screen"><link href="css/pure-nr-min.css" rel="stylesheet" media="screen"><link href="css/pure-button-ex.css" rel="stylesheet" media="screen"><link href="css/typography.css" rel="stylesheet" media="screen"><link href="css/t-style.css" rel="stylesheet" media="screen">  </head>
   <body class="csstype">
-    <script type="text/x-handlebars" data-template-name="application">
-      <h1>Trajectories</h1>
-    </script>
-
-    <script type="text/x-handlebars" data-template-name="application">{{ outlet }}
-</script><script type="text/x-handlebars" data-template-name="index"><div class="t-padded-box-50">
+    <script type="text/x-handlebars" data-template-name="application">{{ outlet }}</script><script type="text/x-handlebars" data-template-name="index"><div class="t-padded-box-50">
   <div class="t-app-name">
     <h1>trajectories</h1>
   </div>
@@ -20,6 +15,8 @@
 
   {{#linkTo 'simulations' class="pure-button"}}<i class="icon-arrow-right"></i> simulations{{/linkTo}}
 </div>
+</script><script type="text/x-handlebars" data-template-name="renderer">{{view "App.RendererView"}}
+
 </script><script type="text/x-handlebars" data-template-name="simulations"><div class="t-padded-box-50">
   <h1>simulations</h1>
 
@@ -31,6 +28,7 @@
 
   <p><button {{action "newSimulation"}} class="pure-button"><i class="icon-plus"></i> new</button></p>
 </div>
+</script><script type="text/x-handlebars" data-template-name="simulator">{{ outlet }}
 </script><script type="text/x-handlebars" data-template-name="simulation"><div class="t-simulation-page">
   <div class="t-simulation-header">
     {{ metadata.title }} {{#linkTo "simulations" class="pure-button"}}<i class="icon-arrow-left"></i> back!!{{/linkTo}}
@@ -48,7 +46,7 @@
       {{ outlet }}
     </div>
     <div class="t-simulation-view">
-      {{view "App.RendererView"}}
+      {{ render "renderer" }}
     </div>
   </div>
   <div class="t-simulation-footer"></div>
@@ -62,6 +60,25 @@
   {{view App.InlineTextFieldView valueBinding="thrust" label="Thrust"}}
   {{view App.InlineTextFieldView valueBinding="isp" label="I<sub>sp</sub>"}}
   {{view App.InlineTextFieldView valueBinding="fuelmass" label="Fuel mass"}}
+</div>
+
+</script><script type="text/x-handlebars" data-template-name="simulation/mission"><div class="t-mission-form">
+  {{render "simulation/mission/start" start}}
+
+  <div class="t-mission-item">
+    <div class="t-mission-item-title">Simulation duration</div>
+    <div class="t-mission-item-body">
+      {{view App.InlineTextFieldView valueBinding="duration" label="Duration"}}
+    </div>
+  </div>
+
+</div>
+
+</script><script type="text/x-handlebars" data-template-name="simulation/mission/start"><div class="t-mission-item">
+  <div class="t-mission-item-title">Initial orbit</div>
+  <div class="t-mission-item-body">
+    {{view App.InlineTextFieldView valueBinding="date" label="Start date"}}
+  </div>
 </div>
 
 </script><script type="text/x-handlebars" data-template-name="viewInlineTextArea"><div class="t-inline-edit-row">
@@ -81,7 +98,7 @@
       <button {{action "edit" target="view"}} 
         class="pure-button pure-button-xsmall pure-button-thin"
         {{bindAttr class="editingTitle:pure-button-disabled"}}>
-        <i class="icon-edit-sign"></i>
+        <i class="icon-edit"></i>
       </button>  
     </div>
   </div>
@@ -96,27 +113,29 @@
   <div class="t-inline-edit-label">
     <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
   </div>
-  {{#if view.isEditing}}
-  <div class="t-inline-edit-widget pure-form">
-    {{view App.EmbeddedTextFieldView valueBinding="view.value"}}
-  </div>
-  {{else}}
-  <div class="t-inline-edit-field">
-    {{ view.value }}
-  </div>
-  <div class="t-inline-edit-button">
-    <div class="t-inline-edit-button-inner">
-      <button {{action "edit" target="view"}} 
-        class="pure-button pure-button-xsmall pure-button-thin"
-        {{bindAttr class="editingTitle:pure-button-disabled"}}>
-        <i class="icon-edit-sign"></i>
-      </button>  
+  <div class="t-inline-edit-field-container">
+    {{#if view.isEditing}}
+    <div class="t-inline-edit-widget pure-form">
+      {{view App.EmbeddedTextFieldView valueBinding="view.value"}}
     </div>
+    {{else}}
+    <div class="t-inline-edit-field">
+      {{ view.value }}
+    </div>
+    <div class="t-inline-edit-button">
+      <div class="t-inline-edit-button-inner">
+        <button {{action "edit" target="view"}} 
+          class="pure-button pure-button-xsmall pure-button-thin"
+          {{bindAttr class="editingTitle:pure-button-disabled"}}>
+          <i class="icon-edit"></i>
+        </button>  
+      </div>
+    </div>
+    {{/if}}
   </div>
-  {{/if}}
 </div>
 
 
 
-</script><script src="js/libs/jquery-1.10.2.js"></script><script src="js/libs/jquery.ba-resize.js"></script><script src="js/libs/handlebars-1.0.0-rc.4.js"></script><script src="js/libs/ember-1.0.0-rc.6.1.js"></script><script src="js/libs/ember-data-0.13.js"></script><script src="js/libs/three.min.js"></script><script src="js/libs/TrackballControls.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/controllers/simulation_ship_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/embedded_edit_widgets.js"></script><script src="js/views/inline_edit_widgets.js"></script><script src="js/views/renderer_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script>  </body>
+</script><script src="js/libs/jquery-1.10.2.js"></script><script src="js/libs/jquery.ba-resize.js"></script><script src="js/libs/handlebars-1.0.0.js"></script><script src="js/libs/ember-1.0.0.js"></script><script src="js/libs/ember-data.js"></script><script src="js/libs/three.min.js"></script><script src="js/libs/TrackballControls.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulator_data.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_start.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/controllers/simulation_ship_controller.js"></script><script src="js/controllers/simulation_mission_controller.js"></script><script src="js/controllers/simulation_mission_start_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/embedded_edit_widgets.js"></script><script src="js/views/inline_edit_widgets.js"></script><script src="js/views/renderer_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script>  </body>
 </html>

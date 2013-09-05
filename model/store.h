@@ -33,10 +33,10 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include "tobjectlink.h"
 #include "sqlitemanager.h"
 
-#define TOBJECT_MODEL_TYPE_INT      0
-#define TOBJECT_MODEL_TYPE_DOUBLE   1
-#define TOBJECT_MODEL_TYPE_STRING   2
-#define TOBJECT_MODEL_TYPE_LINK     3
+
+#define TOBJECT_PARAM_TYPE_INT      0
+#define TOBJECT_PARAM_TYPE_DOUBLE   1
+#define TOBJECT_PARAM_TYPE_STRING   2
 
 namespace model {
 

@@ -12,10 +12,6 @@
     ?>
   </head>
   <body class="csstype">
-    <script type="text/x-handlebars" data-template-name="application">
-      <h1>Trajectories</h1>
-    </script>
-
     <?php
     import_templates();
 

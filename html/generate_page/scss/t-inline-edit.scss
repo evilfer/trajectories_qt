@@ -29,15 +29,20 @@
   font-size: .8em;
 }
 
+.t-inline-edit-field-container {
+  @extend .t-flex-child-1;
+  
+}
+
 
 .t-inline-edit-widget {
-  @extend .t-flex-child-1;
+  width: 100%;
 }
 
 .t-inline-edit-field {
-  @extend .t-flex-child-1;
+  width: 100%;
   
-  height: 30px;
+  height: 32px;
   box-sizing: border-box;
   border: 1px solid transparent;
   padding: .5em .6em .5em .6em;

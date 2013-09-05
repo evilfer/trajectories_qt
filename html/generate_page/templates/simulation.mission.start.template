@@ -1,0 +1,7 @@
+<div class="t-mission-item">
+  <div class="t-mission-item-title">Initial orbit</div>
+  <div class="t-mission-item-body">
+    {{view App.InlineTextFieldView valueBinding="date" label="Start date"}}
+  </div>
+</div>
+

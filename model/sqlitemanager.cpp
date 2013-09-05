@@ -143,13 +143,25 @@ namespace model {
         }
     }
 
-    void SQLiteManager::getNextIds(std::map<std::string, int> ids) {
+    void SQLiteManager::getNextIds(std::map<std::string, int> & ids) {
+        sqlite3_stmt * stmt;
+
         ids.clear();
 
         for (TObjectModelMap::const_iterator i = this->model_.begin(); i != this->model_.end(); i++) {
             std::stringstream query;
-            query << "SELET MAX(id) FROM " << i->first;
+            query << "SELECT MAX(CAST(id as Integer)) FROM " << i->first;
+
             std::cout << query.str() << std::endl;
+
+            sqlite3_prepare_v2(this->db_, query.str().c_str(), -1, &stmt, NULL);
+
+            if (sqlite3_step(stmt) == SQLITE_ROW) {
+                int nextid = sqlite3_column_type(stmt, 0) == SQLITE_NULL ? 1 : sqlite3_column_int(stmt, 0) + 1;
+                ids[i->first] = nextid;
+            }
+
+            sqlite3_finalize(stmt);
         }
     }
 

@@ -62,7 +62,7 @@ namespace model {
     public:
         SQLiteManager(const TObjectModelMap & model);
 
-        void getNextIds(std::map<std::string, int> ids);
+        void getNextIds(std::map<std::string, int> & ids);
 
         void insertObject(TObjectPtr obj);
         void updateObject(TObjectPtr obj);

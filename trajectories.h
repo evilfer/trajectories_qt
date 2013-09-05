@@ -2,9 +2,9 @@
 #define TRAJECTORIES_H
 
 #include "model/store.h"
-#include "bridge/cppjavascriptbridgelistener.h"
+#include "bridge/embercppjslistener.h"
 
-class Trajectories : public bridge::CppJavascriptBridgeListener {
+class Trajectories : public bridge::EmberCppJsListener {
 
     model::Store * store_;
 
@@ -14,13 +14,11 @@ public:
 
     void init();
 
-protected:
-    virtual void processCall(int op, int opId, QVariantMap & data);
-    virtual QVariantMap processSyncCall(int op, QVariantMap & data);
+    virtual void prepareCreateResponse(const std::string & type, QVariantMap & obj);
+    virtual void prepareUpdateResponse(const std::string & type, QVariantMap & obj);
 
-    void object2qvariant(const model::TObjectModel * model, const model::TObjectPtr obj, QVariantMap & result);
-    void updateObject(const model::TObjectModel * model, model::TObjectPtr obj, QVariantMap & data);
-    model::TObjectPtr createObject(const std::string & type, const model::TObjectModelParams & model, QVariantMap & data);
+protected:
+
 };
 
 #endif // TRAJECTORIES_H

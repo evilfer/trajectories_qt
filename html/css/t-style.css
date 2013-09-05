@@ -18,7 +18,7 @@ body,
 .t-font-xsmall {
   font-size: .67em; }
 
-.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view, .t-inline-edit-widget, .t-inline-edit-field, .t-inline-edit-area, .t-canvas, .t-inline-edit-button, .t-inline-edit-label {
+.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view, .t-inline-edit-field-container, .t-inline-edit-area, .t-canvas, .t-inline-edit-button, .t-inline-edit-label {
   display: flex;
   display: -webkit-flex; }
 
@@ -30,7 +30,7 @@ body,
   flex-direction: column;
   -webkit-flex-direction: column; }
 
-.t-flex-child-1, .t-simulation-main, .t-simulation-view, .t-inline-edit-widget, .t-inline-edit-field, .t-inline-edit-area, .t-canvas-main, .t-canvas {
+.t-flex-child-1, .t-simulation-main, .t-simulation-view, .t-inline-edit-field-container, .t-inline-edit-area, .t-canvas-main, .t-canvas {
   flex: 1;
   -webkit-flex: 1; }
 
@@ -45,6 +45,26 @@ body,
 
 .t-simulation-specification-menu {
   margin-bottom: 1em; }
+
+.t-mission-item {
+  margin-bottom: 1em; }
+
+.t-mission-item-title {
+  font-size: .8em;
+  padding: 0 0.25em;
+  background: lightgray;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px 1px 0 1px;
+  border-top-right-radius: .5em;
+  border-top-left-radius: .5em; }
+
+.t-mission-item-body {
+  border-style: solid;
+  border-color: gray;
+  border-width: 0 1px 1px 1px;
+  border-bottom-right-radius: .5em;
+  border-bottom-left-radius: .5em; }
 
 ul.t-simulations-list > li {
   padding-bottom: 1em; }
@@ -67,8 +87,12 @@ ul.t-simulations-list > li {
   text-align: right;
   font-size: .8em; }
 
+.t-inline-edit-widget {
+  width: 100%; }
+
 .t-inline-edit-field {
-  height: 30px;
+  width: 100%;
+  height: 32px;
   box-sizing: border-box;
   border: 1px solid transparent;
   padding: 0.5em 0.6em 0.5em 0.6em;
