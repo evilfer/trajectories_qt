@@ -1,6 +1,6 @@
 
 App.SimulatorData = DS.Model.extend({
-  simulation: DS.belongsTo('App.Simulation'),
-  viewdate: DS.belongsTo('App.SolarSystemState')
+  simulation: DS.belongsTo('simulation'),
+  viewdate: DS.belongsTo('solar_system_state')
 });
 

@@ -33,9 +33,7 @@ namespace bridge {
                 QVariantMap qobj;
                 model::TObjectPtr obj = this->store_->find(type, data["id"].toString().toStdString());
                 this->object2qvariant(model, obj, qobj);
-                QVariantMap result;
-                result[type.c_str()] = qobj;
-                this->makeCall(opId, true, result);
+                this->makeCall(opId, true, qobj);
                 break;
             }
             case BRIDGE_FINDALL:
@@ -49,16 +47,13 @@ namespace bridge {
                     qlist.append(qobj);
                 }
 
-                QVariantMap result;
-                result[model->plural] = qlist;
-
-                this->makeCall(opId, true, result);
+                this->makeCall(opId, true, qlist);
                 break;
             }
             case BRIDGE_CREATE:
             {
                 QVariantMap record = data["record"].toMap();
-                const std::string id = record["id"].toString().toStdString();
+                /*const std::string id = record["id"].toString().toStdString();
 
                 if (id == "singleton") {
                     model::TObjectPtr obj = this->store_->find(type, id);
@@ -69,23 +64,23 @@ namespace bridge {
                         this->object2qvariant(model, obj, record);
                     }
                     this->prepareUpdateResponse(type, record);
-                } else {
+                } else {*/
                     model::TObjectPtr obj = new model::TObject();
-                    obj->setId(id);
-                    obj->setType(type);
-
+                    //obj->setId(id);
                     this->updateObject(model, obj, record);
+                    obj->setType(type);
+                    obj->setId(this->store_->newId(type));
+                    record["id"] = obj->id().c_str();
+
                     this->store_->add(obj);
 
                     if (this->objectCreated(obj)) {
                         this->object2qvariant(model, obj, record);
                     }
                     this->prepareCreateResponse(type, record);
-                }
+                /*}*/
 
-                QVariantMap result;
-                result[type.c_str()] = record;
-                this->makeCall(opId, true, result);
+                this->makeCall(opId, true, record);
 
                 break;
             }
@@ -102,9 +97,7 @@ namespace bridge {
                 this->prepareUpdateResponse(type, record);
 
 
-                QVariantMap result;
-                result[type.c_str()] = record;
-                this->makeCall(opId, true, result);
+                this->makeCall(opId, true, record);
                 break;
             }
             case BRIDGE_DELETE:
@@ -120,18 +113,6 @@ namespace bridge {
             }
         }
     }
-
-    QVariantMap EmberCppJsListener::processSyncCall(int op, QVariantMap & data) {
-        QVariantMap output;
-
-        if (op == BRIDGE_NEWID) {
-            std::string type = data["type"].toString().toStdString();
-            output["id"] = this->store_->newId(type).c_str();
-        }
-
-        return output;
-    }
-
 
     void EmberCppJsListener::object2qvariant(const model::TObjectModel * model, const model::TObjectPtr obj, QVariantMap & result) {
         result.insert("id", obj->id().c_str());
@@ -198,7 +179,7 @@ namespace bridge {
         }
 
         for (model::TObjectModelLinkParams::const_iterator i = model->links.begin(); i != model->links.end(); i++) {
-            if (data.contains(i->second.id_key)) {
+            if (data.contains(i->second.id_key) && data[i->second.id_key].toString().size() > 0) {
                 model::TObjectId id = data[i->second.id_key].toString().toStdString();
                 std::string type = i->second.polymorphic ? data[i->second.type_key].toString().toStdString() : i->second.type;
                 obj->pLink(i->first, type, id);

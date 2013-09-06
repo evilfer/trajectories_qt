@@ -1,5 +1,3 @@
 
-App.Store = DS.Store.extend({
-  revision: 12,
-  adapter: 'Bridge.BridgeAdapter'
-});
+App.ApplicationAdapter = Bridge.BridgeAdapter;
+App.ApplicationSerializer = DS.JSONSerializer;

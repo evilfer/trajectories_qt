@@ -2,8 +2,8 @@
 App.Router.map(function() {
   this.resource('index', {path: '/'});
   this.resource('simulations');
-  this.resource('simulator', {path: 'simulator'}, function() {
-    this.resource('simulation', {path: '/:simulation_id'}, function() {
+  this.resource('simulator', function() {
+    this.resource('simulation', {path: '/simulation/:simulation_id'}, function() {
       this.route('config');
       this.route('ship');
       this.route('mission');
@@ -19,7 +19,7 @@ App.SimulationsRoute = Ember.Route.extend({
 
 App.SimulatorRoute = Ember.Route.extend({
   model: function() {
-    return App.SimulatorData.find('singleton');
+    return this.get('store').find('simulator_data', 'singleton');
   }
 });
 

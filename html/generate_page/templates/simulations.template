@@ -3,7 +3,7 @@
 
   <ul class="t-simulations-list">
     {{#each simulation in controller}}
-    <li>{{ simulation.metadata.title}} {{#linkTo "simulation" simulation class="pure-button"}}<i class="icon-rocket"></i> open{{/linkTo}}</li>
+    <li>{{ simulation.metadata.title }} {{#linkTo "simulation" simulation class="pure-button"}}<i class="icon-rocket"></i> open{{/linkTo}}</li>
     {{/each}}
   </ul>
 

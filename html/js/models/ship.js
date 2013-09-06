@@ -1,6 +1,6 @@
 
 App.Ship = DS.Model.extend({
-  simulation: DS.belongsTo('App.Simulation'),
+  simulation: DS.belongsTo('simulation'),
   name: DS.attr('string'),
   mass: DS.attr('number'),
   thrust: DS.attr('number'),

@@ -38,4 +38,10 @@ namespace bridge {
         }
     }
 
+    void CppJavascriptBridgeListener::makeCall(int opId, bool complete, QVariantList &data) {
+        if (this->bridge_) {
+            this->bridge_->makeCall(opId, complete,data);
+        }
+    }
+
 }

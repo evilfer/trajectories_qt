@@ -14,42 +14,45 @@
 
   Bridge.Comm = {
     opId: 0,
-    ops: {},
+    promises: {},
     enabled: false,
     init: function() {
       if (typeof QtCppJsBridge !== 'undefined') {
         this.enabled = true;
-        QtCppJsBridge.call_js.connect(Bridge.Comm.call_js);
+        QtCppJsBridge.call_js_obj.connect(Bridge.Comm.call_js_obj);
+        QtCppJsBridge.call_js_array.connect(Bridge.Comm.call_js_array);
       }
     },
-    call_js: function(opId, complete, answer) {
+    call_js_obj: function(opId, complete, answer) {
+      Bridge.Comm.processJsCall(opId, complete, answer);
+    },
+    call_js_array: function(opId, complete, answer) {
       Bridge.Comm.processJsCall(opId, complete, answer);
     },
     processJsCall: function(opId, complete, answer) {
-      var opData = this.ops[opId];
-      if (opData) {
-        opData.adapter.invoked(opData.op, opData.adapter, opData.store, opData.type, opData.request, answer, opData.localRecord);
+      console.log(answer);
+      var promise = this.promises[opId];
+      if (promise) {
+        //promise.resolve(answer);
         if (complete) {
-          delete this.ops[opId];
+          delete this.promises[opId];
         }
+        Ember.run(null, promise.resolve, answer);
       }
     },
-    call_qt: function(op, adapter, store, type, data, localRecord) {
+    call_qt: function(op, data) {
       var id = this.opId;
       this.opId++;
-      this.ops[id] = {
-        op: op,
-        adapter: adapter,
-        store: store,
-        type: type,
-        request: data,
-        localRecord: localRecord ? localRecord : null
-      };
 
-      QtCppJsBridge.call_qt(op, id, data);
-    },
-    call_qt_sync: function(op, data) {
-      return QtCppJsBridge.call_qt_sync(op, data);
+      var adapter = this;
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        //Ember.run(null, resolve, {'simulations': []});
+        adapter.promises[id] = {
+          resolve: resolve,
+          reject: reject
+        };
+        QtCppJsBridge.call_qt(op, id, data);
+      });
     }
   };
 
@@ -75,45 +78,7 @@
    @extends DS.Adapter
    */
   Bridge.BridgeAdapter = DS.Adapter.extend({
-    serializer: DS.JSONSerializer,
-    /*
-     Implement this method in order to provide data associated with a type
-     */
-    fixturesForType: function(type) {
-      if (type.FIXTURES) {
-        var fixtures = Ember.A(type.FIXTURES);
-        return fixtures.map(function(fixture) {
-          var fixtureIdType = typeof fixture.id;
-          if (fixtureIdType !== "number" && fixtureIdType !== "string") {
-            throw new Error(fmt('the id property must be defined as a number or string for fixture %@', [dump(fixture)]));
-          }
-          fixture.id = fixture.id + '';
-          return fixture;
-        });
-      }
-      return null;
-    },
-    /*
-     Implement this method in order to query fixtures data
-     */
-    queryFixtures: function(fixtures, query, type) {
-      Ember.assert('Not implemented: You must override the DS.FixtureAdapter::queryFixtures method to support querying the fixture store.');
-    },
-    updateFixtures: function(type, fixture) {
-      if (!type.FIXTURES) {
-        type.FIXTURES = [];
-      }
-
-      var fixtures = type.FIXTURES;
-
-      this.deleteLoadedFixture(type, fixture);
-
-      fixtures.push(fixture);
-    },
-    /*
-     Implement this method in order to provide provide json for CRUD methods
-     */
-    mockJSON: function(type, record) {
+    serializeRecord: function(record) {
       return this.serialize(record, {includeId: true});
     },
     globalObjectType: function(localType) {
@@ -125,13 +90,10 @@
     /*
      Adapter methods
      */
-    generateIdForRecord: function(store, record) {
-      var type = this.globalObjectType(record.constructor);
-      var answer = Bridge.Comm.call_qt_sync(Bridge.Ops.NEWID, {type: type});
-      return answer.id;
-    },
+    generateIdForRecord: null,
+            
     find: function(store, type, id) {
-      Bridge.Comm.call_qt(Bridge.Ops.FIND, this, store, type, {
+      return Bridge.Comm.call_qt(Bridge.Ops.FIND, {
         type: this.globalObjectType(type),
         id: id
       });
@@ -140,7 +102,7 @@
       Ember.assert("find many not implemented", true);
     },
     findAll: function(store, type) {
-      Bridge.Comm.call_qt(Bridge.Ops.FINDALL, this, store, type, {
+      return Bridge.Comm.call_qt(Bridge.Ops.FINDALL, {
         type: this.globalObjectType(type)
       });
     },
@@ -148,49 +110,30 @@
       Ember.assert("find query not implemented", true);
     },
     createRecord: function(store, type, record) {
-      var data = this.mockJSON(type, record);
-      Bridge.Comm.call_qt(Bridge.Ops.CREATE, this, store, type, {
+      var data = this.serializeRecord(record);
+      console.log('create: ' + type);
+      console.log(data);
+      return Bridge.Comm.call_qt(Bridge.Ops.CREATE, {
         type: this.globalObjectType(type),
         record: data
-      }, record);
+      });
     },
     updateRecord: function(store, type, record) {
-      var data = this.mockJSON(type, record);
-      Bridge.Comm.call_qt(Bridge.Ops.UPDATE, this, store, type, {
+      var data = this.serializeRecord(record);
+      console.log('update: ' + type);
+      console.log(data);
+      return Bridge.Comm.call_qt(Bridge.Ops.UPDATE, {
         type: this.globalObjectType(type),
         record: data
-      }, record);
+      });
     },
     deleteRecord: function(store, type, record) {
-      var data = this.mockJSON(type, record);
-      Bridge.Comm.call_qt(Bridge.Ops.DELETE, this, store, type, {
+      var data = this.serializeRecord(record);
+      return Bridge.Comm.call_qt(Bridge.Ops.DELETE, {
         type: this.globalObjectType(type),
         record: data
-      }, record);
-    },
-    /*
-     @listener
-     */
-    invoked: function(op, adapter, store, type, request, data, localRecord) {
-      switch (op) {
-        case Bridge.Ops.FIND:
-          adapter.didFindRecord(store, type, data, request.id);
-          break;
-        case Bridge.Ops.FINDALL:
-          adapter.didFindAll(store, type, data);
-          break;
-        case Bridge.Ops.CREATE:
-          adapter.didCreateRecord(store, type, localRecord, data);
-          break;
-        case Bridge.Ops.UPDATE:
-          adapter.didUpdateRecord(store, type, localRecord, data);
-          break;
-        case Bridge.Ops.DELETE:
-          adapter.didDeleteRecord(store, type, localRecord);
-          break;
-      }
+      });
     }
-
   });
 
   Bridge.Comm.init();

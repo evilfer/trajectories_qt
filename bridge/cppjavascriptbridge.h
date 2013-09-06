@@ -47,13 +47,14 @@ namespace bridge {
         CppJavascriptBridge(CppJavascriptBridgeListener * listener);
         ~CppJavascriptBridge();
         void makeCall(int opId, bool complete, QVariantMap & data);
+        void makeCall(int op, bool complete, QVariantList & data);
 
     signals:
-        void call_js(int op, bool complete, QVariantMap data);
+        void call_js_obj(int op, bool complete, QVariantMap data);
+        void call_js_array(int op, bool complete, QVariantList data);
 
     public slots:
         void call_qt(int op, int opId, QVariantMap data);
-        QVariantMap call_qt_sync(int op, QVariantMap data);
     };
 
 }

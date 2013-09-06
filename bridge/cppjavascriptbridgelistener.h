@@ -38,12 +38,11 @@ namespace bridge {
         void setBridge(CppJavascriptBridge * bridge);
 
         virtual void processCall(int op, int opId, QVariantMap & data) = 0;
-        virtual QVariantMap processSyncCall(int op, QVariantMap & data) = 0;
 
     protected:
         void makeCall(int opId, bool complete, QVariantMap & data);
+        void makeCall(int opId, bool complete, QVariantList & data);
     };
-
 }
 
 

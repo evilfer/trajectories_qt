@@ -22,7 +22,7 @@
 
   <ul class="t-simulations-list">
     {{#each simulation in controller}}
-    <li>{{ simulation.metadata.title}} {{#linkTo "simulation" simulation class="pure-button"}}<i class="icon-rocket"></i> open{{/linkTo}}</li>
+    <li>{{ simulation.metadata.title }} {{#linkTo "simulation" simulation class="pure-button"}}<i class="icon-rocket"></i> open{{/linkTo}}</li>
     {{/each}}
   </ul>
 
@@ -37,10 +37,10 @@
     <div class="t-simulation-specification">
       <div class="pure-menu pure-menu-open pure-menu-horizontal t-simulation-specification-menu">
         <ul  class="t-font-xsmall">
-          {{#linkTo simulation.index tagName="li" activeClass="pure-menu-selected"}}<a href=false>Description</a>{{/linkTo}}
-          {{#linkTo simulation.config tagName="li" activeClass="pure-menu-selected"}}<a href=false>Configuration</a>{{/linkTo}}
-          {{#linkTo simulation.ship tagName="li" activeClass="pure-menu-selected"}}<a href=false>Ship</a>{{/linkTo}}
-          {{#linkTo simulation.mission tagName="li" activeClass="pure-menu-selected"}}<a href=false>Mission</a>{{/linkTo}}
+          {{#linkTo "simulation.index" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Description</a>{{/linkTo}}
+          {{#linkTo "simulation.config" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Configuration</a>{{/linkTo}}
+          {{#linkTo "simulation.ship" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Ship</a>{{/linkTo}}
+          {{#linkTo "simulation.mission" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Mission</a>{{/linkTo}}
         </ul>
       </div>
       {{ outlet }}
@@ -137,5 +137,5 @@
 
 
 
-</script><script src="js/libs/jquery-1.10.2.js"></script><script src="js/libs/jquery.ba-resize.js"></script><script src="js/libs/handlebars-1.0.0.js"></script><script src="js/libs/ember-1.0.0.js"></script><script src="js/libs/ember-data.js"></script><script src="js/libs/three.min.js"></script><script src="js/libs/TrackballControls.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulator_data.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_start.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/controllers/simulation_ship_controller.js"></script><script src="js/controllers/simulation_mission_controller.js"></script><script src="js/controllers/simulation_mission_start_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/embedded_edit_widgets.js"></script><script src="js/views/inline_edit_widgets.js"></script><script src="js/views/renderer_view.js"></script><script src="js/fixtures/simulation_fixtures.js"></script>  </body>
+</script><script src="js/libs/jquery-1.10.2.js"></script><script src="js/libs/jquery.ba-resize.js"></script><script src="js/libs/handlebars-1.0.0.js"></script><script src="js/libs/ember-1.0.0.js"></script><script src="js/libs/ember-data-1.0.0-beta.2.js"></script><script src="js/libs/three.min.js"></script><script src="js/libs/TrackballControls.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulator_data.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_start.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/controllers/simulation_ship_controller.js"></script><script src="js/controllers/simulation_mission_controller.js"></script><script src="js/controllers/simulation_mission_start_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/embedded_edit_widgets.js"></script><script src="js/views/inline_edit_widgets.js"></script><script src="js/views/renderer_view.js"></script>  </body>
 </html>

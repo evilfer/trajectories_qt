@@ -1,8 +1,8 @@
 
 
 App.Mission = DS.Model.extend({
-  simulation: DS.belongsTo('App.Simulation'),
-  start: DS.belongsTo('App.MissionStart'),
+  simulation: DS.belongsTo('simulation'),
+  start: DS.belongsTo('missionStart'),
   duration: DS.attr('number')
   //events: DS.hasMany('App.MissionEvent', {polymorphic: true})
 });

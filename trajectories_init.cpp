@@ -24,7 +24,9 @@ void Trajectories::init() {
              /*plural*/ "simulation_metadatas",
              /*params*/ {
                  {"title", TOBJECT_PARAM_STRING},
-                 {"description", TOBJECT_PARAM_STRING}
+                 {"description", TOBJECT_PARAM_STRING},
+                 {"author", TOBJECT_PARAM_STRING},
+                 {"modified", TOBJECT_PARAM_STRING}
              },
              /*links*/ {
                  {"simulation", {false, false, "simulation", "simulation", "simulation_type", false}}

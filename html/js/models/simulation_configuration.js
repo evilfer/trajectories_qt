@@ -1,6 +1,6 @@
 
 App.SimulationConfiguration = DS.Model.extend({
-  simulation: DS.belongsTo('App.Simulation'),
+  simulation: DS.belongsTo('simulation'),
   ephemerides: DS.attr('string')
 });
 

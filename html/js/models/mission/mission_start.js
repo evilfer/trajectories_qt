@@ -1,7 +1,7 @@
 
 
 App.MissionStart = DS.Model.extend({
-  mission: DS.belongsTo('App.Mission'),
+  mission: DS.belongsTo('mission'),
   date: DS.attr('number')
 });
 
