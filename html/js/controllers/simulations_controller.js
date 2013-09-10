@@ -6,7 +6,7 @@ App.SimulationsController = Ember.ArrayController.extend({
 
     record.save().then(function(record_) {
       if (then) {
-        then(record);
+        then(record_);
       }
     });
   },
@@ -47,7 +47,7 @@ App.SimulationsController = Ember.ArrayController.extend({
                 controller._linkRecords2(sim0, 'mission', mission0, 'simulation');
                 controller._linkRecords2(mission0, 'start', start0, 'mission');
 
-                controller._saveRecords(sim0, metadata0, config0, ship0, mission0, start0);
+                controller._saveRecords(metadata0, config0, ship0, mission0, start0, sim0);
                 /*
                  controller._linkRecords(sim0, 'metadata', metadata0, 'simulation', function(sim1, metadata1) {
                  controller._linkRecords(sim1, 'config', config0, 'simulation', function(sim2, config1) {

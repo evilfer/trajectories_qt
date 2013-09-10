@@ -1,7 +1,7 @@
 
 App.Simulation = DS.Model.extend({
-  metadata: DS.belongsTo('simulationMetadata'),
-  config: DS.belongsTo('simulationConfiguration'),
+  metadata: DS.belongsTo('simulation_metadata'),
+  config: DS.belongsTo('simulation_configuration'),
   ship: DS.belongsTo('ship'),
   mission: DS.belongsTo('mission')
 });
