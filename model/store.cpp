@@ -120,23 +120,7 @@ namespace model {
                 store.objects_[id] = obj;
                 return obj;
             }
-        }
-
-        if (id == "singleton") {
-            TObjectPtr obj = new TObject();
-            obj->setType(type);
-            obj->setId(id);
-            store.objects_[id] = obj;
-
-            TObjectModelLinkParams & links = store.model.links;
-            for(TObjectModelLinkParams::iterator i = links.begin(); i != links.end(); i++) {
-                if (i->second.toSingleton) {
-                    obj->pLink(i->first, i->second.type, "singleton");
-                }
-            }
-
-            return obj;
-        }
+        }        
 
         return NULL;
     }

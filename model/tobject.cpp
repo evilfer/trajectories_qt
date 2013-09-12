@@ -35,42 +35,42 @@ namespace model {
 
     }
 
-    void TObject::pInt(const std::string & property, int value) {
+    void TObject::setInt(const std::string & property, int value) {
         this->ints_[property] = value;
     }
 
-    void TObject::pDouble(const std::string & property, double value) {
+    void TObject::setDouble(const std::string & property, double value) {
         this->doubles_[property] = value;
     }
 
-    void TObject::pString(const std::string & property, const std::string & value) {
+    void TObject::setString(const std::string & property, const std::string & value) {
         this->strings_[property] = value;
     }
 
-    void TObject::pLink(const std::string & property, const std::string & type, const TObjectId & id) {
+    void TObject::setLink(const std::string & property, const std::string & type, const TObjectId & id) {
         this->links_[property].type_id(type, id);
     }
 
-    void TObject::pLink(const std::string & property, const std::string & type_id) {
+    void TObject::setLink(const std::string & property, const std::string & type_id) {
         this->links_[property].type_id(type_id);
     }
 
-    int TObject::pInt(const std::string & property) const {
+    int TObject::getInt(const std::string & property) const {
         std::map<std::string, int>::const_iterator i = this->ints_.find(property);
         return i == this->ints_.end() ? 0 : i->second;
     }
 
-    double TObject::pDouble(const std::string & property) const {
+    double TObject::getDouble(const std::string & property) const {
         std::map<std::string, double>::const_iterator i = this->doubles_.find(property);
         return i == this->doubles_.end() ? 0 : i->second;
     }
 
-    const std::string & TObject::pString(const std::string & property) const {
+    const std::string & TObject::getString(const std::string & property) const {
         std::map<std::string, std::string>::const_iterator i = this->strings_.find(property);
         return i == this->strings_.end() ? TObject::DEFAULT_STRING : i->second;
     }
 
-    const TObjectLink * TObject::pLink(const std::string & property) const {
+    const TObjectLink * TObject::getLink(const std::string & property) const {
         std::map<std::string, TObjectLink>::const_iterator i = this->links_.find(property);
         return i == this->links_.end() ? NULL : &i->second;
     }

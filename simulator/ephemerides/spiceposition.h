@@ -54,6 +54,8 @@ namespace ephemerides {
     static inline void getposvel(int body, double et, double *pv) {spkgeo_c (body, et, "ECLIPJ2000", 0, pv, &m_lt);}
 
     static inline const BodyConstantsList & bodies() {return m_bodies;}
+
+    static inline const EphemeridesInterval & interval() {return m_interval;}
   };
 
 }

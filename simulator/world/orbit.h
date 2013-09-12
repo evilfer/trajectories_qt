@@ -26,6 +26,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../tmath/vectormath.h"
 #include "body.h"
+#include <vector>
 
 namespace world {
 
@@ -79,8 +80,8 @@ public:
     double radius() const {return this->radius_;}
     double eccentricAnomaly() const {return this->eccano_;}
 
-    void calculateOrbitPosition(double angle, double *result);
-    void calculateGlobalPosition(double angle, double *result);
+    void calculateOrbitPosition(double angle, double *result) const;
+    void calculateGlobalPosition(double angle, double *result) const;
 };
 
 }

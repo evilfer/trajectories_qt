@@ -31,8 +31,32 @@ namespace bridge {
             case BRIDGE_FIND:
             {
                 QVariantMap qobj;
-                model::TObjectPtr obj = this->store_->find(type, data["id"].toString().toStdString());
+                std::string id = data["id"].toString().toStdString();
+                model::TObjectPtr obj = this->store_->find(type, id);
+                bool wasUpdated = false;
+
+                if (!obj && id == "singleton") {
+                    obj = new model::TObject();
+                    obj->setType(type);
+                    obj->setId(id);
+
+                    const model::TObjectModelLinkParams & links = model->links;
+                    for(model::TObjectModelLinkParams::const_iterator i = links.begin(); i != links.end(); i++) {
+                        if (i->second.toSingleton) {
+                            obj->setLink(i->first, i->second.type, "singleton");
+                        }
+                    }
+                    this->store_->add(obj);
+                    this->objectCreated(obj);
+                    wasUpdated = true;
+                }
+
                 this->object2qvariant(model, obj, qobj);
+
+                if (wasUpdated) {
+                    this->prepareCreateResponse(type, qobj);
+                }
+
                 this->makeCall(opId, true, qobj);
                 break;
             }
@@ -53,32 +77,18 @@ namespace bridge {
             case BRIDGE_CREATE:
             {
                 QVariantMap record = data["record"].toMap();
-                /*const std::string id = record["id"].toString().toStdString();
+                model::TObjectPtr obj = new model::TObject();
+                this->updateObject(model, obj, record);
+                obj->setType(type);
+                obj->setId(this->store_->newId(type));
+                record["id"] = obj->id().c_str();
 
-                if (id == "singleton") {
-                    model::TObjectPtr obj = this->store_->find(type, id);
-                    this->updateObject(model, obj, record);
-                    this->store_->updated(obj);
+                this->store_->add(obj);
 
-                    if (this->objectUpdated(obj)) {
-                        this->object2qvariant(model, obj, record);
-                    }
-                    this->prepareUpdateResponse(type, record);
-                } else {*/
-                    model::TObjectPtr obj = new model::TObject();
-                    //obj->setId(id);
-                    this->updateObject(model, obj, record);
-                    obj->setType(type);
-                    obj->setId(this->store_->newId(type));
-                    record["id"] = obj->id().c_str();
-
-                    this->store_->add(obj);
-
-                    if (this->objectCreated(obj)) {
-                        this->object2qvariant(model, obj, record);
-                    }
-                    this->prepareCreateResponse(type, record);
-                /*}*/
+                if (this->objectCreated(obj)) {
+                    this->object2qvariant(model, obj, record);
+                }
+                this->prepareCreateResponse(type, record);
 
                 this->makeCall(opId, true, record);
 
@@ -121,17 +131,17 @@ namespace bridge {
             switch(i->second) {
             case TOBJECT_PARAM_INT:
                 if (!obj->emptyInt(i->first)) {
-                    result.insert(i->first.c_str(), obj->pInt(i->first));
+                    result.insert(i->first.c_str(), obj->getInt(i->first));
                 }
                 break;
             case TOBJECT_PARAM_DOUBLE:
                 if (!obj->emptyDouble(i->first)) {
-                    result.insert(i->first.c_str(), obj->pDouble(i->first));
+                    result.insert(i->first.c_str(), obj->getDouble(i->first));
                 }
                 break;
             case TOBJECT_PARAM_STRING:
                 if (!obj->emptyString(i->first)) {
-                    result.insert(i->first.c_str(), obj->pString(i->first).c_str());
+                    result.insert(i->first.c_str(), obj->getString(i->first).c_str());
                 }
                 break;
             }
@@ -139,7 +149,7 @@ namespace bridge {
 
         for (model::TObjectModelLinkParams::const_iterator i = model->links.begin(); i != model->links.end(); i++) {
             if (!obj->emptyLink(i->first)) {
-                const model::TObjectLink * link = obj->pLink(i->first);
+                const model::TObjectLink * link = obj->getLink(i->first);
                 result.insert(i->second.id_key, link->objid().c_str());
                 if (i->second.polymorphic) {
                     result.insert(i->second.type_key, link->type().c_str());
@@ -156,21 +166,21 @@ namespace bridge {
             switch(i->second) {
             case TOBJECT_PARAM_INT:
                 if (data.contains(i->first.c_str())) {
-                    obj->pInt(i->first, data[i->first.c_str()].toInt());
+                    obj->setInt(i->first, data[i->first.c_str()].toInt());
                 } else {
                     obj->clearInt(i->first);
                 }
                 break;
             case TOBJECT_PARAM_DOUBLE:
                 if (data.contains(i->first.c_str())) {
-                    obj->pDouble(i->first, data[i->first.c_str()].toDouble());
+                    obj->setDouble(i->first, data[i->first.c_str()].toDouble());
                 } else {
                     obj->clearDouble(i->first);
                 }
                 break;
             case TOBJECT_PARAM_STRING:
                 if (data.contains(i->first.c_str())) {
-                    obj->pString(i->first, data[i->first.c_str()].toString().toStdString());
+                    obj->setString(i->first, data[i->first.c_str()].toString().toStdString());
                 } else {
                     obj->clearString(i->first);
                 }
@@ -182,7 +192,7 @@ namespace bridge {
             if (data.contains(i->second.id_key) && data[i->second.id_key].toString().size() > 0) {
                 model::TObjectId id = data[i->second.id_key].toString().toStdString();
                 std::string type = i->second.polymorphic ? data[i->second.type_key].toString().toStdString() : i->second.type;
-                obj->pLink(i->first, type, id);
+                obj->setLink(i->first, type, id);
             } else {
                 obj->clearLink(i->first);
             }

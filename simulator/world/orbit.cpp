@@ -138,7 +138,7 @@ namespace world {
 
 
 
-  void Orbit::calculateOrbitPosition(double angle, double *result) {
+  void Orbit::calculateOrbitPosition(double angle, double *result) const {
     double cos_a = cos(angle);
     double k = 2. * this->apoapsis_ * this->periapsis_ / ((this->apoapsis_ - this->periapsis_) * cos_a + this->majoraxis_);
 
@@ -149,11 +149,10 @@ namespace world {
     tvector::addScaled(result, this->smy_, y);
   }
 
-  void Orbit::calculateGlobalPosition(double angle, double *result) {
+  void Orbit::calculateGlobalPosition(double angle, double *result) const {
     calculateOrbitPosition(angle, result);
     tvector::add(result, this->cpos_);
   }
-
 
 }
 

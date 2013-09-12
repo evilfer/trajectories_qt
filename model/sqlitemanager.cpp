@@ -257,16 +257,16 @@ namespace model {
                 if (obj->emptyInt(iter->first)) {
                     sqlite3_bind_null(stmt, index);
                 } else {
-                    sqlite3_bind_int(stmt, index, obj->pInt(iter->first));
+                    sqlite3_bind_int(stmt, index, obj->getInt(iter->first));
                 }
             } else if (iter->second == TOBJECT_PARAM_DOUBLE) {
                 if (obj->emptyDouble(iter->first)) {
                     sqlite3_bind_null(stmt, index);
                 } else {
-                    sqlite3_bind_double(stmt, index, obj->pDouble(iter->first));
+                    sqlite3_bind_double(stmt, index, obj->getDouble(iter->first));
                 }
             } else if (iter->second == TOBJECT_PARAM_STRING) {
-                sqlite3_bind_text(stmt, index, obj->pString(iter->first).c_str(), -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(stmt, index, obj->getString(iter->first).c_str(), -1, SQLITE_TRANSIENT);
             }
 
             index++;
@@ -276,7 +276,7 @@ namespace model {
             if (obj->emptyLink(iter->first)) {
                 sqlite3_bind_null(stmt, index);
             } else {
-                sqlite3_bind_text(stmt, index, obj->pLink(iter->first)->toString().c_str(), -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(stmt, index, obj->getLink(iter->first)->toString().c_str(), -1, SQLITE_TRANSIENT);
             }
             index++;
         }
@@ -295,21 +295,21 @@ namespace model {
                     obj->clearInt(iter->first);
                 } else {
                     int value = sqlite3_column_int(stmt, column);
-                    obj->pInt(iter->first, value);
+                    obj->setInt(iter->first, value);
                 }
             } else if (iter->second == TOBJECT_PARAM_DOUBLE) {
                 if (isNull) {
                     obj->clearDouble(iter->first);
                 } else {
                     double value = sqlite3_column_double(stmt, column);
-                    obj->pDouble(iter->first, value);
+                    obj->setDouble(iter->first, value);
                 }
             } else if (iter->second == TOBJECT_PARAM_STRING) {
                 if (isNull) {
                     obj->clearString(iter->first);
                 } else {
                     std::string value = std::string(reinterpret_cast< const char* >(sqlite3_column_text(stmt, column)));
-                    obj->pString(iter->first, value);
+                    obj->setString(iter->first, value);
                 }
             }
 
@@ -322,7 +322,7 @@ namespace model {
                 obj->clearLink(iter->first);
             } else {
                 std::string value = std::string(reinterpret_cast< const char* >(sqlite3_column_text(stmt, column)));
-                obj->pLink(iter->first, value);
+                obj->setLink(iter->first, value);
             }
 
             column++;

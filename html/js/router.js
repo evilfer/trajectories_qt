@@ -27,7 +27,8 @@ App.SimulationIndexRoute = Ember.Route.extend({
   model: function() {
     var data = this.modelFor('simulator');
     var simulation = this.modelFor('simulation');
-    if (data.get('simulation') != simulation) {
+    var solarSystemState = data.get('viewdate');
+    if (data.get('simulation') !== simulation) {
       data.set('simulation', simulation);
       data.save();
     }

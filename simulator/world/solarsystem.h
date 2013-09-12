@@ -47,9 +47,11 @@ public:
     void wakeUpAllSystems();
     void setAwakeSystem(PlanetSystem *ps);
 
-    inline Body * sun() const {return m_sun;}
+    inline Body * sun() {return m_sun;}
     inline PlanetSystemList & planets() {return m_planets;}
     void update(double et);
+
+    const BodyList & bodies() const {return r_bodies;}
 
     const Body * body(ephemerides::BodyId bi) {return r_bodies[bi];}
     Body * body(ephemerides::BodyId bi, double et);

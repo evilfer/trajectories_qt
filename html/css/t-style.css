@@ -46,6 +46,9 @@ body,
 .t-simulation-specification-menu {
   margin-bottom: 1em; }
 
+.pure-menu.t-simulation-specification-menu li a {
+  padding: 5px 10px; }
+
 .t-mission-item {
   margin-bottom: 1em; }
 
@@ -129,3 +132,17 @@ code, kbd, pre, samp {
 
 .pure-menu-can-have-children > .pure-menu-label:after {
   font-family: 'Lucida Grande','Lucida Sans Unicode','DejaVu Sans',sans-serif; }
+
+/*
+  Document   : t-addmenu
+  Created on : 12-Sep-2013, 13:04:54
+  Author     : evilfer
+  Description:
+  Purpose of the stylesheet follows.
+*/
+/*
+  TODO customize this sample style
+  Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+root {
+  display: block; }

@@ -77,6 +77,11 @@ void Trajectories::init() {
              /*plural*/ "mission_starts",
              /*params*/ {
                  {"date", TOBJECT_PARAM_DOUBLE},
+                 {"planet", TOBJECT_PARAM_STRING},
+                 {"radius", TOBJECT_PARAM_DOUBLE},
+                 {"inclination", TOBJECT_PARAM_DOUBLE},
+                 {"longitude", TOBJECT_PARAM_DOUBLE},
+                 {"latitude", TOBJECT_PARAM_DOUBLE},
              },
              /*links*/ {
                  {"mission", {false, false, "mission", "mission", "mission_type", false}},

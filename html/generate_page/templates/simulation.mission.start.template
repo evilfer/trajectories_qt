@@ -2,6 +2,23 @@
   <div class="t-mission-item-title">Initial orbit</div>
   <div class="t-mission-item-body">
     {{view App.InlineTextFieldView valueBinding="date" label="Start date"}}
+    {{view App.InlineTextFieldView valueBinding="planet" label="Planet"}}
+    {{view App.InlineTextFieldView valueBinding="radius" label="Radius"}}
+    
+    {{#if controller.hasInclination}}
+      {{view App.InlineTextFieldView valueBinding="inclination" label="Inclination"}}
+    {{/if}}
+    
+    {{#if controller.hasLatitude}}
+      {{view App.InlineTextFieldView valueBinding="latitude" label="Latitude"}}
+    {{/if}}
+    
+    {{#if controller.hasLongitude}}
+      {{view App.InlineTextFieldView valueBinding="longitude" label="Longitude"}}
+    {{/if}}
+    
+    {{partial "addMenu"}}
+
   </div>
 </div>
 

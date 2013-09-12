@@ -27,6 +27,10 @@
   margin-bottom: 1em;  
 }
 
+.pure-menu.t-simulation-specification-menu li a {
+  padding: 5px 10px;
+}
+
 .t-simulation-view {
   @extend .t-flex-child-1;
 }

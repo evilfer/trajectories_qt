@@ -31,8 +31,7 @@ namespace trajectory {
 
   typedef std::deque<PathPoint>::const_iterator PathPosition;
 
-  class Path : std::deque<PathPoint>
-  {
+  class Path : std::deque<PathPoint> {
   public:
     Path();
 

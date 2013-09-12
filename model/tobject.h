@@ -60,17 +60,17 @@ namespace model {
         void setType(const std::string type) {this->type_ = type;}
         void setId(const TObjectId & id) {this->id_ = id;}
 
-        void pInt(const std::string & property, int value);
-        void pDouble(const std::string & property, double value);
-        void pString(const std::string & property, const std::string & value);
+        void setInt(const std::string & property, int value);
+        void setDouble(const std::string & property, double value);
+        void setString(const std::string & property, const std::string & value);
 
-        void pLink(const std::string & property, const std::string & type, const TObjectId & id);
-        void pLink(const std::string & property, const std::string & type_id);
+        void setLink(const std::string & property, const std::string & type, const TObjectId & id);
+        void setLink(const std::string & property, const std::string & type_id);
 
-        int pInt(const std::string & property) const;
-        double pDouble(const std::string & property) const;
-        const std::string & pString(const std::string & property) const;
-        const TObjectLink * pLink(const std::string & property) const;
+        int getInt(const std::string & property) const;
+        double getDouble(const std::string & property) const;
+        const std::string & getString(const std::string & property) const;
+        const TObjectLink * getLink(const std::string & property) const;
 
         void clearInt(const std::string & property);
         void clearDouble(const std::string & property);

@@ -37,6 +37,7 @@ SolarSystem::~SolarSystem() {
 
 void SolarSystem::setSun(const ephemerides::BodyConstants *body) {
     m_sun = new Body(body);
+    r_bodies.addBody(m_sun);
 }
 
 void SolarSystem::addPlanetSystem(PlanetSystem *ps) {
