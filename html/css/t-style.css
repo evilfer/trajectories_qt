@@ -18,7 +18,7 @@ body,
 .t-font-xsmall {
   font-size: .67em; }
 
-.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view, .t-inline-edit-field-container, .t-inline-edit-widget, .t-inline-edit-area, .t-canvas, .t-inline-edit-button, .t-inline-edit-label {
+.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-simulation-specification-content, .t-flex-child-1, .t-simulation-specification-content-inner, .t-simulation-view, .t-inline-edit-field-container, .t-inline-edit-widget, .t-inline-edit-area, .t-canvas, .t-simulation-specification-menu, .t-inline-edit-button, .t-inline-edit-label {
   display: flex;
   display: -webkit-flex; }
 
@@ -26,11 +26,11 @@ body,
   flex-direction: row;
   -webkit-flex-direction: row; }
 
-.t-flex-container-v, .t-simulation-page, .t-simulation-specification {
+.t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-simulation-specification-content {
   flex-direction: column;
   -webkit-flex-direction: column; }
 
-.t-flex-child-1, .t-simulation-main, .t-simulation-view, .t-inline-edit-row, .t-inline-edit-field-container, .t-inline-edit-widget, .t-inline-edit-area, .t-canvas-main, .t-canvas {
+.t-flex-child-1, .t-simulation-main, .t-simulation-specification-content, .t-simulation-specification-content-inner, .t-simulation-view, .t-inline-edit-row, .t-inline-edit-field-container, .t-inline-edit-widget, .t-inline-edit-area, .t-canvas-main, .t-canvas {
   flex: 1;
   -webkit-flex: 1; }
 
@@ -40,11 +40,20 @@ body,
   height: 50px; }
 
 .t-simulation-specification {
-  width: 283px;
-  overflow: auto; }
+  width: 283px; }
 
 .t-simulation-specification-menu {
   margin-bottom: 1em; }
+
+.t-simulation-specification-content-inner {
+  overflow-y: scroll;
+  position: relative; }
+
+.t-simulation-specification-content-inner > div {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 270px; }
 
 .pure-menu.t-simulation-specification-menu li a {
   padding: 5px 10px; }
@@ -168,3 +177,16 @@ code, kbd, pre, samp {
 */
 root {
   display: block; }
+
+::-webkit-scrollbar {
+  width: 8px; }
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: transparent; }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7); }
+
+::webkit-scrollbar-track:disabled {
+  background: blue; }

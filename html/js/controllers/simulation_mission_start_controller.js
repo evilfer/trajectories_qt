@@ -1,21 +1,28 @@
 
-App.SimulationMissionStartController = Ember.ObjectController.extend({
+App.SimulationMissionStartController = App.ObjectVariableParamsController.extend({
   acceptChanges: function() {
     this.get('model').save();
   },
-  optionalAttrs: ['inclination', 'latitude', 'longitude'],
+  optionalAttrs: [
+    {key: 'inclination', label: 'Inclination'},
+    {key: 'latitude', label: 'Latitude'},
+    {key: 'longitude', label: 'Longitude'}
+  ],
   hasInclination: function() {
-    return App.Utils.hasAttr(this, 'inclination');
+    console.log(this._hasAttr('inclination'));
+    return this._hasAttr('inclination');
   }.property('inclination'),
   hasLongitude: function() {
-    return App.Utils.hasAttr(this, 'longitude');
+    return this._hasAttr('longitude');
   }.property('longitude'),
   hasLatitude: function() {
-    return App.Utils.hasAttr(this, 'latitude');
+    return this._hasAttr('latitude');
   }.property('latitude'),
+  availableAttr: function() {
+    return this._availableOptionalAttrs();
+  }.property('hasInclination', 'hasLongitude', 'hasLatitude'),
   showAddButton: function() {
-    return App.Utils.optionalAttrAvailable(this);
-  }.property('hasInclination', 'hasLongitude', 'hasLatitude')
+    return this._hasAvailableOptionalAttrs();
+  }.property('availableAttr')
+
 });
-
-

@@ -19,12 +19,28 @@
   @extend .t-flex-container-v;
   @extend .t-padded-box-10;
   width: 283px;
-  
-  overflow: auto;
 }
 
 .t-simulation-specification-menu {
+  @extend .t-flex;
   margin-bottom: 1em;  
+}
+
+.t-simulation-specification-content {
+  @extend .t-flex-child-1;
+  @extend .t-flex-container-v;
+}
+.t-simulation-specification-content-inner {
+  @extend .t-flex-child-1;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.t-simulation-specification-content-inner > div {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 270px;
 }
 
 .pure-menu.t-simulation-specification-menu li a {

@@ -12,7 +12,11 @@
           {{#linkTo "simulation.mission" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Mission</a>{{/linkTo}}
         </ul>
       </div>
-      {{ outlet }}
+      <div class="t-simulation-specification-content">
+        <div class="t-simulation-specification-content-inner">
+          {{ outlet }}
+        </div>
+      </div>
     </div>
     <div class="t-simulation-view">
       {{! render "renderer" }}

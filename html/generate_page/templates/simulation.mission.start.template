@@ -17,7 +17,7 @@
       {{view App.InlineTextFieldView valueBinding="longitude" label="Longitude" thin="true"}}
     {{/if}}
     
-    {{partial "addMenu"}}
+    {{view App.AddMenuView label="Add orbit parameters"}}
 
   </div>
 </div>

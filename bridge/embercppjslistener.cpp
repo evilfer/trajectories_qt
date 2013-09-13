@@ -163,24 +163,25 @@ namespace bridge {
 
     void EmberCppJsListener::updateObject(const model::TObjectModel * model, model::TObjectPtr obj, QVariantMap & data) {
         for (model::TObjectModelParams::const_iterator i = model->params.begin(); i != model->params.end(); i++) {
+            const char * key = i->first.c_str();
             switch(i->second) {
             case TOBJECT_PARAM_INT:
-                if (data.contains(i->first.c_str())) {
-                    obj->setInt(i->first, data[i->first.c_str()].toInt());
+                if (data.contains(key) && data[key].toString().length() > 0) {
+                    obj->setInt(i->first, data[key].toInt());
                 } else {
                     obj->clearInt(i->first);
                 }
                 break;
             case TOBJECT_PARAM_DOUBLE:
-                if (data.contains(i->first.c_str())) {
-                    obj->setDouble(i->first, data[i->first.c_str()].toDouble());
+                if (data.contains(key) && data[key].toString().length() > 0) {
+                    obj->setDouble(i->first, data[key].toDouble());
                 } else {
                     obj->clearDouble(i->first);
                 }
                 break;
             case TOBJECT_PARAM_STRING:
-                if (data.contains(i->first.c_str())) {
-                    obj->setString(i->first, data[i->first.c_str()].toString().toStdString());
+                if (data.contains(key)) {
+                    obj->setString(i->first, data[key].toString().toStdString());
                 } else {
                     obj->clearString(i->first);
                 }
