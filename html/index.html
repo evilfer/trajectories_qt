@@ -165,16 +165,18 @@
 </script><script type="text/x-handlebars" data-template-name="addMenu">{{#if controller.showAddButton}}
   <button {{action "toggle" target="view"}} class="pure-button pure-button-xsmall pure-button-thin">
     {{view.label}}
-    <i class="icon-plus"></i>
+    {{#if view.open}}<i class="icon-minus"></i>{{else}}<i class="icon-plus"></i>{{/if}}
   </button> 
 
   {{#if view.open}}
-  <div class="t-add-menu-container">
-    <div class="t-add-menu-popup">
-      {{#each attr in controller.availableAttr}}
-      <div>{{attr.key}} {{attr.label}}</div>
-      {{/each}}
+  <div class="t-add-menu-anchor">
+    <div class="t-add-menu-container">
+      <div class="t-add-menu-popup">
+        {{#each attr in controller.availableAttr}}
+        <div>{{attr.key}} {{attr.label}}</div>
+        {{/each}}
 
+      </div>
     </div>
   </div>
   {{/if}}
