@@ -77,20 +77,20 @@
 </script><script type="text/x-handlebars" data-template-name="simulation/mission/start"><div class="t-mission-item">
   <div class="t-mission-item-title">Initial orbit</div>
   <div class="t-mission-item-body">
-    {{view App.InlineTextFieldView valueBinding="date" label="Start date"}}
-    {{view App.InlineTextFieldView valueBinding="planet" label="Planet"}}
-    {{view App.InlineTextFieldView valueBinding="radius" label="Radius"}}
+    {{view App.InlineTextFieldView valueBinding="date" label="Start date" thin="true"}}
+    {{view App.InlineTextFieldView valueBinding="planet" label="Planet" thin="true"}}
+    {{view App.InlineTextFieldView valueBinding="radius" label="Radius" thin="true"}}
     
     {{#if controller.hasInclination}}
-      {{view App.InlineTextFieldView valueBinding="inclination" label="Inclination"}}
+      {{view App.InlineTextFieldView valueBinding="inclination" label="Inclination" thin="true"}}
     {{/if}}
     
     {{#if controller.hasLatitude}}
-      {{view App.InlineTextFieldView valueBinding="latitude" label="Latitude"}}
+      {{view App.InlineTextFieldView valueBinding="latitude" label="Latitude" thin="true"}}
     {{/if}}
     
     {{#if controller.hasLongitude}}
-      {{view App.InlineTextFieldView valueBinding="longitude" label="Longitude"}}
+      {{view App.InlineTextFieldView valueBinding="longitude" label="Longitude" thin="true"}}
     {{/if}}
     
     {{partial "addMenu"}}
@@ -126,7 +126,11 @@
 
 
 
-</script><script type="text/x-handlebars" data-template-name="viewInlineTextField"><div class="t-inline-edit-row">
+</script><script type="text/x-handlebars" data-template-name="viewInlineTextField">{{#if view.thin}}
+<div class="t-inline-edit-row t-inline-edit-row-thin">
+{{else}}
+<div class="t-inline-edit-row">
+{{/if}}  
   <div class="t-inline-edit-label">
     <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
   </div>

@@ -1,2 +1,4 @@
 trajectories.pro.*
 cspicelib.pri
+libs.pri
+

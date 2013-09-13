@@ -18,7 +18,7 @@ body,
 .t-font-xsmall {
   font-size: .67em; }
 
-.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view, .t-inline-edit-field-container, .t-inline-edit-area, .t-canvas, .t-inline-edit-button, .t-inline-edit-label {
+.t-flex, .t-flex-container-h, .t-simulation-main, .t-inline-edit-row, .t-canvas-main, .t-flex-container-v, .t-simulation-page, .t-simulation-specification, .t-flex-child-1, .t-simulation-view, .t-inline-edit-field-container, .t-inline-edit-widget, .t-inline-edit-area, .t-canvas, .t-inline-edit-button, .t-inline-edit-label {
   display: flex;
   display: -webkit-flex; }
 
@@ -30,7 +30,7 @@ body,
   flex-direction: column;
   -webkit-flex-direction: column; }
 
-.t-flex-child-1, .t-simulation-main, .t-simulation-view, .t-inline-edit-field-container, .t-inline-edit-area, .t-canvas-main, .t-canvas {
+.t-flex-child-1, .t-simulation-main, .t-simulation-view, .t-inline-edit-row, .t-inline-edit-field-container, .t-inline-edit-widget, .t-inline-edit-area, .t-canvas-main, .t-canvas {
   flex: 1;
   -webkit-flex: 1; }
 
@@ -40,7 +40,7 @@ body,
   height: 50px; }
 
 .t-simulation-specification {
-  width: 367px;
+  width: 283px;
   overflow: auto; }
 
 .t-simulation-specification-menu {
@@ -67,7 +67,8 @@ body,
   border-color: gray;
   border-width: 0 1px 1px 1px;
   border-bottom-right-radius: .5em;
-  border-bottom-left-radius: .5em; }
+  border-bottom-left-radius: .5em;
+  padding: 5px; }
 
 ul.t-simulations-list > li {
   padding-bottom: 1em; }
@@ -79,7 +80,7 @@ ul.t-simulations-list > li {
   display: inline-block; }
 
 .t-inline-edit-label {
-  width: 100px; }
+  width: 80px; }
 
 .t-inline-edit-label-inner {
   width: 100%;
@@ -91,6 +92,10 @@ ul.t-simulations-list > li {
   font-size: .8em; }
 
 .t-inline-edit-widget {
+  width: 100%; }
+
+.t-inline-edit-widget > input,
+.t-inline-edit-widget > textarea {
   width: 100%; }
 
 .t-inline-edit-field {
@@ -115,6 +120,23 @@ ul.t-simulations-list > li {
 
 .t-inline-edit-row:hover .t-inline-edit-label-inner {
   color: #666; }
+
+.t-inline-edit-row-thin {
+  margin-bottom: 1px; }
+
+.t-inline-edit-row-thin .pure-form input {
+  padding: 1px 0.5em;
+  border-radius: 0px; }
+
+.t-inline-edit-row-thin .t-inline-edit-field {
+  height: 21px;
+  padding-top: 0px; }
+
+.t-inline-edit-row-thin .t-inline-edit-label-inner {
+  padding-top: 2px; }
+
+.t-inline-edit-row-thin .t-inline-edit-button {
+  padding-top: 0px; }
 
 .t-canvas {
   position: relative; }

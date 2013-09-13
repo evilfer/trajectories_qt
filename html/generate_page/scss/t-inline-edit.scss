@@ -3,6 +3,7 @@
 
 .t-inline-edit-row {
   @extend .t-flex-container-h;
+  @extend .t-flex-child-1;
 }
 
 .t-inline-edit-button {
@@ -17,7 +18,7 @@
 
 .t-inline-edit-label {
   @extend .t-flex;
-  width: 100px;
+  width: 80px;
 }
 .t-inline-edit-label-inner {
   width: 100%;
@@ -31,11 +32,18 @@
 
 .t-inline-edit-field-container {
   @extend .t-flex-child-1;
-  
 }
 
 
+
+
 .t-inline-edit-widget {
+  @extend .t-flex-child-1;
+  width: 100%;
+}
+
+.t-inline-edit-widget > input,
+.t-inline-edit-widget > textarea {
   width: 100%;
 }
 
@@ -62,3 +70,26 @@
 .t-inline-edit-row .t-inline-edit-button-inner > button {visibility: hidden;}
 .t-inline-edit-row:hover .t-inline-edit-button-inner > button {visibility: visible;}
 .t-inline-edit-row:hover .t-inline-edit-label-inner {color: #666;}
+
+
+.t-inline-edit-row-thin {
+  margin-bottom: 1px;
+}
+
+.t-inline-edit-row-thin .pure-form input {
+  padding: 1px .5em;
+  border-radius: 0px;
+}
+
+.t-inline-edit-row-thin .t-inline-edit-field {
+  height: 21px;
+  padding-top: 0px;
+}
+
+.t-inline-edit-row-thin .t-inline-edit-label-inner {
+  padding-top: 2px;
+}
+
+.t-inline-edit-row-thin .t-inline-edit-button {
+  padding-top: 0px;
+}

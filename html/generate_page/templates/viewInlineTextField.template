@@ -1,4 +1,8 @@
+{{#if view.thin}}
+<div class="t-inline-edit-row t-inline-edit-row-thin">
+{{else}}
 <div class="t-inline-edit-row">
+{{/if}}  
   <div class="t-inline-edit-label">
     <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
   </div>
