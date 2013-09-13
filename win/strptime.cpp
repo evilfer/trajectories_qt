@@ -23,7 +23,6 @@
 #include <ctype.h>
 #include <string.h>
 
-#ifdef WIN32
 // Implement strptime under windows
 static const char* kWeekFull[] = {
   "Sunday", "Monday", "Tuesday", "Wednesday",
@@ -188,7 +187,6 @@ static char* _strptime(const char *s, const char *format, struct tm *tm) {
 char* strptime(const char *buf, const char *fmt, struct tm *tm) {
   return _strptime(buf, fmt, tm);
 }
-#endif  // WIN32
 
 #if defined(__linux__) || defined(__unix__)
 

@@ -2,6 +2,7 @@
 
 #include "simulator/ephemerides/spiceposition.h"
 #include "simulator/world/worldloader.h"
+#include "simulator/tmath/consts.h"
 
 #include <iostream>
 

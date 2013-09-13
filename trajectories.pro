@@ -1,23 +1,26 @@
 greaterThan(QT_MAJOR_VERSION, 4):QT += widgets webkitwidgets
 
 # Add more folders to ship with the application, here
-html_folder.source = html
-html_folder.target = .
-cfg_folder.source = cfg
-cfg_folder.target = .
+folder_01.source = html
+folder_01.target = .
+DEPLOYMENTFOLDERS = folder_01
 
-DEPLOYMENTFOLDERS = html_folder cfg_folder
-
+# Define TOUCH_OPTIMIZED_NAVIGATION for touch optimization and flicking
 #DEFINES += TOUCH_OPTIMIZED_NAVIGATION
+
+# If your application uses the Qt Mobility libraries, uncomment the following
+# lines and add the respective components to the MOBILITY variable.
+# CONFIG += mobility
+# MOBILITY +=
 
 QMAKE_CXXFLAGS += -std=c++0x
 
+# The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    trajectories.cpp \
-    trajectories_init.cpp
+    trajectories_init.cpp \
+    trajectories.cpp
 
-
-include(cspicelib.pri)
+include(libs.pri)
 include(simulator/simulator.pri)
 include(bridge/bridge.pri)
 include(model/model.pri)
@@ -27,9 +30,5 @@ include(win/win.pri)
 include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
 
-
-LIBS += -lsqlite3
-
 HEADERS += \
     trajectories.h
-
