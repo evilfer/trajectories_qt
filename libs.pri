@@ -11,3 +11,4 @@ INCLUDEPATH += $$PWD/../../libs/mingw_sqlite3/include
 DEPENDPATH += $$PWD/../../libs/minwg_sqlite3/include
 #win32: PRE_TARGETDEPS += $$PWD/../../libs/minwg_sqlite3/lib/sqlite3.lib
 
+
