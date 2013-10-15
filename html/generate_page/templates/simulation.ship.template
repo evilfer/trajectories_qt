@@ -1,8 +1,0 @@
-<div class="t-ship-form">
-  {{view App.InlineTextFieldView valueBinding="name" label="Name"}}
-  {{view App.InlineTextFieldView valueBinding="mass" label="Mass"}}
-  {{view App.InlineTextFieldView valueBinding="thrust" label="Thrust"}}
-  {{view App.InlineTextFieldView valueBinding="isp" label="I<sub>sp</sub>"}}
-  {{view App.InlineTextFieldView valueBinding="fuelmass" label="Fuel mass"}}
-</div>
-

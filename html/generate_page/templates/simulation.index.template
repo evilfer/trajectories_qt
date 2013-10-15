@@ -1,4 +1,0 @@
-<div class="t-metadata-form">
-{{view App.InlineTextFieldView valueBinding="title" label="Title" labelWidth="80"}}
-{{view App.InlineTextAreaView valueBinding="description" label="Description" labelWidth="80"}}
-</div>

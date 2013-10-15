@@ -1,185 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trajectories</title>
-
-    <link href="css/font-awesome.css" rel="stylesheet" media="screen"><link href="css/font-opensans.css" rel="stylesheet" media="screen"><link href="css/pure-nr-min.css" rel="stylesheet" media="screen"><link href="css/pure-button-ex.css" rel="stylesheet" media="screen"><link href="css/typography.css" rel="stylesheet" media="screen"><link href="css/t-style.css" rel="stylesheet" media="screen">  </head>
-  <body class="csstype">
-    <script type="text/x-handlebars" data-template-name="application">{{ outlet }}</script><script type="text/x-handlebars" data-template-name="index"><div class="t-padded-box-50">
-  <div class="t-app-name">
-    <h1>trajectories</h1>
-  </div>
-
-
-  {{#linkTo 'simulations' class="pure-button"}}<i class="icon-arrow-right"></i> simulations{{/linkTo}}
-</div>
-</script><script type="text/x-handlebars" data-template-name="renderer">{{view "App.RendererView"}}
-
-</script><script type="text/x-handlebars" data-template-name="simulations"><div class="t-padded-box-50">
-  <h1>simulations</h1>
-
-  <ul class="t-simulations-list">
-    {{#each simulation in controller}}
-    <li>{{ simulation.metadata.title }} {{#linkTo "simulation" simulation class="pure-button"}}<i class="icon-rocket"></i> open{{/linkTo}}</li>
-    {{/each}}
-  </ul>
-
-  <p><button {{action "newSimulation"}} class="pure-button"><i class="icon-plus"></i> new</button></p>
-</div>
-</script><script type="text/x-handlebars" data-template-name="simulator">{{ outlet }}
-</script><script type="text/x-handlebars" data-template-name="simulation"><div class="t-simulation-page">
-  <div class="t-simulation-header">
-    {{ metadata.title }} {{#linkTo "simulations" class="pure-button"}}<i class="icon-arrow-left"></i> back!!{{/linkTo}}
-  </div>
-  <div class="t-simulation-main">
-    <div class="t-simulation-specification">
-      <div class="pure-menu pure-menu-open pure-menu-horizontal t-simulation-specification-menu">
-        <ul  class="t-font-xsmall">
-          {{#linkTo "simulation.index" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Description</a>{{/linkTo}}
-          {{#linkTo "simulation.config" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Configuration</a>{{/linkTo}}
-          {{#linkTo "simulation.ship" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Ship</a>{{/linkTo}}
-          {{#linkTo "simulation.mission" controller.id tagName="li" activeClass="pure-menu-selected"}}<a href=false>Mission</a>{{/linkTo}}
-        </ul>
-      </div>
-      <div class="t-simulation-specification-content">
-        <div class="t-simulation-specification-content-inner">
-          {{ outlet }}
-        </div>
-      </div>
-    </div>
-    <div class="t-simulation-view">
-      {{! render "renderer" }}
-    </div>
-  </div>
-  <div class="t-simulation-footer"></div>
-</div>
-</script><script type="text/x-handlebars" data-template-name="simulation/index"><div class="t-metadata-form">
-{{view App.InlineTextFieldView valueBinding="title" label="Title" labelWidth="80"}}
-{{view App.InlineTextAreaView valueBinding="description" label="Description" labelWidth="80"}}
-</div></script><script type="text/x-handlebars" data-template-name="simulation/ship"><div class="t-ship-form">
-  {{view App.InlineTextFieldView valueBinding="name" label="Name"}}
-  {{view App.InlineTextFieldView valueBinding="mass" label="Mass"}}
-  {{view App.InlineTextFieldView valueBinding="thrust" label="Thrust"}}
-  {{view App.InlineTextFieldView valueBinding="isp" label="I<sub>sp</sub>"}}
-  {{view App.InlineTextFieldView valueBinding="fuelmass" label="Fuel mass"}}
-</div>
-
-</script><script type="text/x-handlebars" data-template-name="simulation/mission"><div class="t-mission-form">
-  {{render "simulation/mission/start" start}}
-
-  <div class="t-mission-item">
-    <div class="t-mission-item-title">Simulation duration</div>
-    <div class="t-mission-item-body">
-      {{view App.InlineTextFieldView valueBinding="duration" label="Duration"}}
-    </div>
-  </div>
-
-</div>
-
-</script><script type="text/x-handlebars" data-template-name="simulation/mission/start"><div class="t-mission-item">
-  <div class="t-mission-item-title">Initial orbit</div>
-  <div class="t-mission-item-body">
-    {{view App.InlineTextFieldView valueBinding="date" label="Start date" thin="true"}}
-    {{view App.InlineTextFieldView valueBinding="planet" label="Planet" thin="true"}}
-    {{view App.InlineTextFieldView valueBinding="radius" label="Radius" thin="true"}}
-    
-    {{#if controller.hasInclination}}
-      {{view App.InlineTextFieldView valueBinding="inclination" label="Inclination" thin="true"}}
-    {{/if}}
-    
-    {{#if controller.hasLatitude}}
-      {{view App.InlineTextFieldView valueBinding="latitude" label="Latitude" thin="true"}}
-    {{/if}}
-    
-    {{#if controller.hasLongitude}}
-      {{view App.InlineTextFieldView valueBinding="longitude" label="Longitude" thin="true"}}
-    {{/if}}
-    
-    {{view App.AddMenuView label="Add orbit parameters"}}
-
-  </div>
-</div>
-
-</script><script type="text/x-handlebars" data-template-name="viewInlineTextArea"><div class="t-inline-edit-row">
-  <div class="t-inline-edit-label">
-    <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
-  </div>
-  {{#if view.isEditing}}
-  <div class="t-inline-edit-widget pure-form">
-    {{view App.EmbeddedTextAreaView valueBinding="view.value"}}
-  </div>
-  {{else}}
-  <div class="t-inline-edit-area">
-    {{{ view.formattedValue }}}
-  </div>
-  <div class="t-inline-edit-button">
-    <div class="t-inline-edit-button-inner">
-      <button {{action "edit" target="view"}} 
-        class="pure-button pure-button-xsmall pure-button-thin"
-        {{bindAttr class="editingTitle:pure-button-disabled"}}>
-        <i class="icon-edit"></i>
-      </button>  
-    </div>
-  </div>
-  {{/if}}
-</div>
-
-
-
-
-
-</script><script type="text/x-handlebars" data-template-name="viewInlineTextField">{{#if view.thin}}
-<div class="t-inline-edit-row t-inline-edit-row-thin">
-{{else}}
-<div class="t-inline-edit-row">
-{{/if}}  
-  <div class="t-inline-edit-label">
-    <div class="t-inline-edit-label-inner">{{{view.label}}}</div>
-  </div>
-  <div class="t-inline-edit-field-container">
-    {{#if view.isEditing}}
-    <div class="t-inline-edit-widget pure-form">
-      {{view App.EmbeddedTextFieldView valueBinding="view.value"}}
-    </div>
-    {{else}}
-    <div class="t-inline-edit-field">
-      {{ view.value }}
-    </div>
-    <div class="t-inline-edit-button">
-      <div class="t-inline-edit-button-inner">
-        <button {{action "edit" target="view"}} 
-          class="pure-button pure-button-xsmall pure-button-thin"
-          {{bindAttr class="editingTitle:pure-button-disabled"}}>
-          <i class="icon-edit"></i>
-        </button>  
-      </div>
-    </div>
-    {{/if}}
-  </div>
-</div>
-
-
-
-</script><script type="text/x-handlebars" data-template-name="addMenu">{{#if controller.showAddButton}}
-  <button {{action "toggle" target="view"}} class="pure-button pure-button-xsmall pure-button-thin">
-    {{view.label}}
-    {{#if view.open}}<i class="icon-minus"></i>{{else}}<i class="icon-plus"></i>{{/if}}
-  </button> 
-
-  {{#if view.open}}
-  <div class="t-add-menu-anchor">
-    <div class="t-add-menu-container">
-      <div class="t-add-menu-popup">
-        {{#each attr in controller.availableAttr}}
-        <div>{{attr.key}} {{attr.label}}</div>
-        {{/each}}
-
-      </div>
-    </div>
-  </div>
-  {{/if}}
-{{/if}}
-</script><script src="js/libs/jquery-1.10.2.js"></script><script src="js/libs/jquery.ba-resize.js"></script><script src="js/libs/handlebars-1.0.0.js"></script><script src="js/libs/ember-1.0.0.js"></script><script src="js/libs/ember-data-v1.0.0-beta.1-164-gbbaef35.js"></script><script src="js/libs/three.min.js"></script><script src="js/libs/TrackballControls.js"></script><script src="js/bridge/bridge.js"></script><script src="js/app.js"></script><script src="js/router.js"></script><script src="js/models/store.js"></script><script src="js/models/solar_system_state.js"></script><script src="js/models/simulator_data.js"></script><script src="js/models/simulation.js"></script><script src="js/models/simulation_metadata.js"></script><script src="js/models/simulation_configuration.js"></script><script src="js/models/ship.js"></script><script src="js/models/mission/mission.js"></script><script src="js/models/mission/mission_start.js"></script><script src="js/models/mission/mission_event.js"></script><script src="js/models/mission/mission_event_burn.js"></script><script src="js/models/mission/mission_event_wait.js"></script><script src="js/controllers/application_controller.js"></script><script src="js/controllers/object_variable_params_controller.js"></script><script src="js/controllers/simulations_controller.js"></script><script src="js/controllers/simulation_index_controller.js"></script><script src="js/controllers/simulation_ship_controller.js"></script><script src="js/controllers/simulation_mission_controller.js"></script><script src="js/controllers/simulation_mission_start_controller.js"></script><script src="js/views/simulation_view.js"></script><script src="js/views/add_menu_view.js"></script><script src="js/views/embedded_edit_widgets.js"></script><script src="js/views/inline_edit_widgets.js"></script><script src="js/views/renderer_view.js"></script>  </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <style type="text/css">
+            body { margin: 0; font-size: 2em; background-color: white; }
+            h1 { text-align: center; color: red; }
+            h1 + h1 { color: green; }
+            h1:last-child { color: blue; }
+            #quit { background-color: gray; color: white; font-weight: bold; display: block; text-align: right; }
+        </style>
+        <script type="text/javascript">
+            var counter = 0;
+            function toggleElement()
+            {
+                var elements = document.getElementsByTagName('h1');
+                for (var i = 0; i < elements.length; ++i)
+                    elements[i].style.display = (counter % elements.length) == i ? '' : 'none';
+                counter++;
+                setTimeout('toggleElement()', 1000);
+            }
+            window.onload = function()
+            {
+                document.getElementById("quit").onmousedown = function()
+                {
+                    Qt.quit();
+                };
+                toggleElement();
+            }
+        </script>
+    </head>
+    <body>
+        <a id="quit">X</a>
+        <h1>Hello</h1>
+        <h1>HTML5</h1>
+        <h1>World</h1>
+    </body>
 </html>
