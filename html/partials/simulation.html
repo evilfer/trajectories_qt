@@ -1,0 +1,30 @@
+
+<div class="t-flex-container-vertical">
+  <div class="t-simulation-header">
+  </div>
+  <div class="t-flex-item t-flex-container-horizontal">
+    <div class="t-flex-container-vertical t-simulation-config-panel">
+      <div class="t-simulation-config-menu">
+        <ul class="nav nav-pills">
+          <li ng-class="{active: currentMenuOption=='metadata'}"><a href="" ng-click="setMenuOption('metadata');">Metadata</a></li>
+          <li ng-class="{active: currentMenuOption=='config'}"><a href="" ng-click="setMenuOption('config');">Configuration</a></li>
+          <li ng-class="{active: currentMenuOption=='ship'}"><a href="" ng-click="setMenuOption('ship');">Ship</a></li>
+          <li ng-class="{active: currentMenuOption=='mission'}"><a href="" ng-click="setMenuOption('mission');">Mission</a></li>
+        </ul>
+      </div>
+      <div class="t-flex-item">
+        <div ng-switch="currentMenuOption">
+          <div ng-switch-when="metadata">metadata</div>
+          <div ng-switch-when="config">config</div>
+          <div ng-switch-when="ship">ship</div>
+          <div ng-switch-when="mission">mission</div>          
+        </div>
+      </div>
+    </div> 
+    <div class="t-flex-item t-simulation-view"></div> 
+    
+  </div>
+  <div class="t-simulation-footer">
+  </div>
+
+</div>

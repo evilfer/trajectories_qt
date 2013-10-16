@@ -5,6 +5,8 @@
 angular.module('trajectories', ['trajectoriesServices']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
-      when('/test', {templateUrl: 'partials/test.html',   controller: TestCtrl}).
-      otherwise({redirectTo: '/test'});
+      when('/welcome', {templateUrl: 'partials/welcome.html'}).
+      when('/simulations', {templateUrl: 'partials/simulations.html', controller: SimulationListCtrl}).
+      when('/simulations/:simId', {templateUrl: 'partials/simulation.html', controller: SimulationCtrl}).
+      otherwise({redirectTo: '/welcome'});
 }]);

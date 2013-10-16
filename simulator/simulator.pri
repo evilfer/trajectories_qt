@@ -18,7 +18,9 @@ HEADERS += \
     simulator/world/interpolator.h \
     simulator/world/gravityfield.h \
     simulator/world/burn.h \
-    simulator/world/body.h
+    simulator/world/body.h \
+    simulator/simulator/simulator.h \
+    simulator/simulator/inputobject.h
 
 SOURCES += \
     simulator/ephemerides/spiceposition.cpp \
@@ -39,6 +41,8 @@ SOURCES += \
     simulator/world/interpolator.cpp \
     simulator/world/gravityfield.cpp \
     simulator/world/burn.cpp \
-    simulator/world/body.cpp
+    simulator/world/body.cpp \
+    simulator/simulator/simulator.cpp \
+    simulator/simulator/inputobject.cpp
 
 

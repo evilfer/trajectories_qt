@@ -20,32 +20,31 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include <QApplication>
-#include <QWebInspector>
-#include <QGraphicsWebView>
+#ifndef INPUTOBJECT_H
+#define INPUTOBJECT_H
 
-#include "trajectories.h"
-#include "html5bridgeviewer/html5bridgeviewer.h"
+#include <vector>
 
+namespace simulator {
 
-
-int main(int argc, char *argv[]) {
-
-    QApplication app(argc, argv);
-
-    bridge::Html5BridgeViewer viewer(new Trajectories());
+    template<typename T>
+    bool equals(const std::vector<T> & v1, const std::vector<T> & v2);
 
 
 
-    QWebInspector inspector;
-    inspector.setPage(viewer.webView()->page());
-    inspector.setGeometry(20, 500, 600, 400);
-    inspector.setVisible(true);
+    class InputObject {
+        std::vector<int> ints_;
+        std::vector<double> doubles_;
 
-    viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-    viewer.setGeometry(20, 30, 600, 400);
-    viewer.showExpanded();
-    viewer.loadFile(QLatin1String("html/index.html"));
+    public:
+        InputObject(std::vector<int> & ints, std::vector<double> doubles);
+        const std::vector<int> & ints() const {return ints_;}
+        const std::vector<double> & doubles() const {return doubles_;}
 
-    return app.exec();
+    };
+
+    bool equals(const InputObject &io1, const InputObject &io2);
+
 }
+
+#endif // INPUTOBJECT_H
