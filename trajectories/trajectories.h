@@ -23,9 +23,14 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef TRAJECTORIES_H
 #define TRAJECTORIES_H
 
+#include <map>
 #include "html5bridgeviewer/cppjavascriptbridgelistener.h"
 
+typedef std::map<int, QVariantMap> SimulationsIdMap;
+
 class Trajectories : public bridge::CppJavascriptBridgeListener {
+
+    SimulationsIdMap simulations_;
 public:
     Trajectories();
 
@@ -33,9 +38,14 @@ public:
 
 
 protected:
+    void load();
+    void save(const QVariantMap & simulation);
+    void save(int id, const QVariantMap & simulation);
+
     void listSimulations(QVariantMap &result);
     void getSimulation(QVariantMap &data, QVariantMap &result);
-
+    void createSimulation(QVariantMap & result);
+    void saveSimulation(QVariantMap &data, QVariantMap &result);
 };
 
 #endif // TRAJECTORIES_H

@@ -24,7 +24,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include <QWebInspector>
 #include <QGraphicsWebView>
 
-#include "trajectories.h"
+#include "trajectories/trajectories.h"
 #include "html5bridgeviewer/html5bridgeviewer.h"
 
 
@@ -35,8 +35,6 @@ int main(int argc, char *argv[]) {
 
     bridge::Html5BridgeViewer viewer(new Trajectories());
 
-
-
     QWebInspector inspector;
     inspector.setPage(viewer.webView()->page());
     inspector.setGeometry(20, 500, 600, 400);
@@ -45,7 +43,7 @@ int main(int argc, char *argv[]) {
     viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
     viewer.setGeometry(20, 30, 600, 400);
     viewer.showExpanded();
-    viewer.loadFile(QLatin1String("html/index.html"));
+    viewer.loadFile(QLatin1String("../html/index.html"));
 
     return app.exec();
 }

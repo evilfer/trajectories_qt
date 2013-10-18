@@ -4,9 +4,10 @@
 <p>Total: {{list.length}}</p>
 <ul>
   <li ng-repeat="item in list">
-    <a href="#/simulations/{{item.id}}">{{item.title}}</a>        
+    {{item.title}} <a href="#/simulations/{{item.id}}">open</a>        
   </li>
 </ul>
 
-<a href="#/welcome">back</a>
+<p><a href="" ng-click="actions.createSimulation();">Create new simulation</a></p>
+<p><a href="#/welcome">back</a></p>
 

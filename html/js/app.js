@@ -2,7 +2,7 @@
 
 /* App Module */
 
-angular.module('trajectories', ['trajectoriesServices']).
+angular.module('trajectories', ['trajectoriesDataServices']).
   config(['$routeProvider', function($routeProvider) {
   $routeProvider.
       when('/welcome', {templateUrl: 'partials/welcome.html'}).

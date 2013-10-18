@@ -1,9 +1,16 @@
 'use strict';
 
-function SimulationListCtrl($scope, Bridge) {
-    var result = Bridge.callQt("simulation_list");
-    $scope.list = result.list;
+function SimulationListCtrl($scope, TrajectoriesData) {
+  var result = TrajectoriesData.getList();
+  $scope.list = result.list;
+
+  $scope.actions = {
+    createSimulation: function() {
+      var result = TrajectoriesData.createSimulation();
+      $scope.list = result.list;
+    }
+  };
 }
 
-//SimulationListCtrl.$inject = ['$scope', 'Bridge'];
+//SimulationListCtrl.$inject = ['$scope', 'TrajectoriesData'];
 

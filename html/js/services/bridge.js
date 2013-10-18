@@ -1,9 +1,7 @@
 
 'use strict';
 
-/* Services */
-
-angular.module('trajectoriesServices', []).factory('Bridge', function() {
+angular.module('trajectoriesBridgeServices', []).factory('Bridge', function() {
     var bridge = {
         callQt: function(op, data) {
             return QtCppJsBridge.call_qt(op, data || {});

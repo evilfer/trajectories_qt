@@ -1,4 +1,4 @@
-greaterThan(QT_MAJOR_VERSION, 4):QT += widgets webkitwidgets
+QT += widgets webkitwidgets xml json
 
 # Add more folders to ship with the application, here
 folder_01.source = html
@@ -17,7 +17,8 @@ QMAKE_CXXFLAGS += -std=c++11
 
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
-    trajectories.cpp
+    trajectories/trajectories.cpp \
+    trajectories/serializer.cpp
 
 include(libs.pri)
 include(html5bridgeviewer/html5bridgeviewer.pri)
@@ -28,4 +29,5 @@ include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
 
 HEADERS += \
-    trajectories.h
+    trajectories/trajectories.h \
+    trajectories/serializer.h
