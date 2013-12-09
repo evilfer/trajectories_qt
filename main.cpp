@@ -35,15 +35,15 @@ int main(int argc, char *argv[]) {
 
     bridge::Html5BridgeViewer viewer(new Trajectories());
 
-    QWebInspector inspector;
-    inspector.setPage(viewer.webView()->page());
-    inspector.setGeometry(20, 500, 600, 400);
-    inspector.setVisible(true);
-
     viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
     viewer.setGeometry(20, 30, 600, 400);
     viewer.showExpanded();
     viewer.loadFile(QLatin1String("../html/index.html"));
+
+    QWebInspector inspector;
+    inspector.setPage(viewer.webView()->page());
+    inspector.setGeometry(20, 500, 800, 400);
+    inspector.setVisible(true);
 
     return app.exec();
 }

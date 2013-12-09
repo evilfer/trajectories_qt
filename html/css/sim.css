@@ -1,0 +1,36 @@
+.sim-panel {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px; }
+
+.sim-header {
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  top: 0px;
+  height: 50px;
+  background: blue; }
+
+.sim-footer {
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  bottom: 0px;
+  height: 50px;
+  background: red; }
+
+.sim-edit {
+  position: absolute;
+  left: 0px;
+  width: 356px;
+  top: 50px;
+  bottom: 50px; }
+
+.sim-viewer {
+  position: absolute;
+  left: 356px;
+  right: 0px;
+  top: 50px;
+  bottom: 50px;
+  background: green; }

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+
+<div class="list-panel">
+    <h2>Your simulations</h2>
+
+    <div ng-repeat="(id, sim) in list">
+        {{ id }} {{ sim }}
+    </div>
+
+    <button class="pure-button pure-button-primary" ng-click="actions.newSim()">New simulation</button>
+
+</div>

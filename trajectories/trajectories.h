@@ -24,28 +24,30 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #define TRAJECTORIES_H
 
 #include <map>
-#include "html5bridgeviewer/cppjavascriptbridgelistener.h"
 
-typedef std::map<int, QVariantMap> SimulationsIdMap;
+#include "html5bridgeviewer/cppjavascriptbridgelistener.h"
+#include "../simulator/world/solarsystem.h"
 
 class Trajectories : public bridge::CppJavascriptBridgeListener {
 
-    SimulationsIdMap simulations_;
+    world::SolarSystem * solarsystem_m;
+
 public:
     Trajectories();
+    ~Trajectories();
 
     virtual QVariantMap processCall(QString & op, QVariantMap & data);
 
 
 protected:
-    void load();
-    void save(const QVariantMap & simulation);
-    void save(int id, const QVariantMap & simulation);
 
-    void listSimulations(QVariantMap &result);
-    void getSimulation(QVariantMap &data, QVariantMap &result);
-    void createSimulation(QVariantMap & result);
-    void saveSimulation(QVariantMap &data, QVariantMap &result);
+
+    void timeInterval(QVariantMap &data, QVariantMap &result);
+    void solarSystemBodies(QVariantMap &data, QVariantMap &result);
+    void solarSystemState(QVariantMap &data, QVariantMap &result);
+
+
+    static void vector2map(const double* vector, QVariantMap &result, const QString &key);
 };
 
 #endif // TRAJECTORIES_H

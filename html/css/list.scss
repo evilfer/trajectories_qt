@@ -1,0 +1,6 @@
+@import 'common';
+
+.list-panel {
+  @include fill-child;
+  padding: 10px;
+}

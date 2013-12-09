@@ -1,6 +1,6 @@
 
 
-LIBS += -L/home/evilfer/lib/cspice/lib -lcspice
-INCLUDEPATH += /home/evilfer/lib/cspice/include
+LIBS += -L/home/evilfer/libs/cspice/lib -lcspice
+INCLUDEPATH += /home/evilfer/libs/cspice/include
 
-LIBS += -lsqlite3
+LIBS += -lsqlite3 -lqjson

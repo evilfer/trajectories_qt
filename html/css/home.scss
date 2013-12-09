@@ -1,0 +1,7 @@
+@import 'common';
+
+.home-panel {
+  @include fill-child;
+
+  text-align: center;
+}

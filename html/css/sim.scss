@@ -1,0 +1,32 @@
+@import 'common';
+
+$headerHeight: 50px;
+$footerHeight: 50px;
+$formPanelWidth: 356px;
+
+.sim-panel {
+  @include fill-parent;
+}
+
+.sim-header {
+  @include absolute-lwth(0px, 100%, 0px, $headerHeight);
+  background: blue;
+}
+
+.sim-footer {
+  @include absolute-lwbh(0px, 100%, 0px, $headerHeight);
+  background: red;
+}
+
+.sim-edit {
+  @include absolute-lwtb(0px, $formPanelWidth, $headerHeight, $footerHeight);
+}
+
+.sim-viewer {
+  @include absolute-lrtb($formPanelWidth, 0px, $headerHeight, $footerHeight);
+  background: green;
+}
+
+
+
+

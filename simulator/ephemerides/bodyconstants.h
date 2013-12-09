@@ -98,6 +98,7 @@ public:
 struct EphemeridesInterval {
     double a, b;
     EphemeridesInterval() : a(0), b(0) {}
+    bool putInRange(double &time) const;
 };
 
 typedef std::map<BodyId, EphemeridesInterval> EphemeridesIntervalMap;

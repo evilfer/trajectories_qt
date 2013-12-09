@@ -1,29 +1,46 @@
 <!doctype html>
 <html lang="en" ng-app="trajectories">
 <head>
-  <meta charset="utf-8">
-  <title>Google Phone Gallery</title>
+    <meta charset="utf-8">
+    <title>Google Phone Gallery</title>
 
-  <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
-  <link rel="stylesheet" href="css/bootstrap/bootstrap-theme.css">
-  <link rel="stylesheet" href="css/font-opensans.css">
-  <link rel="stylesheet" href="css/font-awesome.css">
-  <link rel="stylesheet" href="css/scrollbar.css">
-  <link rel="stylesheet" href="css/scrollbar.css">
-  <link rel="stylesheet" href="css/flex.css">
-  <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/pure-min.css">
+    <link rel="stylesheet" href="css/font-opensans.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <!--<link rel="stylesheet" href="css/scrollbar.css">-->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/list.css">
+    <link rel="stylesheet" href="css/sim.css">
 
-  <script src="lib/angular/angular.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/controllers/simulation-list.js"></script>
-  <script src="js/controllers/simulation.js"></script>
-  <script src="js/services/bridge.js"></script>
-  <script src="js/services/data.js"></script>
+    <script src="js/libs/angular.js"></script>
+    <script src="js/libs/angular-ui-router.js"></script>
+    <script src="js/libs/json2.js"></script>
+
+    <script src="js/helpers/nspClone.js"></script>
+
+    <script src="js/app/app.js"></script>
+
+    <script src="js/app/services/services-module.js"></script>
+    <script src="js/app/services/bridge-service.js"></script>
+    <script src="js/app/services/documents-service.js"></script>
+
+    <script src="js/app/controllers/index-controller.js"></script>
+    <script src="js/app/controllers/list-controller.js"></script>
+    <script src="js/app/controllers/sim-controller.js"></script>
+    <script src="js/app/controllers/sim-edit-controller.js"></script>
 
 </head>
 <body ng-app="trajectories">
 
-  <div ng-view class="t-panel-fill"></div>
+<div class="fill-parent" ng-controller="IndexCtrl">
+    <div class="fill-parent" ng-if="!bridgeReady">
+        <p>No bridge!</p>
+    </div>
+    <div class="fill-parent" ng-if="bridgeReady">
+        <div class="fill-parent" ui-view></div>
+    </div>
+</div>
 
 </body>
 </html>

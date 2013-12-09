@@ -16,18 +16,14 @@ QMAKE_CXXFLAGS += -std=c++11
 # MOBILITY +=
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp \
-    trajectories/trajectories.cpp \
-    trajectories/serializer.cpp
+SOURCES += main.cpp
 
 include(libs.pri)
 include(html5bridgeviewer/html5bridgeviewer.pri)
 include(simulator/simulator.pri)
+include(trajectories/trajectories.pri)
 
 # Please do not modify the following two lines. Required for deployment.
 include(html5applicationviewer/html5applicationviewer.pri)
 qtcAddDeployment()
 
-HEADERS += \
-    trajectories/trajectories.h \
-    trajectories/serializer.h

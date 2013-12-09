@@ -21,127 +21,78 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "trajectories.h"
-#include "serializer.h"
 
-#include <QDirIterator>
+#include "documentmanager.h"
 
-Trajectories::Trajectories() : simulations_() {
-    load();
+#include "simulator/world/worldloader.h"
+#include "simulator/ephemerides/spiceposition.h"
+
+Trajectories::Trajectories() {
+    this->solarsystem_m = world::WorldLoader::loadSolarSystem();
+    this->solarsystem_m->wakeUpAllSystems();
 }
 
-
-
-void Trajectories::load() {
-    QDirIterator dirIt("../simulations");
-    while (dirIt.hasNext()) {
-        dirIt.next();
-        QFileInfo info = QFileInfo(dirIt.filePath());
-        if (info.isFile() && info.suffix() == "xml") {
-            bool ok;
-            int id = info.baseName().toInt(&ok);
-            if (ok && id > 0) {
-                QFile file(dirIt.filePath());
-                QVariantMap simulation = Serializer::load(file);
-                simulations_[id] = simulation;
-            }
-        }
-    }
+Trajectories::~Trajectories() {
+    delete this->solarsystem_m;
 }
-
-void Trajectories::save(const QVariantMap & simulation) {
-    bool ok;
-    int id = simulation["metadata"].toMap()["id"].toInt(&ok);
-    if (ok && id > 0) {
-        save(id, simulation);
-    }
-}
-
-void Trajectories::save(int id, const QVariantMap & simulation) {
-    simulations_[id] = simulation;
-    QFile file("../simulations/" + QString::number(id) + ".xml");
-    Serializer::save(file, "simulation", simulation);
-}
-
 
 
 QVariantMap Trajectories::processCall(QString & op, QVariantMap & data) {
     QVariantMap result;
 
-    if (op == "simulation_list") {
-        this->listSimulations(result);
-    } else if (op == "get_simulation") {
-        this->getSimulation(data, result);
-    } else if (op == "create_simulation") {
-        this->createSimulation(result);
-    } else if (op == "save_simulation") {
-        this->saveSimulation(data, result);
+    if (op == "list") {
+        DocumentManager::listDocuments(data, result);
+    } else if (op == "load") {
+        DocumentManager::loadDocument(data, result);
+    } else if (op == "save") {
+        DocumentManager::saveDocument(data, result);
     }
 
     return result;
 }
 
 
-void Trajectories::listSimulations(QVariantMap &result) {
-    QVariantList list;
 
-    for(SimulationsIdMap::iterator it = simulations_.begin(); it != simulations_.end(); it++) {
-        list.append(it->second["metadata"].toMap());
-    }
-
-    result["list"] = list;
+void Trajectories::timeInterval(QVariantMap &, QVariantMap &result) {
+    const ephemerides::EphemeridesInterval & interval = ephemerides::SpicePosition::interval();
+    result["a"] = interval.a;
+    result["b"] = interval.b;
 }
 
-void Trajectories::createSimulation(QVariantMap & result) {
+void Trajectories::solarSystemBodies(QVariantMap &data, QVariantMap &result) {
 
-    int id = 1;
-    for(SimulationsIdMap::iterator it = simulations_.begin(); it != simulations_.end(); it++) {
-        int simId = it->second["metadata"].toMap()["id"].toInt();
-        if (simId >= id) {
-            id = simId + 1;
-        }
-    }
-
-    QVariantMap simulation;
-
-    QVariantMap metadata;
-    metadata["id"] = id;
-    metadata["title"] = "New simulation";
-    metadata["description"] = "";
-    simulation["metadata"] = metadata;
-
-    QVariantMap config;
-    config["ephemerides"] = "spice";
-    simulation["config"] = config;
-
-    QVariantMap ship;
-    ship["name"] = "deltaglider";
-    ship["thrust"] = 1000.;
-    ship["isp"] = 50.;
-    ship["mass"] = 10000.;
-    ship["fuelmass"] = 20000.;
-    simulation["ship"] = ship;
-
-    save(id, simulation);
-
-    listSimulations(result);
 }
 
-void Trajectories::getSimulation(QVariantMap &data, QVariantMap &result) {
-    int id = data["id"].toInt();
+void Trajectories::solarSystemState(QVariantMap &data, QVariantMap &result) {
+    const ephemerides::EphemeridesInterval & interval = ephemerides::SpicePosition::interval();
 
-    result["ok"] = true;
-
-    QVariantMap simulation = simulations_[id];
-    result["simulation"] = simulation;
-}
-
-void Trajectories::saveSimulation(QVariantMap &data, QVariantMap &result) {
     bool ok;
-    int id = data["metadata"].toMap()["id"].toInt(&ok);
+    double time = data["time"].toDouble(&ok);
 
-    if (ok && id > 0) {
-        save(id, data);
+    if (ok) {
+        interval.putInRange(time);
+    } else {
+        time = interval.a;
     }
 
-    result["ok"] = true;
+    solarsystem_m->update(time);
+
+    for (world::BodyConstIterator it = solarsystem_m->bodies().begin(); it != solarsystem_m->bodies().end(); it++) {
+        const world::Body * body = (*it);
+        QVariantMap state;
+
+        Trajectories::vector2map(body->pos(), state, "pos");
+        Trajectories::vector2map(body->vel(), state, "vel");
+
+        result[QString::number(body->id())] = state;
+    }
 }
+
+ void Trajectories::vector2map(const double* vector, QVariantMap &result, const QString &key) {
+     QVariantList list;
+     for (int i = 0; i < 3; i++) {
+         list.append(vector[i]);
+     }
+     result[key] = list;
+ }
+

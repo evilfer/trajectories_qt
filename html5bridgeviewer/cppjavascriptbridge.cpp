@@ -33,7 +33,7 @@ namespace bridge {
         this->listener_->setBridge(NULL);
     }
 
-    QVariantMap CppJavascriptBridge::call_qt(QString op, QVariantMap data) {
+    QVariantMap CppJavascriptBridge::call_qt_sync(QString op, QVariantMap data) {
         return this->listener_->processCall(op, data);
     }
 

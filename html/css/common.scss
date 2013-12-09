@@ -1,0 +1,44 @@
+@mixin fill-parent {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+@mixin fill-child {
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+}
+
+@mixin absolute-lwth($l, $w, $t, $h) {
+  position: absolute;
+  left: $l;
+  width: $w;
+  top: $t;
+  height: $h;
+}
+
+@mixin absolute-lwbh($l, $w, $b, $h) {
+  position: absolute;
+  left: $l;
+  width: $w;
+  bottom: $b;
+  height: $h;
+}
+
+@mixin absolute-lwtb($l, $w, $t, $b) {
+  position: absolute;
+  left: $l;
+  width: $w;
+  top: $t;
+  bottom: $b;
+}
+
+@mixin absolute-lrtb($l, $r, $t, $b) {
+  position: absolute;
+  left: $l;
+  right: $r;
+  top: $t;
+  bottom: $b;
+}

@@ -47,6 +47,7 @@ public:
 
     inline bool simplemode() {return m_simplemode;}
     inline Body * baricenter() {return m_baricenter;}
+    inline Body * main() {return r_main;}
     inline BodyVector & bodies() {return m_planets;}
 };
 

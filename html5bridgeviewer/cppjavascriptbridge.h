@@ -54,7 +54,7 @@ namespace bridge {
         void call_js_array(QString op, QVariantList data);
 
     public slots:
-        QVariantMap call_qt(QString opId, QVariantMap data);
+        QVariantMap call_qt_sync(QString opId, QVariantMap data);
     };
 
 }

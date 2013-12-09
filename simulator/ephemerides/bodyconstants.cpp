@@ -81,5 +81,17 @@ namespace ephemerides {
         m_namemap[str] = body;
     }
 
+    bool EphemeridesInterval::putInRange(double &time) const {
+        if (time < a) {
+            time = a;
+            return true;
+        } else if (time > b) {
+            time = b;
+            return true;
+        }
+
+        return false;
+    }
+
 
 }
