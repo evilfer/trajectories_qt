@@ -1,9 +1,9 @@
 HEADERS += \
     trajectories/trajectories.h \
-    trajectories/serializer.h \
-    trajectories/documentmanager.h
+    trajectories/documentmanager.h \
+    trajectories/solarsystemstatemanager.h
 
 SOURCES += \
     trajectories/trajectories.cpp \
-    trajectories/serializer.cpp \
-    trajectories/documentmanager.cpp
+    trajectories/documentmanager.cpp \
+    trajectories/solarsystemstatemanager.cpp

@@ -15,7 +15,13 @@ angular.module('trajectoriesServices', null, null).factory('BridgeService', func
          * @returns {*}
          */
         callSync: function(op, data) {
-            return QtCppJsBridge.call_qt_sync(op, data || {});
+            console.log(op);
+            console.log(data);
+
+            var result = QtCppJsBridge.call_qt_sync(op, data || {});
+            console.log(result);
+
+            return result;
         }
     };
 

@@ -5,25 +5,21 @@
     PATH_SYMBOLS = ( 'A' )
 
     KERNELS_TO_LOAD = (
-        '$A/Gravity.tpc'
-        '$A/pck00010.tpc'
-        '$A/naif0010.tls'
-        '$A/de421.bsp'
-        '$A/de721_full.bsp'
-        '$A/jup230l.bsp'
-        '$A/jup282-1.bsp'
-        '$A/jup293.bsp'
-        '$A/jup294.bsp'
-        '$A/mar097.bsp'
-        '$A/nep081.bsp'
-        '$A/nep085.bsp'
-        '$A/plu031.bsp'
-        '$A/sat357.bsp'
-        '$A/sat359l.bsp'
-        '$A/sat361.bsp'
-        '$A/ura083.bsp'
-        '$A/ura091.bsp'
-        '$A/ura095.bsp'
+
+    '$A/Gravity.tpc'
+    '$A/pck00010.tpc'
+    '$A/naif0010.tls'
+    '$A/de430.bsp'
+    '$A/jup300.bsp'
+    '$A/jup310.bsp'
+    '$A/mar097.bsp'
+    '$A/nep077.bsp'
+    '$A/nep081.bsp'
+    '$A/plu042.bsp'
+    '$A/sat359l.bsp'
+    '$A/sat361.bsp'
+    '$A/ura083.bsp'
+
     )
 
 \begintext

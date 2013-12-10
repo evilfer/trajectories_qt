@@ -9,16 +9,14 @@
   left: 0px;
   width: 100%;
   top: 0px;
-  height: 50px;
-  background: blue; }
+  height: 50px; }
 
 .sim-footer {
   position: absolute;
   left: 0px;
   width: 100%;
   bottom: 0px;
-  height: 50px;
-  background: red; }
+  height: 50px; }
 
 .sim-edit {
   position: absolute;
@@ -33,4 +31,10 @@
   right: 0px;
   top: 50px;
   bottom: 50px;
-  background: green; }
+  background: #202020; }
+
+.sim-viewer-canvas {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px; }

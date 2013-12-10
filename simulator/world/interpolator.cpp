@@ -46,6 +46,7 @@ namespace world {
 
 
     double Interpolator::interpolate2GetPoints(double et) {
+        double igap = this->igap_;
         double findex = floor(et*this->igap_);
         int index = (int) findex;
         double time0 = findex * this->gap_;

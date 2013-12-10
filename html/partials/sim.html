@@ -1,10 +1,14 @@
 
 <div class="sim-panel">
-    <div class="sim-header">header</div>
+    <div class="sim-header">
+        <button class="pure-button" ng-click="actions.save()">Save</button>
+    </div>
     <div class="sim-footer">footer</div>
     <div class="sim-edit">
-        <div ng-include="'partials/sim-edit.html'" ng-controller="SimEditCtrl"></div>
+        <div ng-include="'partials/sim-edit.html'" ng-controller="SimEditCtrl" class="fill-parent"></div>
     </div>
-    <div class="sim-viewer"></div>
+    <div class="sim-viewer">
+        <div ng-include="'partials/sim-viewer.html'" ng-controller="SimViewerCtrl" class="fill-parent"></div>
+    </div>
 
 </div>

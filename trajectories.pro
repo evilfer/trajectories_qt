@@ -1,9 +1,12 @@
 QT += widgets webkitwidgets xml json
 
 # Add more folders to ship with the application, here
-folder_01.source = html
-folder_01.target = .
-DEPLOYMENTFOLDERS = folder_01
+folder_html.source = html
+folder_html.target = .
+folder_cfg.source = cfg
+folder_cfg.target = .
+
+DEPLOYMENTFOLDERS = folder_html folder_cfg
 
 QMAKE_CXXFLAGS += -std=c++11
 

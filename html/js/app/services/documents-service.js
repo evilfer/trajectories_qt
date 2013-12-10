@@ -24,6 +24,10 @@ angular.module('trajectoriesServices', null, null).factory('DocumentsService', [
                     detailed: false
                 };
             }
+
+            BridgeService.callSync("loadsolarsystem");
+            BridgeService.callSync("validtimerange");
+            BridgeService.callSync('solarsystemstate', {et: 0});
         },
 
 

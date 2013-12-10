@@ -26,11 +26,10 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 
 #include "html5bridgeviewer/cppjavascriptbridgelistener.h"
-#include "../simulator/world/solarsystem.h"
+#include "solarsystemstatemanager.h"
 
 class Trajectories : public bridge::CppJavascriptBridgeListener {
-
-    world::SolarSystem * solarsystem_m;
+    SolarSystemStateManager * solarSystemManager_m;
 
 public:
     Trajectories();
@@ -39,15 +38,6 @@ public:
     virtual QVariantMap processCall(QString & op, QVariantMap & data);
 
 
-protected:
-
-
-    void timeInterval(QVariantMap &data, QVariantMap &result);
-    void solarSystemBodies(QVariantMap &data, QVariantMap &result);
-    void solarSystemState(QVariantMap &data, QVariantMap &result);
-
-
-    static void vector2map(const double* vector, QVariantMap &result, const QString &key);
 };
 
 #endif // TRAJECTORIES_H

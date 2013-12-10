@@ -21,19 +21,18 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "trajectories.h"
-
 #include "documentmanager.h"
 
-#include "simulator/world/worldloader.h"
 #include "simulator/ephemerides/spiceposition.h"
 
-Trajectories::Trajectories() {
-    this->solarsystem_m = world::WorldLoader::loadSolarSystem();
-    this->solarsystem_m->wakeUpAllSystems();
+Trajectories::Trajectories() : solarSystemManager_m(NULL) {
+    ephemerides::SpicePosition::init();
+
+    this->solarSystemManager_m = new SolarSystemStateManager();
 }
 
 Trajectories::~Trajectories() {
-    delete this->solarsystem_m;
+    delete this->solarSystemManager_m;
 }
 
 
@@ -46,53 +45,16 @@ QVariantMap Trajectories::processCall(QString & op, QVariantMap & data) {
         DocumentManager::loadDocument(data, result);
     } else if (op == "save") {
         DocumentManager::saveDocument(data, result);
+    } else if (op == "loadsolarsystem") {
+        solarSystemManager_m->solarSystemBodies(data, result);
+    } else if (op == "solarsystemstate") {
+        solarSystemManager_m->solarSystemState(data, result);
+    } else if (op == "validtimerange") {
+        solarSystemManager_m->timeInterval(data, result);
     }
+
+
 
     return result;
 }
-
-
-
-void Trajectories::timeInterval(QVariantMap &, QVariantMap &result) {
-    const ephemerides::EphemeridesInterval & interval = ephemerides::SpicePosition::interval();
-    result["a"] = interval.a;
-    result["b"] = interval.b;
-}
-
-void Trajectories::solarSystemBodies(QVariantMap &data, QVariantMap &result) {
-
-}
-
-void Trajectories::solarSystemState(QVariantMap &data, QVariantMap &result) {
-    const ephemerides::EphemeridesInterval & interval = ephemerides::SpicePosition::interval();
-
-    bool ok;
-    double time = data["time"].toDouble(&ok);
-
-    if (ok) {
-        interval.putInRange(time);
-    } else {
-        time = interval.a;
-    }
-
-    solarsystem_m->update(time);
-
-    for (world::BodyConstIterator it = solarsystem_m->bodies().begin(); it != solarsystem_m->bodies().end(); it++) {
-        const world::Body * body = (*it);
-        QVariantMap state;
-
-        Trajectories::vector2map(body->pos(), state, "pos");
-        Trajectories::vector2map(body->vel(), state, "vel");
-
-        result[QString::number(body->id())] = state;
-    }
-}
-
- void Trajectories::vector2map(const double* vector, QVariantMap &result, const QString &key) {
-     QVariantList list;
-     for (int i = 0; i < 3; i++) {
-         list.append(vector[i]);
-     }
-     result[key] = list;
- }
 

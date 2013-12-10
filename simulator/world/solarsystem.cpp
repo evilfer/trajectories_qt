@@ -25,7 +25,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 namespace world {
 
 
-SolarSystem::SolarSystem() : m_sun(0), m_planets(), r_bodies() {
+SolarSystem::SolarSystem() : m_sun(NULL), m_planets(), r_bodies() {
 }
 
 SolarSystem::~SolarSystem() {
@@ -60,7 +60,9 @@ void SolarSystem::setAwakeSystem(PlanetSystem *ps) {
 }
 
 void SolarSystem::update(double et) {
-    m_sun->update(et);
+    if (m_sun) {
+        m_sun->update(et);
+    }
     for (PlanetSystemList::iterator it = m_planets.begin(); it != m_planets.end(); it++) {
         (*it)->update(et);
     }

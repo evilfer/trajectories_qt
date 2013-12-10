@@ -10,12 +10,10 @@ $formPanelWidth: 356px;
 
 .sim-header {
   @include absolute-lwth(0px, 100%, 0px, $headerHeight);
-  background: blue;
 }
 
 .sim-footer {
   @include absolute-lwbh(0px, 100%, 0px, $headerHeight);
-  background: red;
 }
 
 .sim-edit {
@@ -24,8 +22,13 @@ $formPanelWidth: 356px;
 
 .sim-viewer {
   @include absolute-lrtb($formPanelWidth, 0px, $headerHeight, $footerHeight);
-  background: green;
+  background: #202020;
 }
+
+.sim-viewer-canvas {
+  @include fill-parent;
+}
+
 
 
 
