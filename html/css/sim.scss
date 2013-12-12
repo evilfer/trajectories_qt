@@ -27,9 +27,24 @@ $formPanelWidth: 356px;
 
 .sim-viewer-canvas {
   @include fill-parent;
+  z-index: 0;
 }
 
+.sim-viewer-center {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, .5);
+}
 
+.sim-viewer-center-picker {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  padding: 10px;
+  background: rgba(255, 255, 255, .8);
+}
 
 
 

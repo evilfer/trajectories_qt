@@ -1,9 +1,10 @@
 #include "solarsystemstatemanager.h"
 
-#include "simulator/world/worldloader.h"
-#include "simulator/ephemerides/spiceposition.h"
+#include "../simulator/world/worldloader.h"
+#include "../simulator/ephemerides/spiceposition.h"
+#include "../simulator/tmath/consts.h"
 
-SolarSystemStateManager::SolarSystemStateManager() : solarsystem_m(NULL), ids_m() {
+SolarSystemStateManager::SolarSystemStateManager() : solarsystem_m(NULL), orbit_m(), ids_m() {
     this->solarsystem_m = world::WorldLoader::loadSolarSystem();
     this->solarsystem_m->wakeUpAllSystems();
 
@@ -14,7 +15,7 @@ SolarSystemStateManager::SolarSystemStateManager() : solarsystem_m(NULL), ids_m(
 }
 
 SolarSystemStateManager::~SolarSystemStateManager() {
-    delete this->solarsystem_m;
+
 }
 
 
@@ -87,6 +88,10 @@ void SolarSystemStateManager::solarSystemState(QVariantMap &data, QVariantMap &r
 
     solarsystem_m->update(et);
 
+    int orbitN = 1000;
+    double orbitAS = M_2PI / orbitN;
+    double orbitPos[3];
+
     for (world::BodyConstIterator it = solarsystem_m->bodies().begin(); it != solarsystem_m->bodies().end(); it++) {
         const world::Body * body = (*it);
         QVariantMap state;
@@ -94,15 +99,40 @@ void SolarSystemStateManager::solarSystemState(QVariantMap &data, QVariantMap &r
         SolarSystemStateManager::vector2map(body->pos(), state, "pos");
         SolarSystemStateManager::vector2map(body->vel(), state, "vel");
 
+
+        if (body->parent()) {
+            QVariantList orbit;
+            orbit_m.set(solarsystem_m->bodies().get(body->parent()), body);
+
+            for (int i = 0; i < orbitN; i++) {
+                orbit_m.calculateGlobalPosition(orbitAS * i, orbitPos);
+                SolarSystemStateManager::vector2list(orbitPos, orbit);
+            }
+
+            orbit.append(orbit.at(0));
+
+            state["orbit"] = orbit;
+        } else {
+            state["orbit"] = false;
+        }
+
+
         result[ids_m[body->id()]] = state;
     }
 }
 
 void SolarSystemStateManager::vector2map(const double* vector, QVariantMap &result, const QString &key) {
-    QVariantList list;
-    for (int i = 0; i < 3; i++) {
-        list.append(vector[i]);
-    }
-    result[key] = list;
+    QVariantMap v;
+    v["x"] = vector[0];
+    v["y"] = vector[1];
+    v["z"] = vector[2];
+    result[key] = v;
+}
+void SolarSystemStateManager::vector2list(const double* vector, QVariantList &list) {
+    QVariantMap v;
+    v["x"] = vector[0];
+    v["y"] = vector[1];
+    v["z"] = vector[2];
+    list.append(v);
 }
 

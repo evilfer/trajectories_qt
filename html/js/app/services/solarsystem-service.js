@@ -7,11 +7,11 @@ angular.module('trajectoriesServices', null, null).factory('SolarSystemService',
         bodies: null,
         tree: null,
         init: function () {
-            this._timerange = BridgeService.callSync('validtimerange');
+            this.timerange = BridgeService.callSync('validtimerange');
 
             var result = BridgeService.callSync('loadsolarsystem');
-            this._bodies = result.bodies;
-            this._tree = result.tree;
+            this.bodies = result.bodies;
+            this.tree = result.tree;
         },
 
         getState: function (et) {

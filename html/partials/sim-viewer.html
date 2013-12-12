@@ -1,2 +1,9 @@
-<div class="sim-viewer-canvas" t-simulation-renderer>
+<div class="sim-viewer-canvas" t-simulation-renderer ng-model="solarSystem"></div>
+
+<div class="sim-viewer-center">
+    {{ centerName() }}
+    <button class="pure-button pure-button-primary pure-button-xsmall" ng-click="chooseCenter()">Choose</button>
+</div>
+
+<div class="sim-viewer-center-picker" t-tree-picker ng-model="solarSystem">
 </div>

@@ -36,6 +36,11 @@ namespace tmath {
 #ifndef M_PI
 #define M_PI            3.14159265359
 #endif
+
+#ifndef M_2PI
+#define M_2PI           6.28318530718
+#endif
+
 }
 
 #endif
