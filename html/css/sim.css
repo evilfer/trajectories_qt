@@ -50,6 +50,4 @@
 .sim-viewer-center-picker {
   position: absolute;
   left: 50px;
-  top: 50px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.8); }
+  top: 50px; }

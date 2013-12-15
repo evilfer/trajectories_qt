@@ -1,14 +1,14 @@
 
 angular.module('trajectories', null, null).controller('SimViewerCtrl', function ($scope, SolarSystemService) {
 
+    var center = 301;
+
     $scope.solarSystem = {
-        center: 399,
+        center: center,
         bodies: SolarSystemService.bodies,
         tree: SolarSystemService.tree,
-        state: SolarSystemService.getState(0)
+        state: SolarSystemService.getState(0, center)
     };
-
-    console.log($scope.solarSystem);
 
     $scope.bodyName = function(id) {
         return $scope.solarSystem.bodies[id].name;

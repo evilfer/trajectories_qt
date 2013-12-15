@@ -15,6 +15,9 @@ class SolarSystemStateManager {
 
     std::map<int, QString> ids_m;
 
+    ephemerides::BodyId lastCenter;
+    double lastEt;
+
 public:
     SolarSystemStateManager();
     ~SolarSystemStateManager();
@@ -22,6 +25,8 @@ public:
     void timeInterval(QVariantMap &data, QVariantMap &result);
     void solarSystemBodies(QVariantMap &data, QVariantMap &result);
     void solarSystemState(QVariantMap &data, QVariantMap &result);
+    inline void addBodyState(const world::Body *body, QVariantMap &states) {addBodyState(body, body->id(), states);}
+    void addBodyState(const world::Body *body, int code, QVariantMap &states);
 
     void buildBodyTree(std::map<int, std::vector<int>> & tree, QVariantMap &container, int body);
 

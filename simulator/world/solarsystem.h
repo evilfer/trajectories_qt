@@ -33,6 +33,7 @@ class SolarSystem {
 
     Body * m_sun;
     PlanetSystemList m_planets;
+    PlanetSystemMap m_planetsMap;
     BodyList r_bodies;
 
 public:
@@ -46,6 +47,7 @@ public:
 
     void wakeUpAllSystems();
     void setAwakeSystem(PlanetSystem *ps);
+    void setAwakeSystem(ephemerides::BodyId id);
 
     inline Body * sun() {return m_sun;}
     inline PlanetSystemList & planets() {return m_planets;}

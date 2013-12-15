@@ -38,12 +38,9 @@ namespace ephemerides {
         m_id(id), m_baricenter(0), m_code(id), m_parent(0), m_name(name), m_radius(radius), m_gm(gm), m_mass(gm/G), m_interpolategap(interpolategap) {
         if (id != BodyConstants::SUN_ID) {
             m_code = id % 100;
-            m_baricenter = id;
-            while (m_baricenter > 10) {
-                m_baricenter /= 10;
-            }
+            m_baricenter = id / 100;
 
-            if (m_code == BodyConstants::PLANET_CODE) {
+            if (m_code == BodyConstants::PLANET_CODE || id < 10) {
                 m_parent = BodyConstants::SUN_ID;
             } else {
                 m_parent = 100 * (id/100) + BodyConstants::PLANET_CODE;

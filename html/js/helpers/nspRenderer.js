@@ -96,11 +96,11 @@ nspRenderer.prototype.updateScene = function () {
     var line = new THREE.Line(lineGeometry, lineMaterial);
     this.scene.add(line);
 */
-    for (var id in this.model.bodies) {
+    for (var id in this.model.state) {
         this.addBodyLines(id);
     }
 
-    for (var id in this.model.bodies) {
+    for (var id in this.model.state) {
         this.addBody(id);
     }
 
@@ -109,7 +109,7 @@ nspRenderer.prototype.updateScene = function () {
 };
 
 nspRenderer.prototype.updateCamera = function() {
-    var id = 599;
+    var id = this.model.center;
 
     var bodyPos = this.model.state[id].pos;
 

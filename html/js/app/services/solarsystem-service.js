@@ -1,6 +1,19 @@
 'use strict';
 
 angular.module('trajectoriesServices', null, null).factory('SolarSystemService', ['BridgeService', function (BridgeService) {
+/*
+    console.log('testing performance...');
+    var count = 0;
+    var k1 = BridgeService.callSync('loadsolarsystem');
+    var t = Date.now() + 1000;
+
+    while(t > Date.now()) {
+        var k2 = BridgeService.callSync('solarsystemstate', {et: 1000 * count, center: 399});
+        count ++;
+    }
+
+    console.log('done: ' + count);
+    */
 
     var service = {
         timerange: null,
@@ -14,8 +27,8 @@ angular.module('trajectoriesServices', null, null).factory('SolarSystemService',
             this.tree = result.tree;
         },
 
-        getState: function (et) {
-            return BridgeService.callSync('solarsystemstate', {et: et});
+        getState: function (et, center) {
+            return BridgeService.callSync('solarsystemstate', {et: et, center: center});
         }
     };
 

@@ -35,7 +35,7 @@ public:
     Trajectories();
     ~Trajectories();
 
-    virtual QVariantMap processCall(QString & op, QVariantMap & data);
+    virtual void processCall(QString & op, QVariantMap & data, QVariantMap &result);
 
 
 };

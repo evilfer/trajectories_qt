@@ -25,7 +25,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 namespace world {
 
 
-SolarSystem::SolarSystem() : m_sun(NULL), m_planets(), r_bodies() {
+SolarSystem::SolarSystem() : m_sun(NULL), m_planets(), m_planetsMap(), r_bodies() {
 }
 
 SolarSystem::~SolarSystem() {
@@ -42,6 +42,7 @@ void SolarSystem::setSun(const ephemerides::BodyConstants *body) {
 
 void SolarSystem::addPlanetSystem(PlanetSystem *ps) {
     m_planets.push_back(ps);
+    m_planetsMap[ps->main()->baricenter()] = ps;
     for (BodyVector::iterator i = ps->bodies().begin(); i != ps->bodies().end(); i++) {
         r_bodies.addBody(*i);
     }
@@ -56,6 +57,14 @@ void SolarSystem::wakeUpAllSystems() {
 void SolarSystem::setAwakeSystem(PlanetSystem *ps) {
     for (PlanetSystemList::iterator it = m_planets.begin(); it != m_planets.end(); it++) {
         (*it)->set(ps != (*it));
+    }
+}
+
+void SolarSystem::setAwakeSystem(ephemerides::BodyId id) {
+    if (m_sun && id == m_sun->code()) {
+        setAwakeSystem((PlanetSystem*)NULL);
+    } else {
+        setAwakeSystem(m_planetsMap[r_bodies[id]->baricenter()]);
     }
 }
 

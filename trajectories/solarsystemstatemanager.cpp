@@ -4,9 +4,10 @@
 #include "../simulator/ephemerides/spiceposition.h"
 #include "../simulator/tmath/consts.h"
 
-SolarSystemStateManager::SolarSystemStateManager() : solarsystem_m(NULL), orbit_m(), ids_m() {
+#include <iostream>
+
+SolarSystemStateManager::SolarSystemStateManager() : solarsystem_m(NULL), orbit_m(), ids_m(), lastCenter(-1), lastEt() {
     this->solarsystem_m = world::WorldLoader::loadSolarSystem();
-    this->solarsystem_m->wakeUpAllSystems();
 
     for (world::BodyConstIterator it = solarsystem_m->bodies().begin(); it != solarsystem_m->bodies().end(); it++) {
         const world::Body * body = (*it);
@@ -27,6 +28,7 @@ void SolarSystemStateManager::timeInterval(QVariantMap &, QVariantMap &result) {
 }
 
 void SolarSystemStateManager::solarSystemBodies(QVariantMap &, QVariantMap &result) {
+
     QVariantMap bodies;
     QVariantMap treeRoot;
 
@@ -75,50 +77,86 @@ void SolarSystemStateManager::buildBodyTree(std::map<int, std::vector<int>> & tr
 }
 
 void SolarSystemStateManager::solarSystemState(QVariantMap &data, QVariantMap &result) {
+
     const ephemerides::EphemeridesInterval & interval = ephemerides::SpicePosition::interval();
 
-    bool ok;
-    double et = data["et"].toDouble(&ok);
+    bool update = false;
 
+    bool ok;
+
+    int center = data["center"].toInt(&ok);
+    if (ok && this->lastCenter != center) {
+        this->lastCenter = center;
+        this->solarsystem_m->setAwakeSystem(center);
+        //this->solarsystem_m->wakeUpAllSystems();
+        update = true;
+    }
+
+    double et = data["et"].toDouble(&ok);
     if (ok) {
         interval.putInRange(et);
     } else {
         et = interval.a;
     }
 
-    solarsystem_m->update(et);
+    if (et != this->lastEt) {
+        this->lastEt = et;
+        update = true;
+    }
 
-    int orbitN = 1000;
-    double orbitAS = M_2PI / orbitN;
-    double orbitPos[3];
+    if (update) {
+        this->solarsystem_m->update(this->lastEt);
+    }
 
-    for (world::BodyConstIterator it = solarsystem_m->bodies().begin(); it != solarsystem_m->bodies().end(); it++) {
-        const world::Body * body = (*it);
-        QVariantMap state;
+    std::cout << center << std::endl;
 
-        SolarSystemStateManager::vector2map(body->pos(), state, "pos");
-        SolarSystemStateManager::vector2map(body->vel(), state, "vel");
+    addBodyState(this->solarsystem_m->sun(), result);
 
-
-        if (body->parent()) {
-            QVariantList orbit;
-            orbit_m.set(solarsystem_m->bodies().get(body->parent()), body);
-
-            for (int i = 0; i < orbitN; i++) {
-                orbit_m.calculateGlobalPosition(orbitAS * i, orbitPos);
-                SolarSystemStateManager::vector2list(orbitPos, orbit);
-            }
-
-            orbit.append(orbit.at(0));
-
-            state["orbit"] = orbit;
+    for (world::PlanetSystemList::iterator it = solarsystem_m->planets().begin(); it != solarsystem_m->planets().end(); it++) {
+        world::PlanetSystem * ps = (*it);
+        if (ps->simplemode()) {
+            addBodyState(ps->baricenter(), ps->main()->id(), result);
         } else {
-            state["orbit"] = false;
+            for(world::BodyVector::iterator bit = ps->bodies().begin(); bit != ps->bodies().end(); bit++) {
+                world::Body * b = (*bit);
+                addBodyState(b, result);
+            }
+        }
+    }
+
+}
+
+void SolarSystemStateManager::addBodyState(const world::Body *body, int code, QVariantMap &states) {
+
+    static int orbitN = 500;
+    static double orbitAS = M_2PI / orbitN;
+    static double orbitPos[3];
+
+    QVariantMap state;
+
+    SolarSystemStateManager::vector2map(body->pos(), state, "pos");
+    SolarSystemStateManager::vector2map(body->vel(), state, "vel");
+
+
+    if (body->parent()) {
+        QVariantList orbit;
+        orbit_m.set(solarsystem_m->bodies().get(body->parent()), body);
+
+        for (int i = 0; i < orbitN; i++) {
+            orbit_m.calculateGlobalPosition(orbitAS * i, orbitPos);
+            SolarSystemStateManager::vector2list(orbitPos, orbit);
         }
 
+        orbit.append(orbit.at(0));
 
-        result[ids_m[body->id()]] = state;
+        state["orbit"] = orbit;
+    } else {
+        state["orbit"] = false;
     }
+
+
+    states[ids_m[code]] = state;
+
 }
 
 void SolarSystemStateManager::vector2map(const double* vector, QVariantMap &result, const QString &key) {

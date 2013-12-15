@@ -1,0 +1,46 @@
+
+.tree-children {
+    position: absolute;
+    left: 100%;
+}
+
+.tree-item {
+  position: relative;
+  display: block;
+}
+
+.tree-item.tree-hide {
+  display: none;
+}
+
+
+.tree-item:hover > .tree-children > .tree-item.tree-item {
+  display: block;
+}
+
+.tree-item.tree-parent-of-selected > .tree-children > .tree-item.tree-item {
+  display: block;
+}
+
+.tree-children:hover > .tree-item:not(:hover) > .tree-children > .tree-item.tree-hide {
+  display: none;
+}
+
+
+
+
+
+.tree-item-name {
+  padding: 3px 10px;
+  background: rgba(255, 255, 255, .8);
+  cursor: pointer;
+}
+
+.tree-item.tree-selected > .tree-item-name {
+  font-weight: bold;
+}
+
+.tree-item.tree-parent-of-selected  > .tree-item-name{
+  font-style: italic;
+}
+

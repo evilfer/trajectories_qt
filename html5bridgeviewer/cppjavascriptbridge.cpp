@@ -34,7 +34,9 @@ namespace bridge {
     }
 
     QVariantMap CppJavascriptBridge::call_qt_sync(QString op, QVariantMap data) {
-        return this->listener_->processCall(op, data);
+        QVariantMap result;
+        this->listener_->processCall(op, data, result);
+        return result;
     }
 
     void CppJavascriptBridge::makeCall(QString & op, QVariantMap & data) {

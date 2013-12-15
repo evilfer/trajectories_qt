@@ -52,6 +52,7 @@ public:
 };
 
 typedef std::vector<PlanetSystem*> PlanetSystemList;
+typedef std::map<int, PlanetSystem*> PlanetSystemMap;
 
 }
 #endif // PLANETSYSTEM_H

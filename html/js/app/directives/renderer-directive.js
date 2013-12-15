@@ -5,8 +5,6 @@ angular.module('trajectories', null, null).directive('tSimulationRenderer', func
         },
 
         link: function (scope, element, attrs) {
-            console.log(scope.ngModel);
-
             var renderer = new nspRenderer(element, scope.ngModel);
             renderer.updateScene();
         }

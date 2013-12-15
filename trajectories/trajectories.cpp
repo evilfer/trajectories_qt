@@ -36,8 +36,7 @@ Trajectories::~Trajectories() {
 }
 
 
-QVariantMap Trajectories::processCall(QString & op, QVariantMap & data) {
-    QVariantMap result;
+void Trajectories::processCall(QString & op, QVariantMap & data, QVariantMap &result) {
 
     if (op == "list") {
         DocumentManager::listDocuments(data, result);
@@ -53,8 +52,5 @@ QVariantMap Trajectories::processCall(QString & op, QVariantMap & data) {
         solarSystemManager_m->timeInterval(data, result);
     }
 
-
-
-    return result;
 }
 
