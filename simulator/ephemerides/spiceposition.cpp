@@ -97,7 +97,6 @@ namespace ephemerides {
 
     void SpicePosition::getinterval(const std::vector<std::string> &kernels, BodyId body, EphemeridesInterval &interval) {
         SPICEDOUBLE_CELL        ( cover, 2000);
-        char timea[1000], timeb[1000];
 
         bool first = true;
 
@@ -120,6 +119,8 @@ namespace ephemerides {
                 }
             }
         }
+
+        char timea[1000], timeb[1000];
 
         timout_c (interval.a, "YYYY ::TDB", sizeof(timea), timea);
         timout_c (interval.b, "YYYY ::TDB", sizeof(timeb), timeb);

@@ -1,27 +1,31 @@
 
 angular.module('trajectories', null, null).controller('SimViewerCtrl', function ($scope, SolarSystemService) {
 
-    var center = 301;
+    $scope.center = {
+        body: 399
+    };
+
+    $scope.date = {
+       et: 0
+    };
 
     $scope.solarSystem = {
-        center: center,
+        center: $scope.center.body,
         bodies: SolarSystemService.bodies,
         tree: SolarSystemService.tree,
-        state: SolarSystemService.getState(0, center)
+        state: null
     };
 
-    $scope.bodyName = function(id) {
-        return $scope.solarSystem.bodies[id].name;
+
+    var updateCenter = function(center) {
+        $scope.solarSystem.state = SolarSystemService.getState(0, center);
+        $scope.solarSystem.center = center;
     };
 
-    $scope.centerName = function() {
-        return $scope.bodyName($scope.solarSystem.center);
-    };
+    $scope.$watch('center.body', function() {
+       console.log('svc body updated ' + $scope.center.body);
+        updateCenter($scope.center.body);
+    });
 
-    $scope.pickerOpen = true;
-
-    $scope.chooseCenter = function() {
-        $scope.pickerOpen = !$scope.pickerOpen;
-    };
 
 });

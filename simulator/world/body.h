@@ -30,6 +30,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include "../ephemerides/bodyconstants.h"
 #include "object.h"
 #include "interpolator.h"
+#include "irregularorbit.h"
 
 
 #include <string>
@@ -37,11 +38,17 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 namespace world {
 
 class Body : public Object, public ephemerides::BodyConstants, public Interpolator {
+    IrregularOrbit *irregularOrbit_;
 
+    void initOrbit();
 public:
     Body(const BodyConstants * body);
     Body(const BodyConstants & body);
+    ~Body();
     void update(double et);
+
+    inline bool hasIrregularOrbit() const {return irregularOrbit_ != NULL;}
+    inline const IrregularOrbit * irregularOrbit() const {return irregularOrbit_;}
 };
 
 typedef std::map<ephemerides::BodyIndex, Body*> BodyIdMap;

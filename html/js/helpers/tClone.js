@@ -1,13 +1,13 @@
 
 
-function nspClone(obj) {
+function tClone(obj) {
   if (obj === null || typeof (obj) !== 'object')
     return obj;
 
   var temp = obj.constructor(); // changed
 
   for (var key in obj) {
-    temp[key] = nspClone(obj[key]);
+    temp[key] = tClone(obj[key]);
   }
 
 

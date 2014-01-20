@@ -38,7 +38,8 @@ int main(int argc, char *argv[]) {
     viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
     viewer.setGeometry(20, 30, 600, 400);
     viewer.showExpanded();
-    viewer.loadFile(QLatin1String("../html/index.html"));
+    viewer.loadFile(QLatin1String("../html/index.html/#/list"));
+    viewer.loadUrl(QUrl("../html/index.html#sim:1"));
 
     QWebInspector inspector;
     inspector.setPage(viewer.webView()->page());

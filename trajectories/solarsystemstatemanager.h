@@ -25,13 +25,13 @@ public:
     void timeInterval(QVariantMap &data, QVariantMap &result);
     void solarSystemBodies(QVariantMap &data, QVariantMap &result);
     void solarSystemState(QVariantMap &data, QVariantMap &result);
-    inline void addBodyState(const world::Body *body, QVariantMap &states) {addBodyState(body, body->id(), states);}
-    void addBodyState(const world::Body *body, int code, QVariantMap &states);
+    inline void addBodyState(const world::Body *body, const world::Body *center, QVariantMap &states) {addBodyState(body, body->id(), center, states);}
+    void addBodyState(const world::Body *body, int code, const world::Body *center, QVariantMap &states);
 
     void buildBodyTree(std::map<int, std::vector<int>> & tree, QVariantMap &container, int body);
 
-    static void vector2map(const double* vector, QVariantMap &result, const QString &key);
-    static void vector2list(const double* vector, QVariantList &list);
+    static void vector2map(const double* vector, const double* ref, QVariantMap &result, const QString &key);
+    static void vector2list(const double* vector, const double* ref, QVariantList &list);
 };
 
 #endif // SOLARSYSTEMSTATEMANAGER_H

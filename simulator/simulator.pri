@@ -20,7 +20,8 @@ HEADERS += \
     simulator/world/burn.h \
     simulator/world/body.h \
     simulator/simulator/simulator.h \
-    simulator/simulator/inputobject.h
+    simulator/simulator/inputobject.h \
+    simulator/world/irregularorbit.h
 
 SOURCES += \
     simulator/ephemerides/spiceposition.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
     simulator/world/burn.cpp \
     simulator/world/body.cpp \
     simulator/simulator/simulator.cpp \
-    simulator/simulator/inputobject.cpp
+    simulator/simulator/inputobject.cpp \
+    simulator/world/irregularorbit.cpp
 
 

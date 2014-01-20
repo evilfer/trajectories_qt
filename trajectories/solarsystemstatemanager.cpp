@@ -8,6 +8,7 @@
 
 SolarSystemStateManager::SolarSystemStateManager() : solarsystem_m(NULL), orbit_m(), ids_m(), lastCenter(-1), lastEt() {
     this->solarsystem_m = world::WorldLoader::loadSolarSystem();
+    this->solarsystem_m->wakeUpAllSystems();
 
     for (world::BodyConstIterator it = solarsystem_m->bodies().begin(); it != solarsystem_m->bodies().end(); it++) {
         const world::Body * body = (*it);
@@ -87,8 +88,6 @@ void SolarSystemStateManager::solarSystemState(QVariantMap &data, QVariantMap &r
     int center = data["center"].toInt(&ok);
     if (ok && this->lastCenter != center) {
         this->lastCenter = center;
-        this->solarsystem_m->setAwakeSystem(center);
-        //this->solarsystem_m->wakeUpAllSystems();
         update = true;
     }
 
@@ -108,46 +107,59 @@ void SolarSystemStateManager::solarSystemState(QVariantMap &data, QVariantMap &r
         this->solarsystem_m->update(this->lastEt);
     }
 
-    std::cout << center << std::endl;
+    const world::Body *centerBody = solarsystem_m->bodies().get(this->lastCenter);
 
-    addBodyState(this->solarsystem_m->sun(), result);
+    addBodyState(this->solarsystem_m->sun(), centerBody, result);
 
     for (world::PlanetSystemList::iterator it = solarsystem_m->planets().begin(); it != solarsystem_m->planets().end(); it++) {
         world::PlanetSystem * ps = (*it);
-        if (ps->simplemode()) {
-            addBodyState(ps->baricenter(), ps->main()->id(), result);
-        } else {
-            for(world::BodyVector::iterator bit = ps->bodies().begin(); bit != ps->bodies().end(); bit++) {
-                world::Body * b = (*bit);
-                addBodyState(b, result);
-            }
+        //if (ps->simplemode()) {
+        //    addBodyState(ps->baricenter(), ps->main()->id(), centerBody, result);
+        //} else {
+        for(world::BodyVector::iterator bit = ps->bodies().begin(); bit != ps->bodies().end(); bit++) {
+            world::Body * b = (*bit);
+            addBodyState(b, centerBody, result);
         }
+        // }
     }
 
 }
 
-void SolarSystemStateManager::addBodyState(const world::Body *body, int code, QVariantMap &states) {
+void SolarSystemStateManager::addBodyState(const world::Body *body, int code, const world::Body *center, QVariantMap &states) {
 
-    static int orbitN = 500;
-    static double orbitAS = M_2PI / orbitN;
+    static int orbitN = 100;
+    static double i2p = M_PI / orbitN;
+
     static double orbitPos[3];
 
     QVariantMap state;
 
-    SolarSystemStateManager::vector2map(body->pos(), state, "pos");
-    SolarSystemStateManager::vector2map(body->vel(), state, "vel");
+    SolarSystemStateManager::vector2map(body->pos(), center->pos(), state, "pos");
+    SolarSystemStateManager::vector2map(body->vel(), center->pos(), state, "vel");
 
+    std::cout << body->id() << " " << body->parent() << std::endl;
 
     if (body->parent()) {
         QVariantList orbit;
-        orbit_m.set(solarsystem_m->bodies().get(body->parent()), body);
 
-        for (int i = 0; i < orbitN; i++) {
-            orbit_m.calculateGlobalPosition(orbitAS * i, orbitPos);
-            SolarSystemStateManager::vector2list(orbitPos, orbit);
+        if (body->hasIrregularOrbit()) {
+            for (int i = 0; i < body->irregularOrbit()->size(); i++) {
+                SolarSystemStateManager::vector2list(body->irregularOrbit()->get(i), center->pos(), orbit);
+            }
+        } else {
+            const world::Body * parent = solarsystem_m->bodies().get(body->parent());
+            orbit_m.set(parent, body);
+
+            double a0 = orbit_m.trueAnomaly();
+
+            for (int i = 0; i < orbitN; i++) {
+                double a = a0 + M_PI * (1 - cos(i2p * i));
+                orbit_m.calculateGlobalPosition(a, orbitPos);
+                SolarSystemStateManager::vector2list(orbitPos, center->pos(), orbit);
+            }
+
+            orbit.append(orbit.at(0));
         }
-
-        orbit.append(orbit.at(0));
 
         state["orbit"] = orbit;
     } else {
@@ -159,18 +171,23 @@ void SolarSystemStateManager::addBodyState(const world::Body *body, int code, QV
 
 }
 
-void SolarSystemStateManager::vector2map(const double* vector, QVariantMap &result, const QString &key) {
+void SolarSystemStateManager::vector2map(const double* vector, const double* ref, QVariantMap &result, const QString &key) {
     QVariantMap v;
-    v["x"] = vector[0];
-    v["y"] = vector[1];
-    v["z"] = vector[2];
+    v["x"] = vector[0] - ref[0];
+    v["y"] = vector[1] - ref[1];
+    v["z"] = vector[2] - ref[2];
     result[key] = v;
 }
-void SolarSystemStateManager::vector2list(const double* vector, QVariantList &list) {
+void SolarSystemStateManager::vector2list(const double* vector, const double* ref, QVariantList &list) {
     QVariantMap v;
-    v["x"] = vector[0];
-    v["y"] = vector[1];
-    v["z"] = vector[2];
+    v["x"] = vector[0] - ref[0];
+    v["y"] = vector[1] - ref[1];
+    v["z"] = vector[2] - ref[2];
     list.append(v);
 }
+/*void SolarSystemStateManager::vector2list(const double* vector, QVariantList &list) {
+    list.append(vector[0]);
+    list.append(vector[1]);
+    list.append(vector[2]);
+}*/
 

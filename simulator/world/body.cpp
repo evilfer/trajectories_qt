@@ -22,16 +22,41 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <algorithm>
 #include "../tmath/consts.h"
+#include "../tmath/vectormath.h"
 #include "../ephemerides/spiceposition.h"
 #include "body.h"
 
 
 namespace world {
 
-Body::Body(const BodyConstants &body) : Object(), BodyConstants(body), Interpolator(body.id(), body.gap()){
+Body::Body(const BodyConstants &body) : Object(), BodyConstants(body), Interpolator(body.id(), body.gap()), irregularOrbit_(NULL) {
+    initOrbit();
 }
 
-Body::Body(const BodyConstants *body) : Object(), BodyConstants(body), Interpolator(body->id(), body->gap()){
+Body::Body(const BodyConstants *body) : Object(), BodyConstants(body), Interpolator(body->id(), body->gap()), irregularOrbit_(NULL) {
+    initOrbit();
+}
+
+Body::~Body() {
+    if (irregularOrbit_) {
+        delete irregularOrbit_;
+    }
+}
+
+void Body::initOrbit() {
+    if (this->id() > 699 && this->id() % 100 == 99) { // irregular orbit
+        const ephemerides::EphemeridesInterval interval = ephemerides::SpicePosition::interval();
+        double gap = interval.b - interval.a;
+        int n = 300;
+        double step = gap / n;
+        this->irregularOrbit_ = new IrregularOrbit(n);
+        for (int i = 0; i < n; i++) {
+            double t = interval.a + i * step;
+            this->update(t);
+            tvector::set(this->pos(), irregularOrbit_->get(i));
+        }
+        return;
+    }
 }
 
 void Body::update(double et) {

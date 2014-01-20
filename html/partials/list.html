@@ -4,7 +4,7 @@
     <h2>Your simulations</h2>
 
     <div ng-repeat="(id, sim) in list">
-        {{ id }} {{ sim }}
+        {{ id }} {{ sim }} <button class="pure-button pure-button-primary pure-button-xsmall" ng-click="actions.openSim(id)">New simulation</button>
     </div>
 
     <button class="pure-button pure-button-primary" ng-click="actions.newSim()">New simulation</button>

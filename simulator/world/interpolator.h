@@ -43,6 +43,7 @@ public:
     Interpolator(ephemerides::BodyId body, double gap);
     virtual ~Interpolator();
     
+    void interpolate2(double et, double *pos);
     void interpolate2(double et, double *pos, double *vel);
 };
 

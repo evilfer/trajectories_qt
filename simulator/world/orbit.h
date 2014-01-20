@@ -79,6 +79,7 @@ public:
     double apoapsis() const {return this->apoapsis_;}
     double radius() const {return this->radius_;}
     double eccentricAnomaly() const {return this->eccano_;}
+    double trueAnomaly() const {return this->v_;}
 
     void calculateOrbitPosition(double angle, double *result) const;
     void calculateGlobalPosition(double angle, double *result) const;

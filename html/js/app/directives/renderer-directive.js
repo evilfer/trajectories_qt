@@ -5,8 +5,14 @@ angular.module('trajectories', null, null).directive('tSimulationRenderer', func
         },
 
         link: function (scope, element, attrs) {
-            var renderer = new nspRenderer(element, scope.ngModel);
-            renderer.updateScene();
+            console.log('renderer directive');
+            console.log(scope.ngModel);
+            var renderer = new tRenderer(element, scope.ngModel);
+
+            scope.$watch('ngModel.center', function() {
+                console.log('rd ' + scope.ngModel.center);
+                renderer.updateScene();
+            });
         }
     };
 });

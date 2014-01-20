@@ -36,6 +36,12 @@ namespace world {
     Interpolator::~Interpolator() {
     }
 
+    void Interpolator::interpolate2(double et, double* pos) {
+        double dt = interpolate2GetPoints(et);
+        tvector::set(this->a_, pos); // e = ps[0]
+        tvector::addScaled(pos, this->b_, dt);
+    }
+
 
     void Interpolator::interpolate2(double et, double* pos, double* vel) {
         double dt = interpolate2GetPoints(et);

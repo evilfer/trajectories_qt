@@ -23,14 +23,13 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "orbit.h"
 #include <cmath>
-#include <iostream>
 
 #include "../tmath/consts.h"
 #include "../tmath/vectormath.h"
 
 namespace world {
 
-  void Orbit::set(const double *cbpos, const double *cbvel, double gm, const double *pos, const double *vel) {
+void Orbit::set(const double *cbpos, const double *cbvel, double gm, const double *pos, const double *vel) {
     tvector::set(cbpos, this->cpos_);
 
     tvector::substract(pos, cbpos, this->opos_);
@@ -39,19 +38,19 @@ namespace world {
     this->gm_ = gm;
 
     calculate();
-  }
+}
 
-  void Orbit::set(const Object *centralobj, double gm, const Object *orbiter) {
+void Orbit::set(const Object *centralobj, double gm, const Object *orbiter) {
     set(centralobj->pos(), centralobj->vel(), gm, orbiter->pos(), orbiter->vel());
-  }
+}
 
-  void Orbit::set(const Body *centralobj, const Object *orbiter) {
+void Orbit::set(const Body *centralobj, const Object *orbiter) {
     set(centralobj, centralobj->gm(), orbiter);
-  }
+}
 
 
 
-  void Orbit::calculate() {
+void Orbit::calculate() {
     /* specific relative angular momentum vector: h */
     tvector::cross(this->opos_, this->ovel_, this->h_);
 
@@ -76,21 +75,22 @@ namespace world {
     this->ascnodelon_ = this->nmod_ == 0 ? 0. : acos(this->n_[0] / this->nmod_);
     if (this->n_[1] < 0) {
         this->ascnodelon_ = 2 * M_PI - this->ascnodelon_;
-      }
+    }
 
     /* argument of the periapsis: perarg */
     this->nmod_ecc_ = this->nmod_ * this->ecc_;
     this->perarg_ = this->nmod_ecc_ == 0. ? 0. : acos(tvector::dot(this->n_, this->eccv_) / this->nmod_ecc_);
     if (this->eccv_[2] < 0) {
         this->perarg_ = 2 * M_PI - this->perarg_;
-      }
+    }
 
     /* true anomaly: v */
     this->recc_ = tvector::mod(this->opos_) * this->ecc_;
     this->v_ = this->recc_ == 0 ? 0. : acos(tvector::dot(this->eccv_, this->opos_) / this->recc_);
     if (tvector::dot(this->opos_, this->ovel_) < 0) {
         this->v_ = 2 * M_PI - this->v_;
-      }
+    }
+
 
     /* eccentric anomaly */
     this->eccano_ = atan(sqrt(1 - this->ecc_*this->ecc_) * sin(this->v_) / (this->ecc_ + cos(this->v_)));
@@ -109,21 +109,21 @@ namespace world {
     this->semimajor_ = .5 * this->majoraxis_;
     if (this->isEllipse_) {
         this->semimajor_ = -this->semimajor_;
-      }
+    }
 
     /* periapsis / apoapsis */
     if (this->isEllipse_) {
         this->periapsis_ = this->semimajor_ * (1 - this->ecc_);
         this->apoapsis_ = this->semimajor_ * (1 + this->ecc_);
-      } else {
+    } else {
         this->periapsis_ = this->semimajor_ * (this->ecc_ - 1);
         this->apoapsis_ = 0;
-      }
+    }
 
     setOrbitAxis();
-  }
+}
 
-  void Orbit::setOrbitAxis() {
+void Orbit::setOrbitAxis() {
     double a = cos(this->perarg_);
     double pa = cos(this->inclination_) * sin(this->perarg_);
     double x = a * cos(this->ascnodelon_) - pa * sin(this->ascnodelon_);
@@ -134,25 +134,25 @@ namespace world {
     tvector::unit(this->smx_);
     tvector::cross(this->h_, this->smx_, this->smy_);
     tvector::unit(this->smy_);
-  }
+}
 
 
 
-  void Orbit::calculateOrbitPosition(double angle, double *result) const {
+void Orbit::calculateOrbitPosition(double angle, double *result) const {
     double cos_a = cos(angle);
-    double k = 2. * this->apoapsis_ * this->periapsis_ / ((this->apoapsis_ - this->periapsis_) * cos_a + this->majoraxis_);
+    double k = abs(2. * this->apoapsis_ * this->periapsis_ / ((this->periapsis_ - this->apoapsis_) * cos_a + this->majoraxis_));
 
     double x = k * cos_a;
     double y = k * sin(angle);
 
     tvector::setScaled(this->smx_, x, result);
     tvector::addScaled(result, this->smy_, y);
-  }
+}
 
-  void Orbit::calculateGlobalPosition(double angle, double *result) const {
+void Orbit::calculateGlobalPosition(double angle, double *result) const {
     calculateOrbitPosition(angle, result);
     tvector::add(result, this->cpos_);
-  }
+}
 
 }
 

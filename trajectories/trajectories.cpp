@@ -27,7 +27,6 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 Trajectories::Trajectories() : solarSystemManager_m(NULL) {
     ephemerides::SpicePosition::init();
-
     this->solarSystemManager_m = new SolarSystemStateManager();
 }
 

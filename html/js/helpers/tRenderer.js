@@ -1,4 +1,4 @@
-var nspRenderer = function (element, model) {
+var tRenderer = function (element, model) {
 
     this.model = model;
     this.objects = {};
@@ -66,13 +66,13 @@ var nspRenderer = function (element, model) {
     })();
 };
 
-nspRenderer.prototype.clear = function() {
+tRenderer.prototype.clear = function() {
     for (var i in this.objects) {
-        this.scene.removeChild(this.objects[i]);
+        this.scene.remove(this.objects[i]);
     }
 };
 
-nspRenderer.prototype.updateScene = function () {
+tRenderer.prototype.updateScene = function () {
     this.clear();
 
     /*var segments = 32;
@@ -108,13 +108,13 @@ nspRenderer.prototype.updateScene = function () {
     this.renderer.render(this.scene, this.camera);
 };
 
-nspRenderer.prototype.updateCamera = function() {
+tRenderer.prototype.updateCamera = function() {
     var id = this.model.center;
 
     var bodyPos = this.model.state[id].pos;
 
 
-    this.camera.position.set(bodyPos.x, bodyPos.y, bodyPos.z + 2 * this.model.bodies[id].radius);
+    this.camera.position.set(bodyPos.x, bodyPos.y, bodyPos.z + 8 * this.model.bodies[id].radius);
     this.camera.up = new THREE.Vector3(0,1,0);
     this.camera.lookAt(new THREE.Vector3(bodyPos.x, bodyPos.y, bodyPos.z));
 
@@ -122,7 +122,7 @@ nspRenderer.prototype.updateCamera = function() {
     this.controls.update();
 };
 
-nspRenderer.prototype.addBodyLines = function(id) {
+tRenderer.prototype.addBodyLines = function(id) {
 
     var state = this.model.state[id];
 
@@ -148,7 +148,7 @@ nspRenderer.prototype.addBodyLines = function(id) {
     }
 };
 
-nspRenderer.prototype.addBody = function(id) {
+tRenderer.prototype.addBody = function(id) {
     var body = this.model.bodies[id];
     var state = this.model.state[id];
 

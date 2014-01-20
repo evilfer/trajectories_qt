@@ -38,11 +38,19 @@ $formPanelWidth: 356px;
   background: rgba(255, 255, 255, .5);
 }
 
-.sim-viewer-center-picker {
-  position: absolute;
+.body-picker {
+  position: relative;
+  width: 0px;
   left: 50px;
-  top: 50px;
+  top: 0px;
+  font-size: 0.75em;
 }
 
-
+.sim-viewer-date {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, .5);
+}
 

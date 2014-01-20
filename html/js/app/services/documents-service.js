@@ -24,10 +24,6 @@ angular.module('trajectoriesServices', null, null).factory('DocumentsService', [
                     detailed: false
                 };
             }
-
-            BridgeService.callSync("loadsolarsystem");
-            BridgeService.callSync("validtimerange");
-            BridgeService.callSync('solarsystemstate', {et: 0});
         },
 
 
@@ -83,7 +79,7 @@ angular.module('trajectoriesServices', null, null).factory('DocumentsService', [
             this.docs[newId] = {
                 config: {},
                 metadata: {},
-                ship: nspClone(defaultShip),
+                ship: tClone(defaultShip),
                 mission: {}
             };
 
