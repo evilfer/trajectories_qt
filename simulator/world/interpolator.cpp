@@ -30,55 +30,63 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace world {
 
-    Interpolator::Interpolator(ephemerides::BodyId body, double gap) : body_(body), gap_(gap), igap_(1. / gap), index_(INT_MIN) {
-    }
+Interpolator::Interpolator(ephemerides::BodyId body, double gap) : body_(body), gap_(gap), igap_(1. / gap), index_(INT_MIN) {
+}
 
-    Interpolator::~Interpolator() {
-    }
+Interpolator::~Interpolator() {
+}
 
-    void Interpolator::interpolate2(double et, double* pos) {
+void Interpolator::interpolate2(double et, double* pos) {
+    if (this->body_) {
         double dt = interpolate2GetPoints(et);
         tvector::set(this->a_, pos); // e = ps[0]
         tvector::addScaled(pos, this->b_, dt);
+    } else {
+        tvector::reset(pos);
     }
+}
 
 
-    void Interpolator::interpolate2(double et, double* pos, double* vel) {
+void Interpolator::interpolate2(double et, double* pos, double* vel) {
+    if (this->body_) {
         double dt = interpolate2GetPoints(et);
         tvector::set(this->a_, pos); // e = ps[0]
         tvector::addScaled(pos, this->b_, dt);
         tvector::set(this->b_, vel);
+    } else {
+        tvector::reset(pos);
+        tvector::reset(vel);
+    }
+}
+
+
+double Interpolator::interpolate2GetPoints(double et) {
+    double findex = floor(et*this->igap_);
+    int index = (int) findex;
+    double time0 = findex * this->gap_;
+    double dt = et - time0;
+
+    int diff = index - this->index_;
+
+    if (diff == 1) {
+        tvector::set(this->c_, this->a_);
+        ephemerides::SpicePosition::getpos(this->body_, time0 + this->gap_, this->c_);
+    } else if (diff == -1) {
+        tvector::set(this->a_, this->c_);
+        ephemerides::SpicePosition::getpos(this->body_, time0, this->a_);
+    } else if (diff != 0) {
+        ephemerides::SpicePosition::getpos(this->body_, time0, this->a_);
+        ephemerides::SpicePosition::getpos(this->body_, time0 + this->gap_, this->c_);
     }
 
-
-    double Interpolator::interpolate2GetPoints(double et) {
-        double igap = this->igap_;
-        double findex = floor(et*this->igap_);
-        int index = (int) findex;
-        double time0 = findex * this->gap_;
-        double dt = et - time0;
-
-        int diff = index - this->index_;
-
-        if (diff == 1) {
-            tvector::set(this->c_, this->a_);
-            ephemerides::SpicePosition::getpos(this->body_, time0 + this->gap_, this->c_);
-        } else if (diff == -1) {
-            tvector::set(this->a_, this->c_);
-            ephemerides::SpicePosition::getpos(this->body_, time0, this->a_);
-        } else if (diff != 0) {
-            ephemerides::SpicePosition::getpos(this->body_, time0, this->a_);
-            ephemerides::SpicePosition::getpos(this->body_, time0 + this->gap_, this->c_);
-        }
-
-        if (diff != 0) {
-            tvector::substract(this->c_, this->a_, this->b_);
-            tvector::scale(this->b_, this->igap_);
-            this->index_ = index;
-        }
-
-        return dt;
+    if (diff != 0) {
+        tvector::substract(this->c_, this->a_, this->b_);
+        tvector::scale(this->b_, this->igap_);
+        this->index_ = index;
     }
+
+    return dt;
+}
 
 
 }

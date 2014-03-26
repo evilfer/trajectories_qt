@@ -37,7 +37,7 @@ namespace simulator {
     }
 
     bool equals(const InputObject &io1, const InputObject &io2) {
-        return equals(io1.ints(), io1.ints()) && simulator::equals(io1.doubles(), io2.doubles());
+        return equals(io1.ints(), io1.ints()) && equals(io1.doubles(), io2.doubles());
     }
 
     template<typename T>

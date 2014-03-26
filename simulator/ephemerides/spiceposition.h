@@ -50,8 +50,8 @@ namespace ephemerides {
 
   public:
     static void init();
-    static inline void getpos(int body, double et, double *xyz) {spkgps_c (body, et, "ECLIPJ2000", 0, xyz, &m_lt);}
-    static inline void getposvel(int body, double et, double *pv) {spkgeo_c (body, et, "ECLIPJ2000", 0, pv, &m_lt);}
+    static void getpos(int body, double et, double *xyz);
+    static void getposvel(int body, double et, double *pv);
 
     static inline const BodyConstantsList & bodies() {return m_bodies;}
 

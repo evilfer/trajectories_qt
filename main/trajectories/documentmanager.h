@@ -4,7 +4,9 @@
 #include <QVariantMap>
 
 class DocumentManager {
+
 public:
+
 
     static void listDocuments(QVariantMap & data, QVariantMap & result);
     static void saveDocument(QVariantMap & data, QVariantMap & result);

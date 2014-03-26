@@ -25,9 +25,8 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include "../tmath/consts.h"
 
 namespace world {
-    Ship::Ship(SolarSystem * solarsystem) : Object()
-    {
-        this->set(0, 0, 0, 0);
+    Ship::Ship(SolarSystem * solarsystem) : Object() {
+        this->solarsystem_ = solarsystem;
         tvector::reset(this->acc_);
         this->gravity_ = new GravityField(solarsystem);
         this->burn_ = new Burn();
@@ -41,25 +40,26 @@ namespace world {
         this->current_fuelmass_ = state;
     }
 
-    void Ship::getShipSystemsState(ShipSystemsState & state) {
+    void Ship::getShipSystemsState(ShipSystemsState & state) const {
         state = this->current_fuelmass_;
     }
 
-    void Ship::setInOrbit(const Body * body, double radius, double inc, double lon, double lat) {
+    void Ship::setInOrbit(const simulator::data::MissionOrbit *orbit) {
 
-        double a = radius * cos(lat);
-        double pa = radius * cos(inc) * sin(lat);
-        double x = a * cos(lon) - pa * sin(lon);
-        double y = a * sin(lon) + pa * cos(lon);
-        double z = radius * sin(inc) * sin(lat);
+        double a = orbit->radius * cos(orbit->lat);
+        double pa = orbit->radius * cos(orbit->inc) * sin(orbit->lat);
+        double x = a * cos(orbit->lon) - pa * sin(orbit->lon);
+        double y = a * sin(orbit->lon) + pa * cos(orbit->lon);
+        double z = orbit->radius * sin(orbit->inc) * sin(orbit->lat);
 
-        double v = sqrt(body->gm() / radius);
+        const Body * body = solarsystem_->body(orbit->body);
+        double v = sqrt(body->gm() / orbit->radius);
 
-        double va = -v * sin(lat);
-        double vpa = v * cos(inc) * cos(lat);
-        double vx = va * cos(lon) - vpa * sin(lon);
-        double vy = va * sin(lon) + vpa * cos(lon);
-        double vz = v * sin(inc) * cos(lat);
+        double va = -v * sin(orbit->lat);
+        double vpa = v * cos(orbit->inc) * cos(orbit->lat);
+        double vx = va * cos(orbit->lon) - vpa * sin(orbit->lon);
+        double vy = va * sin(orbit->lon) + vpa * cos(orbit->lon);
+        double vz = v * sin(orbit->inc) * cos(orbit->lat);
 
         tvector::set(x, y, z, this->pos_);
         tvector::add(this->pos_, body->pos());
@@ -67,6 +67,10 @@ namespace world {
         tvector::add(this->vel_, body->vel());
 
         this->gravity_->updateAccDistance(this->pos(), this->acc_);
+    }
+
+    void Ship::setState(const simulator::data::MissionState* state) {
+        setState(state->pos, state->vel);
     }
 
     void Ship::setState(const double *pos, const double *vel) {
@@ -109,11 +113,12 @@ namespace world {
         }
     }
 
-    void Ship::set(double shipmass, double thrust, double isp, double fuelmass) {
-        this->shipmass_ = shipmass;
-        this->thrust_ = thrust;
-        this->isp_ = isp;
-        this->fuelmass_ = fuelmass;
+    void Ship::set(const simulator::data::MissionShip* data) {
+        this->shipmass_ = data->shipmass;
+        this->thrust_ = data->thrust;
+        this->isp_ = data->isp;
+        this->fuelmass_ = data->fuelmass;
+
         this->ve_ = MT_G0 * this->isp_;
 
         this->current_fuelmass_ = fuelmass_;

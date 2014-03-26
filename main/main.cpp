@@ -20,29 +20,31 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#include <QApplication>
+#include <QWebInspector>
+#include <QGraphicsWebView>
 
-#include "path.h"
-
-namespace trajectory {
-
-
-  Path::Path()
-  {
-  }
-
-  PathPosition Path::startSection(const PathPoint &startPoint)
-  {
-    this->save(startPoint);
-    return this->lastPoint();
-  }
-
-
-  PathPosition Path::endSection() {
-    return this->lastPoint();
-  }
+#include "trajectories/trajectories.h"
+#include "html5bridgeviewer/html5bridgeviewer.h"
 
 
 
+int main(int argc, char *argv[]) {
 
+    QApplication app(argc, argv);
+
+    bridge::Html5BridgeViewer viewer(new Trajectories());
+
+    viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
+    viewer.setGeometry(20, 30, 600, 400);
+    viewer.showExpanded();
+    viewer.loadFile(QLatin1String("../html/index.html"));
+//    viewer.loadUrl(QUrl("../html/index.html"));
+
+    QWebInspector inspector;
+    inspector.setPage(viewer.webView()->page());
+    inspector.setGeometry(20, 500, 800, 400);
+    inspector.setVisible(true);
+
+    return app.exec();
 }
-

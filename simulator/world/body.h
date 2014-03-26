@@ -74,6 +74,8 @@ public:
     inline Body * operator[] (ephemerides::BodyId id) {return this->get(id);}
     inline Body * operator[] (const std::string & name) {return this->get(name);}
 
+    inline const BodyVector& vector() const {return vector_;}
+
     void updateAll(double et);
 
     inline BodyConstIterator begin() const {return this->vector_.begin();}

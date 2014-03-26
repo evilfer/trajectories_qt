@@ -6,17 +6,19 @@
 #include <map>
 #include <vector>
 
-#include "../simulator/world/solarsystem.h"
-#include "../simulator/world/orbit.h"
+#include "world/solarsystem.h"
+#include "world/orbit.h"
 
 class SolarSystemStateManager {
     world::SolarSystem * solarsystem_m;
     world::Orbit orbit_m;
 
+
     std::map<int, QString> ids_m;
 
     ephemerides::BodyId lastCenter;
     double lastEt;
+
 
 public:
     SolarSystemStateManager();
@@ -24,6 +26,7 @@ public:
 
     void timeInterval(QVariantMap &data, QVariantMap &result);
     void solarSystemBodies(QVariantMap &data, QVariantMap &result);
+
     void solarSystemState(QVariantMap &data, QVariantMap &result);
     inline void addBodyState(const world::Body *body, const world::Body *center, QVariantMap &states) {addBodyState(body, body->id(), center, states);}
     void addBodyState(const world::Body *body, int code, const world::Body *center, QVariantMap &states);

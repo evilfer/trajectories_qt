@@ -42,11 +42,12 @@ namespace world {
 
     inline SolarSystem *solarSystem() {return this->solarsystem_;}
     inline Ship *ship() {return this->ship_;}
+    inline const Ship *ship() const {return this->ship_;}
 
-    double time() {return this->et_;}
+    double time() const {return this->et_;}
 
-    void init(double et, ephemerides::BodyId id, double radius, double inc, double lon, double lat);
-    void setState(double et, const double *shippos, const double *shipvel);
+    void init(const simulator::data::MissionOrbit * orbit);
+    void init(const simulator::data::MissionState * state);
     void step(double maxtime);
   };
 

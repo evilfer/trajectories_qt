@@ -24,15 +24,41 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace trajectory {
 
-    Trajectory::Trajectory() : sections_(), children_(), parents_() {
-        this->clear();
-    }
+Trajectory::Trajectory(const world::World* world) : world_(world), data_(), sections_(), children_(), parents_() {
+    this->clear();
+}
 
-    void Trajectory::clear() {
-        this->sections_.clear();
-        this->children_.clear();
-        this->parents_.clear();
-    }
+void Trajectory::clear() {
+    this->data_.clear();
+    this->sections_.clear();
+    this->children_.clear();
+    this->parents_.clear();
+    this->currentSection_ = "";
+    this->children_[this->currentSection_] = SectionIdList();
+}
+
+
+void Trajectory::selectSection(SectionId section) {
+    this->currentSection_ = section;
+}
+
+SectionId Trajectory::initNewSection() {
+    SectionId parent = currentSection_;
+    SectionId id = (currentSection_.length() > 0 ? currentSection_ + std::string(".") : std::string("")) + std::to_string(children_[currentSection_].size());
+    children_[parent].push_back(id);
+    parents_[id] = parent;
+    sections_[id].init(id, data_.lastPoint(), world_->ship());
+    currentSection_ = id;
+    return id;
+}
+
+void Trajectory::savePoint() {
+    this->data_.push_back(PathPoint(world_->time(), world_->ship()->pos(), world_->ship()->vel()));
+}
+
+void Trajectory::completeSection() {
+    sections_[currentSection_].setLast(data_.lastPoint());
+}
 
 
 }

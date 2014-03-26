@@ -36,20 +36,20 @@ namespace world {
         delete this->solarsystem_;
     }
 
-    void World::init(double et, ephemerides::BodyId id, double radius, double inc, double lon, double lat) {
-        this->et_ = et;
+    void World::init(const simulator::data::MissionOrbit * orbit) {
+        this->et_ = orbit->et;
         this->solarsystem_->wakeUpAllSystems();
-        this->solarsystem_->update(et);
-        this->ship_->setInOrbit(this->solarsystem_->body(id), radius, inc, lon, lat);
+        this->solarsystem_->update(et_);
+        this->ship_->setInOrbit(orbit);
         this->solarsystem_->setAwakeSystem(this->ship_->closestSystem());
     }
 
 
-    void World::setState(double et, const double *shippos, const double *shipvel) {
-        this->et_ = et;
+    void World::init(const simulator::data::MissionState * state) {
+        this->et_ = state->et;
         this->solarsystem_->wakeUpAllSystems();
-        this->solarsystem_->update(et);
-        this->ship_->setState(shippos, shipvel);
+        this->solarsystem_->update(et_);
+        this->ship_->setState(state);
         this->solarsystem_->setAwakeSystem(this->ship_->closestSystem());
     }
 

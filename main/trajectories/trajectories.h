@@ -20,14 +20,25 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
+#ifndef TRAJECTORIES_H
+#define TRAJECTORIES_H
 
-#include "simulator.h"
+#include <QObject>
+#include <map>
 
-namespace simulator {
+#include "html5bridgeviewer/cppjavascriptbridgelistener.h"
+#include "solarsystemstatemanager.h"
+
+class Trajectories : public bridge::CppJavascriptBridgeListener {
+    SolarSystemStateManager * solarSystemManager_m;
+
+public:
+    Trajectories();
+    ~Trajectories();
+
+    virtual void processCall(QString & op, QVariantMap & data, QVariantMap &result);
 
 
-    Simulator::Simulator() {
-    }
+};
 
-
-}
+#endif // TRAJECTORIES_H

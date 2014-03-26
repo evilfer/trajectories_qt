@@ -24,7 +24,6 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cmath>
 #include <cctype>
-#include <iostream>
 
 namespace ephemerides {
 
@@ -124,9 +123,6 @@ namespace ephemerides {
 
         timout_c (interval.a, "YYYY ::TDB", sizeof(timea), timea);
         timout_c (interval.b, "YYYY ::TDB", sizeof(timeb), timeb);
-
-        std::cout << body << " " << m_bodies[body]->name() << " ";
-        std::cout << "[" << timea << " - " << timeb << "]" << std::endl;
     }
 
     void SpicePosition::init() {
@@ -139,7 +135,6 @@ namespace ephemerides {
         kernels(ks);
 
         for (std::vector<std::string>::iterator i = ks.begin(); i != ks.end(); i++) {
-            std::cout << *i << std::endl;
             getbodies(*i);
         }
 
@@ -166,13 +161,12 @@ namespace ephemerides {
         timout_c (m_interval.a, "YYYY ::TDB", sizeof(timea), timea);
         timout_c (m_interval.b, "YYYY ::TDB", sizeof(timeb), timeb);
 
-        std::cout << "global: [" << m_interval.a << " - " << m_interval.b << "]" << std::endl;
-        std::cout << "global: [" << timea << " - " << timeb << "]" << std::endl;
-
-        std::cout << m_bodies.size() << std::endl;
-
         erract_c("SET", 0, (char*)"DEFAULT");
     }
+
+    void SpicePosition::getpos(int body, double et, double *xyz) {spkgps_c (body, et, "ECLIPJ2000", 0, xyz, &m_lt);}
+    void SpicePosition::getposvel(int body, double et, double *pv) {spkgeo_c (body, et, "ECLIPJ2000", 0, pv, &m_lt);}
+
 
 
 }

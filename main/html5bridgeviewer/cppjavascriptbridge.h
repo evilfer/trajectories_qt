@@ -25,6 +25,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 
+
 #include "cppjavascriptbridgelistener.h"
 
 #define BRIDGE_BAD      -1

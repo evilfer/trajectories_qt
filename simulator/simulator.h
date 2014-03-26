@@ -23,13 +23,39 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
+#include "world/world.h"
+#include "trajectory/trajectory.h"
+
+#include "structs/missiondata.h"
+
 namespace simulator {
 
 
-    class Simulator {
-    public:
-        Simulator();
-    };
+class Simulator {
+
+    world::World * world_;
+
+    trajectory::Trajectory trajectory_;
+
+    bool typeOk(int &state, const data::MissionObjectType & type);
+
+
+    void initShip(const data::MissionShip* ship);
+    void createStateSection(const data::MissionState* state);
+    void createOrbitSection(const data::MissionOrbit* orbit);
+
+    void createPointSection();
+
+    void simulate(int state, const data::InputMission& mission, const data::InputMission::const_iterator missionItem);
+
+public:
+    Simulator(world::SolarSystem * solarsystem);
+    void simulate(const data::InputMission& mission);
+
+    const trajectory::Trajectory& trajectory() const {return trajectory_;}
+
+    const world::World* world() const {return world_;}
+};
 
 }
 

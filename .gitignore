@@ -1,4 +1,5 @@
 trajectories.pro.*
-cspicelib.pri
-libs.pri
+main/libs.pri
+simulator/libs.pri
+tests/testlibs.pri
 

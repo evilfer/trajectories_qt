@@ -26,28 +26,35 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <map>
 #include <string>
-#include "path.h"
+#include "trajectorydata.h"
+#include "world/ship.h"
 
 namespace trajectory {
 
+typedef std::string SectionId;
+typedef std::vector<SectionId> SectionIdList;
 
-  class PathSection
-  {
-    std::string key_;
+class PathSection {
+    SectionId id_;
     PathPosition from_;
     PathPosition to_;
+    world::ShipSystemsState systemState_;
     bool multipoint_;
 
-  public:
-    PathSection(std::string key, PathPosition point);
-    PathSection(std::string key, PathPosition from, PathPosition to);
+public:
+    PathSection();
+
+    void init(SectionId id, PathPosition start, const world::Ship * ship);
+    void setLast(PathPosition last);
 
     bool belongs(PathPosition point);
     bool multipoint() const {return this->multipoint_;}
 
     PathPosition from() const {return this->from_;}
     PathPosition to() const {return this->to_;}
-  };
+
+    int length() const {return this->to_ - this->from_;}
+};
 
 }
 

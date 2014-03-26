@@ -26,6 +26,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include "object.h"
 #include "gravityfield.h"
 #include "burn.h"
+#include "structs/missiondata.h"
 
 namespace world {
 
@@ -33,6 +34,7 @@ namespace world {
 
     class Ship : public Object {
         double acc_[3];
+        SolarSystem * solarsystem_;
         GravityField * gravity_;
 
         double shipmass_;
@@ -51,16 +53,17 @@ namespace world {
         ~Ship();
 
         void setShipSystemsState(const ShipSystemsState & state);
-        void getShipSystemsState(ShipSystemsState & state);
+        void getShipSystemsState(ShipSystemsState & state) const;
 
         const double * acc() const {return this->acc_;}
         double * acc() {return this->acc_;}
 
-        void setInOrbit(const Body * body, double radius, double inc, double lon, double lat);
+        void setInOrbit(const simulator::data::MissionOrbit* orbit);
+        void setState(const simulator::data::MissionState* state);
         void setState(const double *pos, const double *vel);
         void step(double t, double dt);
 
-        void set(double shipmass, double thrust, double isp, double fuelmass);
+        void set(const simulator::data::MissionShip* data);
 
 
         inline double minDistance() const {return this->gravity_->minDistance();}
@@ -73,6 +76,8 @@ namespace world {
         void calculateBurn(const double *dv, double maneuverTime);
         void startBurn();
         void endBurn();
+
+        double shipmass() const {return shipmass_;}
     };
 }
 

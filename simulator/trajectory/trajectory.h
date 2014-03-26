@@ -26,20 +26,41 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include <map>
 #include <vector>
 
+#include "trajectorydata.h"
 #include "pathsection.h"
+#include "world/world.h"
 
 namespace trajectory {
 
-    class Trajectory {
-        std::map<std::string, PathSection> sections_;
-        std::map<std::string, std::vector<std::string> > children_;
-        std::map<std::string, std::string> parents_;
+typedef std::map<SectionId, PathSection>  SectionMap;
+typedef std::map<SectionId, SectionIdList> SectionChildrenMap;
+typedef std::map<SectionId, SectionId> SectionParentMap;
 
-    public:
-        Trajectory();
 
-        void clear();
-    };
+class Trajectory {
+    const world::World* world_;
+
+    TrajectoryData data_;
+    SectionMap sections_;
+    SectionChildrenMap children_;
+    SectionParentMap parents_;
+    SectionId currentSection_;
+
+public:
+    Trajectory(const world::World *world);
+
+    void clear();
+
+    void savePoint();
+
+    SectionId initNewSection();
+    void completeSection();
+    void selectSection(SectionId section);
+
+    const SectionIdList& roots() const {return children_.at("");}
+    const SectionMap& sections() const {return sections_;}
+    const SectionIdList& children(const SectionId& parent) const {return children_.at(parent);}
+};
 
 }
 

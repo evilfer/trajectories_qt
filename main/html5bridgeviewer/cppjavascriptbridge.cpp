@@ -42,6 +42,7 @@ namespace bridge {
     void CppJavascriptBridge::makeCall(QString & op, QVariantMap & data) {
         this->call_js_obj(op, data);
     }
+
     void CppJavascriptBridge::makeCall(QString & op, QVariantList & data) {
         this->call_js_array(op, data);
     }

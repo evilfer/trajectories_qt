@@ -1,5 +1,0 @@
-
-# link cspice, sqlite3, etc...
-# for windows, you can use:
-# DEFINES += _TRAJECTORIES_USE_OWN_WIN_STRPTIME
-

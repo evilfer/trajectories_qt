@@ -20,31 +20,25 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#include <QApplication>
-#include <QWebInspector>
-#include <QGraphicsWebView>
 
-#include "trajectories/trajectories.h"
-#include "html5bridgeviewer/html5bridgeviewer.h"
+#ifndef TRAJECTORY_PATH_H
+#define TRAJECTORY_PATH_H
 
+#include <deque>
+#include "pathpoint.h"
 
+namespace trajectory {
 
-int main(int argc, char *argv[]) {
+  typedef std::deque<PathPoint>::const_iterator PathPosition;
 
-    QApplication app(argc, argv);
+  class TrajectoryData : public std::deque<PathPoint> {
+  public:
+    TrajectoryData();
 
-    bridge::Html5BridgeViewer viewer(new Trajectories());
+    void save(const PathPoint& point) {this->push_back(point);}
+    const PathPosition lastPoint() const {return this->end() - 1;}
+  };
 
-    viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
-    viewer.setGeometry(20, 30, 600, 400);
-    viewer.showExpanded();
-    viewer.loadFile(QLatin1String("../html/index.html/#/list"));
-    viewer.loadUrl(QUrl("../html/index.html#sim:1"));
-
-    QWebInspector inspector;
-    inspector.setPage(viewer.webView()->page());
-    inspector.setGeometry(20, 500, 800, 400);
-    inspector.setVisible(true);
-
-    return app.exec();
 }
+
+#endif // PATH_H

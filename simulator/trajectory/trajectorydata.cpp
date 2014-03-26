@@ -20,31 +20,16 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef INPUTOBJECT_H
-#define INPUTOBJECT_H
 
-#include <vector>
+#include "trajectorydata.h"
 
-namespace simulator {
+namespace trajectory {
 
-    template<typename T>
-    bool equals(const std::vector<T> & v1, const std::vector<T> & v2);
+
+  TrajectoryData::TrajectoryData() {}
 
 
 
-    class InputObject {
-        std::vector<int> ints_;
-        std::vector<double> doubles_;
-
-    public:
-        InputObject(std::vector<int> & ints, std::vector<double> doubles);
-        const std::vector<int> & ints() const {return ints_;}
-        const std::vector<double> & doubles() const {return doubles_;}
-
-    };
-
-    bool equals(const InputObject &io1, const InputObject &io2);
 
 }
 
-#endif // INPUTOBJECT_H

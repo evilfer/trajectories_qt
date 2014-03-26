@@ -23,7 +23,7 @@ along with Trajectories.  If not, see <http://www.gnu.org/licenses/>.
 #include "trajectories.h"
 #include "documentmanager.h"
 
-#include "simulator/ephemerides/spiceposition.h"
+#include "ephemerides/spiceposition.h"
 
 Trajectories::Trajectories() : solarSystemManager_m(NULL) {
     ephemerides::SpicePosition::init();
@@ -50,6 +50,5 @@ void Trajectories::processCall(QString & op, QVariantMap & data, QVariantMap &re
     } else if (op == "validtimerange") {
         solarSystemManager_m->timeInterval(data, result);
     }
-
 }
 
