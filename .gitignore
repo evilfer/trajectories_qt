@@ -1,5 +1,5 @@
-node_modules
-dist
-.tmp
-.sass-cache
-bower_components
+html/node_modules
+html/dist
+html/.tmp
+html/.sass-cache
+html/bower_components
