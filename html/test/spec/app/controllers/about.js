@@ -3,7 +3,7 @@
 describe('Controller: AboutCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('trajectoriesApp'));
+  beforeEach(module('trajectories'));
 
   var AboutCtrl,
     scope;
