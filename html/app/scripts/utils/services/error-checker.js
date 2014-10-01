@@ -22,7 +22,7 @@ angular.module('utils').factory('ErrorCheckerService', function () {
 
   ErrorCheckerService.prototype.check = function (data) {
     var errors = {};
-    this._checkNode(errors, 'root', data, '_ROOT_');
+    this._checkNode(errors, '', data, '_ROOT_');
     return errors;
   };
 
@@ -34,7 +34,7 @@ angular.module('utils').factory('ErrorCheckerService', function () {
   };
 
   ErrorCheckerService.prototype._appendPath = function (base, path) {
-    return base + '.' + path;
+    return base.length > 0 ? (base + '.' + path) : path;
   };
 
   ErrorCheckerService.prototype._checkNode = function (errors, dataPath, data, type) {
@@ -51,7 +51,7 @@ angular.module('utils').factory('ErrorCheckerService', function () {
     } else {
       for (var key in objDef) {
         if (objDef.hasOwnProperty(key)) {
-          if (objDef[key][0] && !(data[key])) {
+          if (objDef[key][0] && !(key in data)) {
             this._addError(errors, this._appendPath(dataPath, key), 'missing');
           }
         }

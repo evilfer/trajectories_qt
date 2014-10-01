@@ -27,7 +27,7 @@ describe("Service: ErrorChecker", function () {
     it('should detect non obj root', function () {
       var dataItems = [null, 4, [1, 2], "e"];
       var result = {
-        root: ['type:obj']
+        '': ['type:obj']
       };
 
       for (var i = 0; i < dataItems.length; i++) {
@@ -56,12 +56,12 @@ describe("Service: ErrorChecker", function () {
 
     it('should detect missing obj children', function () {
       expect(errorChecker.check({})).toEqual({
-        'root.a': ['missing'],
-        'root.b': ['missing']
+        'a': ['missing'],
+        'b': ['missing']
       });
 
       expect(errorChecker.check({a: 1})).toEqual({
-        'root.b': ['missing']
+        'b': ['missing']
       });
 
       expect(errorChecker.check({a: 1, b: 2})).toEqual({});
@@ -69,14 +69,14 @@ describe("Service: ErrorChecker", function () {
 
     it('should detect children not allowed', function () {
       expect(errorChecker.check({a: 1, b: 2, d: null})).toEqual({
-        'root.d': ['notallowed']
+        'd': ['notallowed']
       });
     });
 
   });
 
 
-  describe('number/string checking', function () {
+  describe('optional number/string checking', function () {
     var errorChecker;
 
     beforeEach(function () {
@@ -92,13 +92,46 @@ describe("Service: ErrorChecker", function () {
 
     it('should detect null values', function () {
       expect(errorChecker.check({a: null})).toEqual({
-        'root.a': ['type:number']
+        'a': ['type:number']
       });
     });
 
     it('should detect bad strings', function () {
       expect(errorChecker.check({b: 4})).toEqual({
-        'root.b': ['type:string']
+        'b': ['type:string']
+      });
+    });
+
+    it('should pass 0 numbers and empty strings', function () {
+      expect(errorChecker.check({a: 0, b: ''})).toEqual({});
+    });
+  });
+
+  describe('mandatory number/string checking', function () {
+    var errorChecker;
+
+    beforeEach(function () {
+      errorChecker = new ErrorCheckerService({
+        '_ROOT_': ['obj', {
+          'a': [true, 'N'],
+          'b': [true, 'S']
+        }],
+        'N': ['number'],
+        'S': ['string']
+      });
+    });
+
+    it('should detect null values', function () {
+      expect(errorChecker.check({a: null})).toEqual({
+        'a': ['type:number'],
+        'b': ['missing']
+      });
+    });
+
+    it('should detect bad strings', function () {
+      expect(errorChecker.check({b: 4})).toEqual({
+        'a': ['missing'],
+        'b': ['type:string']
       });
     });
 
@@ -131,11 +164,11 @@ describe("Service: ErrorChecker", function () {
 
     it('should detect array property with bad type', function() {
       expect(errorChecker.check({a: 0})).toEqual({
-        'root.a': ['type:array']
+        'a': ['type:array']
       });
 
       expect(errorChecker.check({a: null})).toEqual({
-        'root.a': ['type:array']
+        'a': ['type:array']
       });
 
       expect(errorChecker.check({a: []})).toEqual({});
@@ -145,7 +178,7 @@ describe("Service: ErrorChecker", function () {
       expect(errorChecker.check({
         a:[null]
       })).toEqual({
-        'root.a.0': ['nullitem']
+        'a.0': ['nullitem']
       });
     });
 
@@ -153,7 +186,7 @@ describe("Service: ErrorChecker", function () {
       expect(errorChecker.check({
         a:[0]
       })).toEqual({
-        'root.a.0': ['type:obj']
+        'a.0': ['type:obj']
       });
     });
 
@@ -161,7 +194,7 @@ describe("Service: ErrorChecker", function () {
       expect(errorChecker.check({
         a:[{}]
       })).toEqual({
-        'root.a.0': ['missingtype']
+        'a.0': ['missingtype']
       });
     });
 
@@ -169,7 +202,7 @@ describe("Service: ErrorChecker", function () {
       expect(errorChecker.check({
         a:[{type: 'k'}]
       })).toEqual({
-        'root.a.0': ['badtype']
+        'a.0': ['badtype']
       });
     });
 
@@ -187,8 +220,8 @@ describe("Service: ErrorChecker", function () {
           {type: 'c_obj', 'cs': 0, 'cn': ''}
         ]
       })).toEqual({
-        'root.a.2.cs': ['type:string'],
-        'root.a.2.cn': ['type:number']
+        'a.2.cs': ['type:string'],
+        'a.2.cn': ['type:number']
       });
     });
   });
