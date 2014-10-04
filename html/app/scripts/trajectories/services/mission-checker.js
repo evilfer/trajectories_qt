@@ -13,6 +13,7 @@ angular.module('trajectories').service('MissionCheckerService', ['ErrorCheckerSe
   this._structure = {
     'STR': ['string'],
     'NUM': ['number'],
+    'RANGE': ['numberRange'],
     '_ROOT_': ['obj', {
       'metadata': [true, 'METADATA'],
       'ship': [true, 'SHIP'],

@@ -10,7 +10,7 @@
  */
 angular.module('utils').factory('ErrorCheckerService', function () {
 
-  var ErrorCheckerService = function (dataStructure) {
+  var ErrorCheckerService = function (dataStructure, extend) {
     this.dataStructure = dataStructure;
     this._methods = {
       'obj': '_checkObj',
@@ -18,6 +18,8 @@ angular.module('utils').factory('ErrorCheckerService', function () {
       'string': '_checkString',
       'array': '_checkArray'
     };
+
+    this._extend = extend || {};
   };
 
   ErrorCheckerService.prototype.check = function (data) {
@@ -42,7 +44,14 @@ angular.module('utils').factory('ErrorCheckerService', function () {
 
     var typeName = def[0];
     var typeOptions = def.length > 1 ? def[1] : {};
-    this[this._methods[typeName]](errors, dataPath, data, typeOptions);
+    if (typeName in this._methods) {
+      this[this._methods[typeName]](errors, dataPath, data, typeOptions);
+    } else if (typeName in this._extend) {
+      var error = this._extend[typeName](data);
+      if (error) {
+        this._addError(errors, dataPath, error);
+      }
+    }
   };
 
   ErrorCheckerService.prototype._checkObj = function (errors, dataPath, data, objDef) {

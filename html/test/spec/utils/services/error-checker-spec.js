@@ -162,7 +162,7 @@ describe("Service: ErrorChecker", function () {
       });
     });
 
-    it('should detect array property with bad type', function() {
+    it('should detect array property with bad type', function () {
       expect(errorChecker.check({a: 0})).toEqual({
         'a': ['type:array']
       });
@@ -174,47 +174,53 @@ describe("Service: ErrorChecker", function () {
       expect(errorChecker.check({a: []})).toEqual({});
     });
 
-    it('should detect object array null elements', function() {
+    it('should detect object array null elements', function () {
       expect(errorChecker.check({
-        a:[null]
+        a: [null]
       })).toEqual({
         'a.0': ['nullitem']
       });
     });
 
-    it('should detect object array non-object elements', function() {
+    it('should detect object array non-object elements', function () {
       expect(errorChecker.check({
-        a:[0]
+        a: [0]
       })).toEqual({
         'a.0': ['type:obj']
       });
     });
 
-    it('should detect object array items without type', function() {
+    it('should detect object array items without type', function () {
       expect(errorChecker.check({
-        a:[{}]
+        a: [
+          {}
+        ]
       })).toEqual({
         'a.0': ['missingtype']
       });
     });
 
-    it('should detect object array items with bad type', function() {
+    it('should detect object array items with bad type', function () {
       expect(errorChecker.check({
-        a:[{type: 'k'}]
+        a: [
+          {type: 'k'}
+        ]
       })).toEqual({
         'a.0': ['badtype']
       });
     });
 
-    it('should pass good object array', function() {
+    it('should pass good object array', function () {
       expect(errorChecker.check({
-        a:[{type: 'c_obj'}]
+        a: [
+          {type: 'c_obj'}
+        ]
       })).toEqual({});
     });
 
-    it('should check object array items', function() {
+    it('should check object array items', function () {
       expect(errorChecker.check({
-        a:[
+        a: [
           {type: 'c_obj'},
           {type: 'c_obj', 'cs': '', 'cn': 0},
           {type: 'c_obj', 'cs': 0, 'cn': ''}
@@ -225,4 +231,44 @@ describe("Service: ErrorChecker", function () {
       });
     });
   });
+
+  describe('numberRange checking', function () {
+    var NumberRangeService, errorChecker;
+
+
+    beforeEach(inject(function (_NumberRangeService_) {
+      NumberRangeService = _NumberRangeService_;
+    }));
+
+
+    beforeEach(function () {
+      errorChecker = new ErrorCheckerService({
+        '_ROOT_': ['obj', {
+          'a': [true, 'NR']
+        }],
+        'NR': ['numberRange']
+      }, {
+        'numberRange': NumberRangeService.error
+      });
+
+      console.log(errorChecker._methods);
+    });
+
+    it('should detect property with bad type', function () {
+      expect(errorChecker.check({
+        a: []
+      })).toEqual({
+        'a': ['type:numberRange']
+      });
+    });
+
+    it('should detect badly formatted range', function () {
+      expect(errorChecker.check({
+        a: 'a'
+      })).toEqual({
+        'a': ['format']
+      });
+    });
+  });
+
 });
