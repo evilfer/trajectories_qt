@@ -250,8 +250,6 @@ describe("Service: ErrorChecker", function () {
       }, {
         'numberRange': NumberRangeService.error
       });
-
-      console.log(errorChecker._methods);
     });
 
     it('should detect property with bad type', function () {

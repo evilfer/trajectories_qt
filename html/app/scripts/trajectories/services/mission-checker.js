@@ -40,9 +40,24 @@ angular.module('trajectories').service('MissionCheckerService', ['ErrorCheckerSe
     }],
     'PLAN': ['array', {
       typeKey: 'type',
-      types: {}
+      types: {
+        'timePeriod': 'STEP_TIMEPERIOD',
+        'maneuver': 'STEP_MANEUVER'
+      }
+    }],
+    'STEP_TIMEPERIOD': ['obj', {
+      type: [true, 'STR'],
+      period: [true, 'RANGE']
+    }],
+    'STEP_MANEUVER': ['obj', {
+      type: [true, 'STR'],
+      orbit: [true, 'NUM'],
+      prograde: [false, 'RANGE'],
+      offplane: [false, 'RANGE'],
+      outward: [false, 'RANGE']
     }]
   };
+
 
   this._errorChecker = new ErrorCheckerService(this._structure);
 

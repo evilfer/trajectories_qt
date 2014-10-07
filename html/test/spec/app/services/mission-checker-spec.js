@@ -12,11 +12,21 @@ describe("Service: MissionChecker", function () {
     MissionCheckerService = _MissionCheckerService_;
   }));
 
-  beforeEach(function() {
+  beforeEach(function () {
     mission = MissionManipulatorService.newMission();
   });
 
   it('should pass new mission', function () {
+    expect(MissionCheckerService.check(mission)).toEqual({});
+  });
+
+  it('should pass timePeriod step', function () {
+    MissionManipulatorService.add(mission, 'timePeriod')
+    expect(MissionCheckerService.check(mission)).toEqual({});
+  });
+
+  it('should pass maneuver step', function () {
+    MissionManipulatorService.add(mission, 'maneuver')
     expect(MissionCheckerService.check(mission)).toEqual({});
   });
 });
